@@ -264,9 +264,7 @@
 <script>
 
     /*
-    ==========================================
     SUPABASE EDGE FUNCTION URLs
-    ==========================================
     */
 
     const LOGIN_URL =
@@ -276,34 +274,14 @@
         "https://xitmexidjgacikjpheji.supabase.co/functions/v1/create-blog";
 
 
-    /*
-    ==========================================
-    TEMPORARY PAGE VARIABLES
-    ==========================================
 
-    Nothing is stored in:
-
-    - localStorage
-    - sessionStorage
-    - cookies
-    - database sessions
-
-    These variables disappear when the page
-    is closed or refreshed.
-    ==========================================
-    */
 
     let workerUsername = "";
     let workerPassword = "";
     let workerNameValue = "";
 
 
-    /*
-    ==========================================
-    HELPER: SHOW MESSAGE
-    ==========================================
-    */
-
+    
     function showMessage(element, message, success) {
 
         element.textContent = message;
