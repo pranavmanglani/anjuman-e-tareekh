@@ -1,1 +1,2158 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+    name="description"
+    content="The People Behind the Research — ANJUMAN ए TAREEKH"
+>
+
+<title>
+    The People — ANJUMAN ए TAREEKH
+</title>
+
+
+<!-- =========================================
+     FONTS
+========================================= -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
+
+<style>
+
+/* =========================================
+   ROOT
+========================================= */
+
+:root {
+
+    --green: #164d36;
+
+    --green-dark: #0d3022;
+
+    --green-light: #276b4b;
+
+    --orange: #df6915;
+
+    --orange-light: #ef8b36;
+
+    --gold: #b99350;
+
+    --gold-light: #d6b878;
+
+    --ivory: #f8f4e9;
+
+    --paper: #fffdf7;
+
+    --paper-dark: #eee7d6;
+
+    --ink: #18251e;
+
+    --muted: #68736c;
+
+    --white: #ffffff;
+
+    --border: rgba(185,147,80,.35);
+
+    --serif:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    --sans:
+        "DM Sans",
+        Arial,
+        sans-serif;
+
+}
+
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    margin: 0;
+
+    background:
+
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(185,147,80,.08),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(22,77,54,.07),
+            transparent 35%
+        ),
+
+        var(--ivory);
+
+    color: var(--ink);
+
+    font-family: var(--sans);
+
+    overflow-x: hidden;
+
+}
+
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: .035;
+
+    background-image:
+
+        url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
+
+    z-index: 999;
+
+}
+
+
+button {
+    font: inherit;
+    cursor: pointer;
+}
+
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.page {
+
+    width:
+        min(
+            1240px,
+            calc(100% - 32px)
+        );
+
+    margin: auto;
+
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.topbar {
+
+    padding: 18px 0;
+
+    border-bottom:
+        1px solid
+        rgba(185,147,80,.25);
+
+    animation:
+        fadeDown .8s ease both;
+
+}
+
+
+.nav {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+}
+
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.brand-mark {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        var(--gold);
+
+    background: white;
+
+}
+
+
+.brand-mark img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.brand-name {
+
+    color: var(--green);
+
+    font-family: var(--serif);
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+}
+
+
+.brand-tagline {
+
+    margin-top: 5px;
+
+    color: var(--orange);
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+}
+
+
+.nav-link {
+
+    padding:
+        9px
+        15px;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius: 100px;
+
+    color: var(--green);
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition: .25s ease;
+
+}
+
+
+.nav-link:hover {
+
+    border-color: var(--gold);
+
+    background:
+        rgba(185,147,80,.08);
+
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero {
+
+    position: relative;
+
+    padding:
+        90px
+        20px
+        75px;
+
+    text-align: center;
+
+    overflow: hidden;
+
+}
+
+
+.hero::before {
+
+    content: "✦";
+
+    position: absolute;
+
+    top: 35px;
+
+    left: 10%;
+
+    color: var(--gold);
+
+    font-size: 18px;
+
+    animation:
+        float 4s ease-in-out infinite;
+
+}
+
+
+.hero::after {
+
+    content: "✦";
+
+    position: absolute;
+
+    right: 12%;
+
+    bottom: 40px;
+
+    color: var(--orange);
+
+    font-size: 13px;
+
+    animation:
+        float 5s ease-in-out infinite reverse;
+
+}
+
+
+.eyebrow {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    color: var(--orange);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    animation:
+        fadeUp .7s .1s ease both;
+
+}
+
+
+.eyebrow::before,
+.eyebrow::after {
+
+    content: "";
+
+    width: 45px;
+
+    height: 1px;
+
+    background: var(--gold);
+
+}
+
+
+.hero h1 {
+
+    margin:
+        20px
+        0
+        8px;
+
+    color: var(--green);
+
+    font-family: var(--serif);
+
+    font-size:
+        clamp(
+            55px,
+            9vw,
+            110px
+        );
+
+    line-height: .78;
+
+    font-weight: 600;
+
+    letter-spacing: -3px;
+
+    animation:
+        fadeUp .8s .2s ease both;
+
+}
+
+
+.hero h1 span {
+
+    color: var(--orange);
+
+    font-style: italic;
+
+}
+
+
+.hero-subtitle {
+
+    max-width: 670px;
+
+    margin:
+        28px
+        auto
+        0;
+
+    color: var(--muted);
+
+    font-family: var(--serif);
+
+    font-size:
+        clamp(
+            19px,
+            2.5vw,
+            25px
+        );
+
+    line-height: 1.45;
+
+    animation:
+        fadeUp .8s .35s ease both;
+
+}
+
+
+.ornament {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    margin:
+        28px
+        auto
+        0;
+
+    color: var(--gold);
+
+    animation:
+        fadeUp .8s .45s ease both;
+
+}
+
+
+.ornament-line {
+
+    width: 80px;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gold)
+        );
+
+}
+
+
+.ornament-line:last-child {
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--gold),
+            transparent
+        );
+
+}
+
+
+/* =========================================
+   INTRODUCTION
+========================================= */
+
+.intro {
+
+    max-width: 780px;
+
+    margin:
+        0
+        auto
+        60px;
+
+    padding:
+        25px
+        30px;
+
+    border-top:
+        1px solid
+        var(--border);
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+    text-align: center;
+
+    animation:
+        fadeUp .8s .55s ease both;
+
+}
+
+
+.intro p {
+
+    margin: 0;
+
+    color: var(--green);
+
+    font-family: var(--serif);
+
+    font-size: 21px;
+
+    line-height: 1.6;
+
+}
+
+
+.intro strong {
+
+    color: var(--orange);
+
+}
+
+
+/* =========================================
+   STUDENT GRID
+========================================= */
+
+.students-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 22px;
+
+    padding-bottom: 100px;
+
+}
+
+
+/* =========================================
+   STUDENT CARD
+========================================= */
+
+.student-card {
+
+    position: relative;
+
+    min-height: 330px;
+
+    padding: 30px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.92),
+            rgba(249,244,232,.86)
+        );
+
+    border:
+        1px solid
+        rgba(185,147,80,.32);
+
+    box-shadow:
+        0 8px 30px
+        rgba(22,77,54,.06);
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition:
+
+        transform .45s
+        cubic-bezier(.2,.8,.2,1),
+
+        box-shadow .45s ease,
+
+        border-color .45s ease;
+
+    animation:
+        cardIn .7s both;
+
+}
+
+
+.student-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 190px;
+
+    height: 190px;
+
+    right: -85px;
+
+    top: -85px;
+
+    border:
+        1px solid
+        rgba(185,147,80,.20);
+
+    border-radius: 50%;
+
+    transition: .55s ease;
+
+}
+
+
+.student-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    width: 5px;
+
+    height: 0;
+
+    background:
+        linear-gradient(
+            var(--orange),
+            var(--gold)
+        );
+
+    transition: .45s ease;
+
+}
+
+
+.student-card:hover {
+
+    transform:
+        translateY(-10px);
+
+    box-shadow:
+        0 25px 60px
+        rgba(22,77,54,.14);
+
+    border-color:
+        rgba(185,147,80,.75);
+
+}
+
+
+.student-card:hover::before {
+
+    transform: scale(1.5);
+
+}
+
+
+.student-card:hover::after {
+
+    height: 100%;
+
+}
+
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.student-number {
+
+    color: var(--gold);
+
+    font-family: var(--serif);
+
+    font-size: 18px;
+
+    letter-spacing: 1px;
+
+}
+
+
+.student-role {
+
+    display: inline-block;
+
+    margin-top: 25px;
+
+    color: var(--orange);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+}
+
+
+.student-name {
+
+    margin:
+        8px
+        0
+        12px;
+
+    color: var(--green);
+
+    font-family: var(--serif);
+
+    font-size: 36px;
+
+    line-height: .95;
+
+    font-weight: 600;
+
+}
+
+
+.student-short {
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+}
+
+
+.student-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 25px;
+
+    padding-top: 15px;
+
+    border-top:
+        1px solid
+        rgba(185,147,80,.22);
+
+}
+
+
+.student-open {
+
+    color: var(--green);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    transition: .25s ease;
+
+}
+
+
+.student-card:hover
+.student-open {
+
+    color: var(--orange);
+
+    transform:
+        translateX(4px);
+
+}
+
+
+/* =========================================
+   PROFILE VIEW
+========================================= */
+
+#profileView {
+
+    display: none;
+
+    padding-bottom: 100px;
+
+    animation:
+        articleIn .6s ease both;
+
+}
+
+
+.back-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 40px;
+
+    padding:
+        10px
+        18px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 100px;
+
+    background:
+        rgba(255,255,255,.65);
+
+    color: var(--green);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    transition: .25s ease;
+
+}
+
+
+.back-button:hover {
+
+    background: var(--green);
+
+    color: white;
+
+    transform:
+        translateX(-4px);
+
+}
+
+
+.profile-shell {
+
+    position: relative;
+
+    max-width: 900px;
+
+    margin: auto;
+
+    padding:
+        clamp(
+            30px,
+            7vw,
+            75px
+        );
+
+    background:
+        var(--paper);
+
+    border:
+        1px solid
+        rgba(185,147,80,.35);
+
+    box-shadow:
+        0 30px 90px
+        rgba(22,77,54,.10);
+
+}
+
+
+.profile-shell::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 14px;
+
+    border:
+        1px solid
+        rgba(185,147,80,.14);
+
+    pointer-events: none;
+
+}
+
+
+.profile-header {
+
+    position: relative;
+
+    text-align: center;
+
+}
+
+
+.profile-role {
+
+    color: var(--orange);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+}
+
+
+.profile-name {
+
+    margin:
+        15px
+        0;
+
+    color: var(--green);
+
+    font-family: var(--serif);
+
+    font-size:
+        clamp(
+            50px,
+            8vw,
+            85px
+        );
+
+    line-height: .9;
+
+    font-weight: 600;
+
+}
+
+
+.profile-bio {
+
+    max-width: 680px;
+
+    margin:
+        25px
+        auto
+        0;
+
+    color: var(--muted);
+
+    font-family: var(--serif);
+
+    font-size: 21px;
+
+    line-height: 1.65;
+
+}
+
+
+.profile-divider {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin:
+        40px
+        0;
+
+    color: var(--gold);
+
+}
+
+
+.profile-divider span {
+
+    width: 55px;
+
+    height: 1px;
+
+    background: var(--gold);
+
+}
+
+
+.profile-section {
+
+    position: relative;
+
+    margin-top: 35px;
+
+}
+
+
+.profile-section-title {
+
+    margin-bottom: 12px;
+
+    color: var(--green);
+
+    font-family: var(--serif);
+
+    font-size: 30px;
+
+}
+
+
+.profile-section-text {
+
+    color: #344039;
+
+    font-family: var(--serif);
+
+    font-size: 19px;
+
+    line-height: 1.7;
+
+}
+
+
+.profile-list {
+
+    margin: 0;
+
+    padding: 0;
+
+    list-style: none;
+
+}
+
+
+.profile-list li {
+
+    padding:
+        12px
+        0;
+
+    border-bottom:
+        1px solid
+        rgba(185,147,80,.18);
+
+    color: #344039;
+
+    font-family: var(--serif);
+
+    font-size: 18px;
+
+}
+
+
+.profile-list li::before {
+
+    content: "✦";
+
+    margin-right: 12px;
+
+    color: var(--orange);
+
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+footer {
+
+    padding:
+        35px
+        0
+        50px;
+
+    border-top:
+        1px solid
+        rgba(185,147,80,.25);
+
+    text-align: center;
+
+}
+
+
+.footer-title {
+
+    color: var(--green);
+
+    font-family: var(--serif);
+
+    font-size: 27px;
+
+}
+
+
+.footer-tagline {
+
+    margin-top: 7px;
+
+    color: var(--orange);
+
+    font-size: 9px;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+}
+
+
+.footer-text {
+
+    margin-top: 18px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes fadeDown {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(-15px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+@keyframes fadeUp {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(25px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+@keyframes cardIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(35px)
+            scale(.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+@keyframes articleIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(30px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+@keyframes float {
+
+    0%,
+    100% {
+
+        transform:
+            translateY(0);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(-8px);
+
+    }
+
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+    .students-grid {
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .page {
+
+        width:
+            min(
+                calc(100% - 22px),
+                1240px
+            );
+
+    }
+
+
+    .brand-mark {
+
+        width: 42px;
+
+        height: 42px;
+
+    }
+
+
+    .brand-name {
+
+        font-size: 18px;
+
+    }
+
+
+    .brand-tagline {
+
+        font-size: 6px;
+
+        letter-spacing: 1.4px;
+
+    }
+
+
+    .nav-link {
+
+        padding:
+            8px
+            11px;
+
+        font-size: 11px;
+
+    }
+
+
+    .hero {
+
+        padding:
+            65px
+            10px
+            55px;
+
+    }
+
+
+    .hero h1 {
+
+        letter-spacing: -2px;
+
+    }
+
+
+    .students-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .student-card {
+
+        min-height: 310px;
+
+    }
+
+
+    .student-name {
+
+        font-size: 38px;
+
+    }
+
+
+    .profile-shell {
+
+        padding:
+            35px
+            22px;
+
+    }
+
+
+    .profile-shell::before {
+
+        inset: 8px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     NAVIGATION
+========================================= -->
+
+<header class="topbar">
+
+    <div class="page nav">
+
+        <a
+            href="index.html"
+            class="brand"
+        >
+
+            <div class="brand-mark">
+
+                <img
+                    src="favicon.jpg"
+                    alt="ANJUMAN ए TAREEKH"
+                >
+
+            </div>
+
+
+            <div>
+
+                <div class="brand-name">
+                    ANJUMAN ए TAREEKH
+                </div>
+
+                <div class="brand-tagline">
+                    Research Meets Zaika
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <a
+            href="index.html"
+            class="nav-link"
+        >
+            ← Home
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<main class="page">
+
+
+<!-- =========================================
+     STUDENT LIST
+========================================= -->
+
+<section id="studentsList">
+
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <div class="eyebrow">
+            The People Behind The Research
+        </div>
+
+
+        <h1>
+            Our
+            <span>Researchers</span>
+        </h1>
+
+
+        <p class="hero-subtitle">
+
+            The young researchers, writers,
+            observers and storytellers who are
+            helping preserve the living heritage
+            of Awadh.
+
+        </p>
+
+
+        <div class="ornament">
+
+            <div class="ornament-line"></div>
+
+            ✦
+
+            <div class="ornament-line"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- INTRO -->
+
+    <div class="intro">
+
+        <p>
+
+            <strong>History</strong>
+            is not only found in archives.
+
+            It lives in the people who
+            <strong>research</strong>,
+            document, question and preserve it.
+
+        </p>
+
+    </div>
+
+
+    <!-- =====================================
+         STUDENT CARDS
+         
+         COPY THIS ENTIRE ARTICLE BLOCK
+         TO ADD ANOTHER STUDENT.
+    ====================================== -->
+
+    <div class="students-grid">
+
+
+        <!-- ==============================
+             STUDENT 01
+        =============================== -->
+
+        <article
+            class="student-card"
+            data-name="Student Name"
+            data-role="Researcher"
+            data-bio="Write a short description of the student here."
+            data-work="Historical research and documentation"
+            data-contributions="Research|Writing|Documentation"
+        >
+
+            <div>
+
+                <div class="student-number">
+                    01
+                </div>
+
+
+                <div class="student-role">
+                    Researcher
+                </div>
+
+
+                <h2 class="student-name">
+                    Student Name
+                </h2>
+
+
+                <p class="student-short">
+
+                    Historical researcher exploring
+                    the stories, people and heritage
+                    of Awadh.
+
+                </p>
+
+            </div>
+
+
+            <div class="student-footer">
+
+                <span>
+                    ANJUMAN Research
+                </span>
+
+                <span class="student-open">
+                    Explore Profile →
+                </span>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- ==============================
+             STUDENT 02
+        =============================== -->
+
+        <article
+            class="student-card"
+            data-name="Student Name"
+            data-role="Writer & Researcher"
+            data-bio="Write a short description of the student here."
+            data-work="Research writing and storytelling"
+            data-contributions="Writing|Research|Storytelling"
+        >
+
+            <div>
+
+                <div class="student-number">
+                    02
+                </div>
+
+
+                <div class="student-role">
+                    Writer & Researcher
+                </div>
+
+
+                <h2 class="student-name">
+                    Student Name
+                </h2>
+
+
+                <p class="student-short">
+
+                    Documenting stories and discoveries
+                    through research and writing.
+
+                </p>
+
+            </div>
+
+
+            <div class="student-footer">
+
+                <span>
+                    ANJUMAN Research
+                </span>
+
+                <span class="student-open">
+                    Explore Profile →
+                </span>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- ==============================
+             STUDENT 03
+        =============================== -->
+
+        <article
+            class="student-card"
+            data-name="Student Name"
+            data-role="Researcher & Observer"
+            data-bio="Write a short description of the student here."
+            data-work="Field research and observation"
+            data-contributions="Field Work|Research|Observation"
+        >
+
+            <div>
+
+                <div class="student-number">
+                    03
+                </div>
+
+
+                <div class="student-role">
+                    Researcher & Observer
+                </div>
+
+
+                <h2 class="student-name">
+                    Student Name
+                </h2>
+
+
+                <p class="student-short">
+
+                    Exploring Awadh through field
+                    observation, conversations and
+                    documentation.
+
+                </p>
+
+            </div>
+
+
+            <div class="student-footer">
+
+                <span>
+                    ANJUMAN Research
+                </span>
+
+                <span class="student-open">
+                    Explore Profile →
+                </span>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- ==============================
+             COPY FROM HERE
+             TO ADD MORE STUDENTS
+        =============================== -->
+
+
+        <article
+            class="student-card"
+            data-name="Student Name"
+            data-role="Your Role"
+            data-bio="Your student biography goes here."
+            data-work="Your research or project goes here."
+            data-contributions="Research|Writing|Documentation"
+        >
+
+            <div>
+
+                <div class="student-number">
+                    04
+                </div>
+
+
+                <div class="student-role">
+                    Your Role
+                </div>
+
+
+                <h2 class="student-name">
+                    Student Name
+                </h2>
+
+
+                <p class="student-short">
+
+                    A short description of this
+                    student's work goes here.
+
+                </p>
+
+            </div>
+
+
+            <div class="student-footer">
+
+                <span>
+                    ANJUMAN Research
+                </span>
+
+                <span class="student-open">
+                    Explore Profile →
+                </span>
+
+            </div>
+
+        </article>
+
+
+        <!--
+        
+        COPY THE BLOCK ABOVE.
+
+        Change:
+
+        data-name
+        data-role
+        data-bio
+        data-work
+        data-contributions
+
+        And change:
+
+        04
+
+        to:
+
+        05
+        06
+        07
+        etc.
+
+        -->
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================
+     PROFILE VIEW
+========================================= -->
+
+<section id="profileView">
+
+
+    <button
+        id="backButton"
+        class="back-button"
+    >
+
+        ← Back to Researchers
+
+    </button>
+
+
+    <article class="profile-shell">
+
+
+        <div class="profile-header">
+
+
+            <div
+                id="profileRole"
+                class="profile-role"
+            >
+            </div>
+
+
+            <h1
+                id="profileName"
+                class="profile-name"
+            >
+            </h1>
+
+
+            <p
+                id="profileBio"
+                class="profile-bio"
+            >
+            </p>
+
+
+            <div class="profile-divider">
+
+                <span></span>
+
+                ✦
+
+                <span></span>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="profile-section">
+
+            <h2 class="profile-section-title">
+                Research & Work
+            </h2>
+
+
+            <div
+                id="profileWork"
+                class="profile-section-text"
+            >
+            </div>
+
+        </div>
+
+
+
+        <div class="profile-section">
+
+            <h2 class="profile-section-title">
+                Contributions
+            </h2>
+
+
+            <ul
+                id="profileContributions"
+                class="profile-list"
+            >
+            </ul>
+
+        </div>
+
+
+    </article>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer>
+
+    <div class="page">
+
+        <div class="footer-title">
+            ANJUMAN ए TAREEKH
+        </div>
+
+
+        <div class="footer-tagline">
+            Tareekh Aur Anjuman — Research Meets Zaika
+        </div>
+
+
+        <div class="footer-text">
+
+            Explore • Research • Create • Document
+            • Share • Lead • Preserve
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<script>
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const studentsList =
+    document.getElementById(
+        "studentsList"
+    );
+
+
+const profileView =
+    document.getElementById(
+        "profileView"
+    );
+
+
+const backButton =
+    document.getElementById(
+        "backButton"
+    );
+
+
+const profileName =
+    document.getElementById(
+        "profileName"
+    );
+
+
+const profileRole =
+    document.getElementById(
+        "profileRole"
+    );
+
+
+const profileBio =
+    document.getElementById(
+        "profileBio"
+    );
+
+
+const profileWork =
+    document.getElementById(
+        "profileWork"
+    );
+
+
+const profileContributions =
+    document.getElementById(
+        "profileContributions"
+    );
+
+
+/* =========================================
+   STUDENT CARD CLICK
+========================================= */
+
+document
+    .querySelectorAll(".student-card")
+    .forEach(card => {
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                openProfile(card);
+
+            }
+        );
+
+    });
+
+
+/* =========================================
+   OPEN PROFILE
+========================================= */
+
+function openProfile(card) {
+
+    const name =
+        card.dataset.name ||
+        "Student";
+
+
+    const role =
+        card.dataset.role ||
+        "ANJUMAN Researcher";
+
+
+    const bio =
+        card.dataset.bio ||
+        "";
+
+
+    const work =
+        card.dataset.work ||
+        "";
+
+
+    const contributions =
+        card.dataset.contributions
+            ? card.dataset.contributions
+                .split("|")
+            : [];
+
+
+    profileName.textContent =
+        name;
+
+
+    profileRole.textContent =
+        role;
+
+
+    profileBio.textContent =
+        bio;
+
+
+    profileWork.textContent =
+        work;
+
+
+    profileContributions.innerHTML =
+        "";
+
+
+    contributions.forEach(
+        contribution => {
+
+            const li =
+                document.createElement("li");
+
+            li.textContent =
+                contribution.trim();
+
+            profileContributions
+                .appendChild(li);
+
+        }
+    );
+
+
+    studentsList.style.display =
+        "none";
+
+
+    profileView.style.display =
+        "block";
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "instant"
+
+    });
+
+}
+
+
+/* =========================================
+   BACK
+========================================= */
+
+backButton.addEventListener(
+    "click",
+    () => {
+
+        profileView.style.display =
+            "none";
+
+
+        studentsList.style.display =
+            "block";
+
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>
