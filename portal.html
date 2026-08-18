@@ -1,1 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>ANJUMAN ए TAREEKH — Worker Portal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f1e8;
+            color: #222;
+        }
+
+        header {
+            background: #173b2c;
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            opacity: 0.9;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        textarea {
+            min-height: 250px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            background: #173b2c;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #24553f;
+        }
+
+        .logout {
+            background: #8b2f2f;
+        }
+
+        .logout:hover {
+            background: #a33b3b;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .success {
+            background: #dff3e5;
+            color: #176b36;
+        }
+
+        .error {
+            background: #f8dddd;
+            color: #8b1e1e;
+        }
+
+        #portalSection {
+            display: none;
+        }
+
+        .user-info {
+            margin-bottom: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>ANJUMAN ए TAREEKH</h1>
+    <p>TAREEKH AUR ANJUMAN — RESEARCH MEETS ZAIKA</p>
+</header>
+
+
+<div class="container">
+
+    <!-- LOGIN -->
+    <section id="loginSection" class="card">
+
+        <h2>Worker Portal</h2>
+
+        <p>
+            Authorized workers only.
+        </p>
+
+        <form id="loginForm">
+
+            <label for="username">
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                required
+                autocomplete="username"
+            >
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                required
+                autocomplete="current-password"
+            >
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <div id="loginMessage" class="message"></div>
+
+    </section>
+
+
+    <!-- PORTAL -->
+    <section id="portalSection">
+
+        <div class="card">
+
+            <h2>Worker Dashboard</h2>
+
+            <div class="user-info">
+                Logged in as:
+                <strong id="workerName"></strong>
+            </div>
+
+            <button
+                type="button"
+                class="logout"
+                id="logoutButton"
+            >
+                Logout
+            </button>
+
+        </div>
+
+
+        <!-- CREATE BLOG -->
+        <div class="card">
+
+            <h2>Create New Blog</h2>
+
+            <form id="blogForm">
+
+                <label for="blogName">
+                    Blog Name
+                </label>
+
+                <input
+                    type="text"
+                    id="blogName"
+                    placeholder="Enter blog title"
+                    required
+                >
+
+
+                <label for="author">
+                    Author
+                </label>
+
+                <input
+                    type="text"
+                    id="author"
+                    placeholder="Author name"
+                >
+
+
+                <label for="blogContent">
+                    Content
+                </label>
+
+                <textarea
+                    id="blogContent"
+                    placeholder="Write your blog here..."
+                    required
+                ></textarea>
+
+
+                <button type="submit">
+                    Publish Blog
+                </button>
+
+            </form>
+
+            <div id="blogMessage" class="message"></div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    /*
+    ==========================================
+    SUPABASE EDGE FUNCTION URLs
+    ==========================================
+    */
+
+    const LOGIN_URL =
+        "https://xitmexidjgacikjpheji.supabase.co/functions/v1/portal-login";
+
+    const CREATE_BLOG_URL =
+        "https://xitmexidjgacikjpheji.supabase.co/functions/v1/create-blog";
+
+
+    /*
+    ==========================================
+    TEMPORARY PAGE VARIABLES
+    ==========================================
+
+    Nothing is stored in:
+
+    - localStorage
+    - sessionStorage
+    - cookies
+    - database sessions
+
+    These variables disappear when the page
+    is closed or refreshed.
+    ==========================================
+    */
+
+    let workerUsername = "";
+    let workerPassword = "";
+    let workerNameValue = "";
+
+
+    /*
+    ==========================================
+    HELPER: SHOW MESSAGE
+    ==========================================
+    */
+
+    function showMessage(element, message, success) {
+
+        element.textContent = message;
+
+        element.className =
+            "message " + (success ? "success" : "error");
+
+        element.style.display = "block";
+    }
+
+
+    /*
+    ==========================================
+    LOGIN
+    ==========================================
+    */
+
+    document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const username =
+                document.getElementById("username").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            const message =
+                document.getElementById("loginMessage");
+
+
+            message.style.display = "none";
+
+
+            try {
+
+                const response = await fetch(LOGIN_URL, {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+
+                });
+
+
+                const result = await response.json();
+
+
+                if (!response.ok || !result.success) {
+
+                    showMessage(
+                        message,
+                        result.error || "Login failed",
+                        false
+                    );
+
+                    return;
+                }
+
+
+                /*
+                Store credentials ONLY in memory.
+                */
+
+                workerUsername = username;
+                workerPassword = password;
+
+                workerNameValue =
+                    result.user.name || username;
+
+
+                /*
+                Hide login
+                */
+
+                document
+                    .getElementById("loginSection")
+                    .style.display = "none";
+
+
+                /*
+                Show portal
+                */
+
+                document
+                    .getElementById("portalSection")
+                    .style.display = "block";
+
+
+                document
+                    .getElementById("workerName")
+                    .textContent = workerNameValue;
+
+
+                /*
+                Clear password input.
+                */
+
+                document
+                    .getElementById("password")
+                    .value = "";
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage(
+                    message,
+                    "Could not connect to server.",
+                    false
+                );
+            }
+
+        });
+
+
+    /*
+    ==========================================
+    CREATE BLOG
+    ==========================================
+    */
+
+    document
+        .getElementById("blogForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            if (!workerUsername || !workerPassword) {
+
+                alert("Please login again.");
+
+                return;
+            }
+
+
+            const blogName =
+                document.getElementById("blogName").value.trim();
+
+            const author =
+                document.getElementById("author").value.trim();
+
+            const content =
+                document.getElementById("blogContent").value.trim();
+
+            const message =
+                document.getElementById("blogMessage");
+
+
+            message.style.display = "none";
+
+
+            try {
+
+                const response = await fetch(
+                    CREATE_BLOG_URL,
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            username: workerUsername,
+
+                            password: workerPassword,
+
+                            blog_name: blogName,
+
+                            content: content,
+
+                            author:
+                                author || workerNameValue
+
+                        })
+
+                    }
+                );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok || !result.success) {
+
+                    showMessage(
+                        message,
+                        result.error || "Could not publish blog.",
+                        false
+                    );
+
+                    return;
+                }
+
+
+                showMessage(
+                    message,
+                    "Blog published successfully!",
+                    true
+                );
+
+
+                /*
+                Clear form
+                */
+
+                document
+                    .getElementById("blogForm")
+                    .reset();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage(
+                    message,
+                    "Could not connect to server.",
+                    false
+                );
+            }
+
+        });
+
+
+    /*
+    ==========================================
+    LOGOUT
+    ==========================================
+    */
+
+    document
+        .getElementById("logoutButton")
+        .addEventListener("click", function() {
+
+            /*
+            Destroy credentials from memory.
+            */
+
+            workerUsername = "";
+            workerPassword = "";
+            workerNameValue = "";
+
+
+            /*
+            Hide portal
+            */
+
+            document
+                .getElementById("portalSection")
+                .style.display = "none";
+
+
+            /*
+            Show login
+            */
+
+            document
+                .getElementById("loginSection")
+                .style.display = "block";
+
+
+            /*
+            Clear login form
+            */
+
+            document
+                .getElementById("loginForm")
+                .reset();
+
+        });
+
+</script>
+
+</body>
+</html>
