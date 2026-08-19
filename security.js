@@ -99,7 +99,7 @@ feel free to inspect responsibly.`
                 if (SETTINGS.showAlertOnDevTools) {
 
                     alert(
-                        `PM. Securities
+                        `
 
 Developer tools detected.
 
@@ -142,7 +142,7 @@ securely on the server.`
                 if (SETTINGS.showAlertOnDevTools) {
 
                     alert(
-                        `PM. Securities
+                        `
 
 Developer tools appear to be open.
 
