@@ -125,6 +125,215 @@
             margin-bottom: 20px;
             color: #555;
         }
+    
+        /* ================================
+           MY BLOGS / EDITOR UI
+           ================================ */
+
+        .blogs-heading {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:15px;
+            margin-bottom:20px;
+        }
+
+        .blogs-heading h2 {
+            margin-bottom:5px;
+        }
+
+        .blogs-heading p {
+            margin:0;
+            color:#777;
+        }
+
+        .small-btn {
+            width:auto;
+            margin:0;
+            padding:10px 16px;
+            font-size:14px;
+        }
+
+        .blogs-status {
+            padding:25px;
+            text-align:center;
+            color:#777;
+            background:#faf8f2;
+            border-radius:12px;
+            margin-top:10px;
+        }
+
+        .blog-item {
+            background:#fffdf8;
+            border:1px solid #e4ddcf;
+            border-radius:16px;
+            padding:20px;
+            margin-top:14px;
+            transition:transform .2s ease, box-shadow .2s ease;
+        }
+
+        .blog-item:hover {
+            transform:translateY(-3px);
+            box-shadow:0 12px 30px rgba(23,59,44,.10);
+        }
+
+        .blog-item h3 {
+            margin:0 0 8px;
+            color:#173b2c;
+            font-family:Georgia,serif;
+            font-size:21px;
+        }
+
+        .blog-date {
+            color:#9a8d78;
+            font-size:12px;
+            margin-bottom:12px;
+        }
+
+        .blog-preview {
+            color:#555;
+            line-height:1.6;
+            white-space:pre-wrap;
+            max-height:115px;
+            overflow:hidden;
+        }
+
+        .blog-actions {
+            display:flex;
+            gap:9px;
+            margin-top:16px;
+        }
+
+        .blog-actions button {
+            width:auto;
+            margin:0;
+            padding:10px 15px;
+            font-size:14px;
+        }
+
+        .edit-btn {
+            background:#173b2c;
+        }
+
+        .delete-btn {
+            background:#8b2f2f;
+        }
+
+        .modal {
+            position:fixed;
+            inset:0;
+            z-index:1000;
+            display:none;
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+            background:rgba(10,28,20,.72);
+            backdrop-filter:blur(7px);
+        }
+
+        .modal.show {
+            display:flex;
+            animation:modalFade .2s ease;
+        }
+
+        @keyframes modalFade {
+            from { opacity:0; }
+            to { opacity:1; }
+        }
+
+        .modal-box {
+            width:100%;
+            max-width:720px;
+            max-height:90vh;
+            overflow:auto;
+            background:#fdfbf6;
+            border-radius:22px;
+            padding:28px;
+            box-shadow:0 25px 80px rgba(0,0,0,.28);
+            animation:modalUp .25s ease;
+        }
+
+        @keyframes modalUp {
+            from {
+                opacity:0;
+                transform:translateY(20px) scale(.98);
+            }
+            to {
+                opacity:1;
+                transform:none;
+            }
+        }
+
+        .modal-header {
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+            gap:15px;
+            margin-bottom:10px;
+        }
+
+        .modal-header h2 {
+            margin:5px 0 0;
+        }
+
+        .modal-kicker {
+            color:#b28a48;
+            font-size:11px;
+            font-weight:bold;
+            letter-spacing:2px;
+        }
+
+        .close-modal {
+            width:42px;
+            height:42px;
+            padding:0;
+            margin:0;
+            border-radius:50%;
+            background:#e9e2d5;
+            color:#173b2c;
+            font-size:25px;
+        }
+
+        .modal-actions {
+            display:flex;
+            gap:10px;
+        }
+
+        .modal-actions button {
+            flex:1;
+        }
+
+        .cancel-btn {
+            background:#777;
+        }
+
+        @media (max-width:600px) {
+            .blogs-heading {
+                align-items:flex-start;
+                flex-direction:column;
+            }
+
+            .small-btn {
+                width:100%;
+            }
+
+            .blog-actions {
+                flex-direction:column;
+            }
+
+            .blog-actions button {
+                width:100%;
+            }
+
+            .modal-box {
+                padding:20px;
+            }
+
+            .modal-actions {
+                flex-direction:column;
+            }
+        }
+
     </style>
 </head>
 
@@ -256,6 +465,85 @@
 
         </div>
 
+        <!-- MY BLOGS -->
+        <div class="card" id="myBlogsCard">
+
+            <div class="blogs-heading">
+                <div>
+                    <h2>My Research Stories</h2>
+                    <p>Blogs created by your username.</p>
+                </div>
+
+                <button type="button" id="refreshBlogsButton" class="small-btn">
+                    Refresh
+                </button>
+            </div>
+
+            <div id="blogsLoading" class="blogs-status">
+                Loading your blogs...
+            </div>
+
+            <div id="blogsEmpty" class="blogs-status" style="display:none;">
+                You haven't published any blogs yet.
+            </div>
+
+            <div id="myBlogsList"></div>
+
+        </div>
+
+        <!-- EDIT BLOG MODAL -->
+        <div id="editModal" class="modal">
+            <div class="modal-box">
+
+                <div class="modal-header">
+                    <div>
+                        <span class="modal-kicker">RESEARCH JOURNAL</span>
+                        <h2>Edit Blog</h2>
+                    </div>
+
+                    <button type="button" id="closeEditModal" class="close-modal">
+                        ×
+                    </button>
+                </div>
+
+                <form id="editBlogForm">
+
+                    <input type="hidden" id="editBlogId">
+
+                    <label for="editBlogName">Blog Name</label>
+                    <input
+                        type="text"
+                        id="editBlogName"
+                        required
+                    >
+
+                    <label for="editBlogContent">Content</label>
+                    <textarea
+                        id="editBlogContent"
+                        required
+                    ></textarea>
+
+                    <div class="modal-actions">
+                        <button type="submit" id="saveEditButton">
+                            Save Changes
+                        </button>
+
+                        <button
+                            type="button"
+                            id="cancelEditButton"
+                            class="cancel-btn"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+
+                    <div id="editMessage" class="message"></div>
+
+                </form>
+
+            </div>
+        </div>
+
     </section>
 
 </div>
@@ -272,6 +560,9 @@
 
     const CREATE_BLOG_URL =
         "https://xitmexidjgacikjpheji.supabase.co/functions/v1/create-blog";
+
+    const MANAGE_BLOGS_URL =
+        "https://xitmexidjgacikjpheji.supabase.co/functions/v1/manage-blogs";
 
 
 
@@ -393,6 +684,9 @@
                     .getElementById("password")
                     .value = "";
 
+                // Load only this worker's blogs.
+                await loadMyBlogs();
+
             } catch (error) {
 
                 console.error(error);
@@ -431,9 +725,6 @@
             const blogName =
                 document.getElementById("blogName").value.trim();
 
-            const author =
-                document.getElementById("author").value.trim();
-
             const content =
                 document.getElementById("blogContent").value.trim();
 
@@ -465,9 +756,7 @@
                             blog_name: blogName,
 
                             content: content,
-
-                            author:
-                                author || workerNameValue
+                            published: true
 
                         })
 
@@ -521,6 +810,337 @@
         });
 
 
+
+    /*
+    ==========================================
+    LOAD MY BLOGS
+    ==========================================
+    */
+
+    async function loadMyBlogs() {
+
+        const list = document.getElementById("myBlogsList");
+        const loading = document.getElementById("blogsLoading");
+        const empty = document.getElementById("blogsEmpty");
+
+        list.innerHTML = "";
+        loading.style.display = "block";
+        empty.style.display = "none";
+
+        try {
+
+            const response = await fetch(MANAGE_BLOGS_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: workerUsername,
+                    password: workerPassword,
+                    action: "list"
+                })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.error || "Could not load blogs.");
+            }
+
+            const blogs = result.blogs || [];
+
+            loading.style.display = "none";
+
+            if (!blogs.length) {
+                empty.style.display = "block";
+                return;
+            }
+
+            blogs.forEach(function(blog) {
+
+                const item = document.createElement("div");
+                item.className = "blog-item";
+
+                const date = blog.created_at
+                    ? new Date(blog.created_at).toLocaleDateString(
+                        "en-IN",
+                        {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric"
+                        }
+                    )
+                    : "";
+
+                item.innerHTML = `
+                    <h3></h3>
+                    <div class="blog-date"></div>
+                    <div class="blog-preview"></div>
+
+                    <div class="blog-actions">
+                        <button type="button" class="edit-btn">
+                            Edit
+                        </button>
+
+                        <button type="button" class="delete-btn">
+                            Delete
+                        </button>
+                    </div>
+                `;
+
+                item.querySelector("h3").textContent =
+                    blog.blog_name || "Untitled";
+
+                item.querySelector(".blog-date").textContent =
+                    date;
+
+                item.querySelector(".blog-preview").textContent =
+                    blog.content || "";
+
+                item.querySelector(".edit-btn")
+                    .addEventListener("click", function() {
+                        openEditBlog(blog);
+                    });
+
+                item.querySelector(".delete-btn")
+                    .addEventListener("click", function() {
+                        deleteBlog(blog.id, blog.blog_name);
+                    });
+
+                list.appendChild(item);
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            loading.style.display = "none";
+
+            empty.style.display = "block";
+            empty.textContent =
+                error.message || "Could not load your blogs.";
+        }
+    }
+
+
+    /*
+    ==========================================
+    OPEN EDIT BLOG
+    ==========================================
+    */
+
+    function openEditBlog(blog) {
+
+        document.getElementById("editBlogId").value =
+            blog.id;
+
+        document.getElementById("editBlogName").value =
+            blog.blog_name || "";
+
+        document.getElementById("editBlogContent").value =
+            blog.content || "";
+
+        document.getElementById("editMessage").style.display =
+            "none";
+
+        document.getElementById("editModal")
+            .classList.add("show");
+
+        document.body.style.overflow = "hidden";
+    }
+
+
+    /*
+    ==========================================
+    CLOSE EDIT MODAL
+    ==========================================
+    */
+
+    function closeEditBlog() {
+
+        document.getElementById("editModal")
+            .classList.remove("show");
+
+        document.body.style.overflow = "";
+    }
+
+
+    document.getElementById("closeEditModal")
+        .addEventListener("click", closeEditBlog);
+
+    document.getElementById("cancelEditButton")
+        .addEventListener("click", closeEditBlog);
+
+
+    document.getElementById("editModal")
+        .addEventListener("click", function(event) {
+
+            if (event.target === this) {
+                closeEditBlog();
+            }
+
+        });
+
+
+    /*
+    ==========================================
+    UPDATE BLOG
+    ==========================================
+    */
+
+    document.getElementById("editBlogForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            if (!workerUsername || !workerPassword) {
+                alert("Please login again.");
+                return;
+            }
+
+            const blogId =
+                document.getElementById("editBlogId").value;
+
+            const blogName =
+                document.getElementById("editBlogName").value.trim();
+
+            const content =
+                document.getElementById("editBlogContent").value.trim();
+
+            const message =
+                document.getElementById("editMessage");
+
+            const button =
+                document.getElementById("saveEditButton");
+
+            message.style.display = "none";
+
+            button.disabled = true;
+            button.textContent = "Saving...";
+
+            try {
+
+                const response = await fetch(MANAGE_BLOGS_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: workerUsername,
+                        password: workerPassword,
+                        action: "update",
+                        blog_id: blogId,
+                        blog_name: blogName,
+                        content: content
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    showMessage(
+                        message,
+                        result.error || "Could not update blog.",
+                        false
+                    );
+                    return;
+                }
+
+                showMessage(
+                    message,
+                    "Blog updated successfully.",
+                    true
+                );
+
+                await loadMyBlogs();
+
+                setTimeout(closeEditBlog, 600);
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage(
+                    message,
+                    "Could not connect to server.",
+                    false
+                );
+
+            } finally {
+
+                button.disabled = false;
+                button.textContent = "Save Changes";
+            }
+
+        });
+
+
+    /*
+    ==========================================
+    DELETE BLOG
+    ==========================================
+    */
+
+    async function deleteBlog(blogId, blogName) {
+
+        if (!workerUsername || !workerPassword) {
+            alert("Please login again.");
+            return;
+        }
+
+        const confirmed = confirm(
+            'Delete "' +
+            (blogName || "this blog") +
+            '"?\n\nThis cannot be undone.'
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+
+            const response = await fetch(MANAGE_BLOGS_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: workerUsername,
+                    password: workerPassword,
+                    action: "delete",
+                    blog_id: blogId
+                })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                alert(result.error || "Could not delete blog.");
+                return;
+            }
+
+            await loadMyBlogs();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Could not connect to server.");
+        }
+    }
+
+
+    /*
+    ==========================================
+    REFRESH BLOGS
+    ==========================================
+    */
+
+    document.getElementById("refreshBlogsButton")
+        .addEventListener("click", loadMyBlogs);
+
+
     /*
     ==========================================
     LOGOUT
@@ -538,6 +1158,11 @@
             workerUsername = "";
             workerPassword = "";
             workerNameValue = "";
+
+            document.getElementById("myBlogsList").innerHTML = "";
+            document.getElementById("blogsLoading").style.display = "none";
+            document.getElementById("blogsEmpty").style.display = "none";
+            closeEditBlog();
 
 
             /*
