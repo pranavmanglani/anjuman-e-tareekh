@@ -3,14 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tareekh Stories — Research, history, food and cultural heritage of Awadh by ANJUMAN ए TAREEKH.">
+
+    <meta
+        name="description"
+        content="Tareekh Stories — Research, history, food and cultural heritage of Awadh by ANJUMAN ए TAREEKH."
+    >
+
     <link rel="icon" type="image/jpeg" href="favicon.jpg">
 
+    <title>Tareekh Stories — ANJUMAN ए TAREEKH</title>
 
-   
+    <script src="security.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
 <style>
 
@@ -18,16 +29,21 @@
     --green:#164d36;
     --green-dark:#0d3022;
     --green-light:#276b4b;
+
     --orange:#df6915;
     --orange-light:#ef8b36;
+
     --gold:#b99350;
     --gold-light:#d6b878;
+
     --ivory:#f8f4e9;
     --paper:#fffdf7;
     --paper-dark:#eee7d6;
+
     --ink:#18251e;
     --muted:#68736c;
     --white:#ffffff;
+
     --border:rgba(185,147,80,.35);
 
     --f-tangy:#c62828;
@@ -51,13 +67,28 @@ html{
 
 body{
     margin:0;
+
     background:
-        radial-gradient(circle at 15% 5%, rgba(223,105,21,.10), transparent 32%),
-        radial-gradient(circle at 90% 15%, rgba(22,77,54,.09), transparent 38%),
-        radial-gradient(circle at 50% 90%, rgba(185,147,80,.10), transparent 40%),
+        radial-gradient(
+            circle at 15% 5%,
+            rgba(223,105,21,.10),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(22,77,54,.09),
+            transparent 38%
+        ),
+        radial-gradient(
+            circle at 50% 90%,
+            rgba(185,147,80,.10),
+            transparent 40%
+        ),
         var(--ivory);
+
     color:var(--ink);
     font-family:var(--sans);
+
     overflow-x:hidden;
 }
 
@@ -81,14 +112,20 @@ img{
     margin:auto;
 }
 
-/* ================= NAV ================= */
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
 .topbar{
     position:sticky;
     top:0;
     z-index:50;
+
     background:rgba(248,244,233,.9);
+
     backdrop-filter:blur(10px);
+
     border-bottom:1px solid var(--border);
 }
 
@@ -96,7 +133,9 @@ img{
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     gap:20px;
+
     padding:14px 0;
 }
 
@@ -110,19 +149,26 @@ img{
     width:44px;
     height:44px;
     min-width:44px;
+
     border-radius:50%;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     border:1px solid var(--gold);
+
     overflow:hidden;
 }
 
 .brand-mark img{
     width:44px !important;
     height:44px !important;
+
     max-width:44px !important;
+
     object-fit:cover;
+
     display:block;
 }
 
@@ -132,216 +178,317 @@ img{
 
 .brand-name{
     color:var(--green);
+
     font-family:var(--serif);
+
     font-size:20px;
     font-weight:700;
 }
 
 .brand-tagline{
     margin-top:3px;
+
     color:var(--orange);
+
     font-size:8px;
+
     letter-spacing:2px;
+
     text-transform:uppercase;
 }
 
 .nav-links{
     display:flex;
     gap:6px;
+
     flex-wrap:wrap;
 }
 
 .nav-link{
     padding:9px 15px;
+
     border:1px solid transparent;
+
     border-radius:100px;
+
     color:var(--green);
+
     font-size:13px;
     font-weight:600;
+
     transition:.25s ease;
 }
 
 .nav-link:hover{
     border-color:var(--gold);
+
     background:rgba(185,147,80,.08);
 }
 
 .nav-link.active{
     background:var(--green);
+
     color:var(--white);
 }
 
-/* ================= HERO ================= */
+
+/* =========================================================
+   HERO
+========================================================= */
 
 .hero{
     position:relative;
+
     padding:80px 20px 40px;
+
     text-align:center;
+
     overflow:hidden;
 }
 
 .eyebrow{
     display:inline-flex;
+
     align-items:center;
+
     gap:12px;
+
     color:var(--orange);
+
     font-size:11px;
+
     font-weight:700;
+
     letter-spacing:3px;
+
     text-transform:uppercase;
 }
 
 .eyebrow::before,
 .eyebrow::after{
     content:"";
+
     width:40px;
     height:1px;
+
     background:var(--gold);
 }
 
 .hero h1{
     margin:18px 0 10px;
+
     color:var(--green);
+
     font-family:var(--serif);
+
     font-size:clamp(42px,8vw,86px);
+
     line-height:.9;
+
     font-weight:600;
+
     letter-spacing:-2px;
 }
 
 .hero h1 span{
     color:var(--orange);
+
     font-style:italic;
 }
 
 .hero-subtitle{
     max-width:640px;
+
     margin:20px auto 0;
+
     color:var(--muted);
+
     font-family:var(--serif);
+
     font-size:clamp(18px,2.2vw,22px);
+
     line-height:1.5;
 }
 
 .hero-ctas{
     display:flex;
+
     gap:14px;
+
     justify-content:center;
+
     flex-wrap:wrap;
+
     margin-top:30px;
 }
 
 .btn{
     padding:13px 26px;
+
     border-radius:100px;
+
     font-size:14px;
+
     font-weight:700;
+
     border:1px solid transparent;
+
     transition:.25s ease;
 }
 
 .btn-solid{
     background:var(--orange);
+
     color:var(--white);
 }
 
 .btn-solid:hover{
     background:var(--orange-light);
+
     transform:translateY(-2px);
 }
 
 .btn-outline{
     border-color:var(--green);
+
     color:var(--green);
 }
 
 .btn-outline:hover{
     background:var(--green);
+
     color:var(--white);
 }
 
-/* ================= CLOUDS ================= */
+
+/* =========================================================
+   COMMUNITY CLOUDS
+========================================================= */
 
 .sky{
     position:relative;
+
     height:260px;
+
     margin-top:10px;
 }
 
 .sky-label{
     text-align:center;
+
     color:var(--gold);
+
     font-size:11px;
+
     font-weight:700;
+
     letter-spacing:3px;
+
     text-transform:uppercase;
+
     margin-bottom:6px;
 }
 
 .cloud{
     position:absolute;
+
     display:flex;
+
     align-items:center;
+
     gap:10px;
+
     background:var(--white);
+
     border:1px solid var(--border);
+
     border-radius:100px;
+
     padding:8px 18px 8px 8px;
+
     box-shadow:0 14px 30px rgba(22,77,54,.14);
+
     animation:bob 6s ease-in-out infinite;
+
     cursor:pointer;
-    transition:transform .2s ease,box-shadow .2s ease;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
 }
 
 .cloud:hover{
     transform:translateY(-6px) scale(1.04);
+
     box-shadow:0 20px 40px rgba(22,77,54,.2);
 }
 
 .cloud-thumb{
     width:42px;
     height:42px;
+
     border-radius:50%;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     font-size:20px;
+
     color:var(--white);
+
     flex-shrink:0;
 }
 
 .cloud-title{
     font-family:var(--serif);
+
     font-weight:700;
+
     color:var(--green);
+
     font-size:15px;
+
     line-height:1.1;
+
     max-width:150px;
 }
 
 .cloud-likes{
     font-size:11px;
+
     color:var(--muted);
+
     margin-top:2px;
 }
 
 @keyframes bob{
+
     0%,100%{
         transform:translateY(0);
     }
+
     50%{
         transform:translateY(-14px);
     }
+
 }
 
 .sky-empty{
     text-align:center;
+
     color:var(--muted);
+
     font-size:14px;
+
     padding-top:60px;
 }
 
-/* ================= SECTIONS ================= */
+
+/* =========================================================
+   SECTIONS
+========================================================= */
 
 section.block{
     padding:70px 20px;
@@ -349,7 +496,9 @@ section.block{
 
 .block-head{
     text-align:center;
+
     max-width:680px;
+
     margin:0 auto 40px;
 }
 
@@ -359,81 +508,125 @@ section.block{
 
 .block-head h2{
     color:var(--green);
+
     font-family:var(--serif);
+
     font-size:clamp(30px,4.5vw,46px);
+
     margin:0 0 12px;
+
     font-weight:600;
 }
 
 .block-head p{
     color:var(--muted);
+
     font-size:15.5px;
+
     line-height:1.6;
+
     margin:0;
 }
 
-/* ================= WHEEL ================= */
+
+/* =========================================================
+   TASTE WHEEL
+========================================================= */
 
 .wheel-wrap{
     display:grid;
+
     grid-template-columns:340px 1fr;
+
     gap:50px;
+
     align-items:center;
 }
 
 @media(max-width:820px){
+
     .wheel-wrap{
         grid-template-columns:1fr;
+
         justify-items:center;
     }
+
 }
 
 .wheel-stage{
     position:relative;
+
     width:300px;
     height:300px;
 }
 
 .wheel-pointer{
     position:absolute;
+
     top:-14px;
     left:50%;
+
     transform:translateX(-50%);
+
     width:0;
     height:0;
+
     border-left:12px solid transparent;
     border-right:12px solid transparent;
+
     border-top:20px solid var(--green);
+
     z-index:5;
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+
+    filter:drop-shadow(
+        0 2px 3px rgba(0,0,0,.25)
+    );
 }
 
 .wheel{
     width:100%;
     height:100%;
+
     border-radius:50%;
+
     position:relative;
+
     box-shadow:
         0 20px 50px rgba(22,77,54,.25),
         inset 0 0 0 8px var(--paper);
-    transition:transform 3.5s cubic-bezier(.17,.89,.32,1.28);
+
+    transition:
+        transform 3.5s cubic-bezier(.17,.89,.32,1.28);
+
     border:4px solid var(--gold);
+
+    overflow:hidden;
 }
 
 .wheel-hub{
     position:absolute;
+
     top:50%;
     left:50%;
+
     transform:translate(-50%,-50%);
+
     width:64px;
     height:64px;
+
     border-radius:50%;
+
     background:var(--paper);
+
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     box-shadow:0 4px 14px rgba(0,0,0,.2);
+
     border:3px solid var(--gold);
+
     z-index:4;
 }
 
@@ -443,101 +636,151 @@ section.block{
 
 .wheel-seg-label{
     position:absolute;
+
     top:50%;
     left:50%;
+
     width:120px;
     height:24px;
+
     margin-top:-12px;
+
     transform-origin:0 12px;
+
     display:flex;
+
     align-items:center;
+
     gap:6px;
+
     color:var(--white);
+
     font-weight:700;
+
     font-size:11.5px;
+
     letter-spacing:.3px;
+
     pointer-events:none;
+
     text-shadow:0 1px 3px rgba(0,0,0,.35);
 }
 
 .spin-btn{
     display:block;
+
     margin:22px auto 0;
+
     padding:13px 34px;
+
     border-radius:100px;
+
     background:var(--green);
+
     color:var(--white);
+
     font-weight:700;
+
     font-size:14px;
+
     border:none;
-    box-shadow:0 10px 24px rgba(22,77,54,.3);
+
+    box-shadow:
+        0 10px 24px rgba(22,77,54,.3);
 }
 
 .spin-btn:hover{
     background:var(--green-light);
 }
 
-.spin-btn:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-}
-
 .spin-result{
     text-align:center;
+
     margin-top:14px;
+
     color:var(--orange);
+
     font-family:var(--serif);
+
     font-size:17px;
+
     font-style:italic;
+
     min-height:24px;
 }
 
-/* ================= FILTERS ================= */
+
+/* =========================================================
+   FLAVOUR PANEL
+========================================================= */
 
 .flavour-panel{
     background:var(--paper);
+
     border:1px solid var(--border);
+
     border-radius:20px;
+
     padding:26px 28px;
 }
 
 .flavour-panel h3{
     margin:0 0 4px;
+
     color:var(--green);
+
     font-family:var(--serif);
+
     font-size:22px;
 }
 
 .flavour-panel .hint{
     margin:0 0 18px;
+
     color:var(--muted);
+
     font-size:13.5px;
 }
 
 .flavour-grid{
     display:grid;
+
     grid-template-columns:1fr 1fr;
+
     gap:10px;
 }
 
 @media(max-width:480px){
+
     .flavour-grid{
         grid-template-columns:1fr;
     }
+
 }
 
 .flavour-check{
     display:flex;
+
     align-items:center;
+
     gap:10px;
+
     padding:10px 12px;
+
     border-radius:12px;
+
     border:1px solid var(--border);
+
     background:var(--white);
+
     cursor:pointer;
+
     transition:.2s ease;
+
     font-size:13.5px;
+
     font-weight:600;
+
     color:var(--ink);
 }
 
@@ -547,15 +790,19 @@ section.block{
 
 .flavour-check input{
     accent-color:var(--green);
+
     width:16px;
     height:16px;
+
     flex-shrink:0;
 }
 
 .flavour-swatch{
     width:10px;
     height:10px;
+
     border-radius:50%;
+
     flex-shrink:0;
 }
 
@@ -565,13 +812,21 @@ section.block{
 
 .custom-input{
     width:100%;
+
     margin-top:8px;
+
     padding:11px 14px;
+
     border-radius:10px;
+
     border:1px solid var(--border);
+
     font-size:14px;
+
     font-family:var(--sans);
+
     display:none;
+
     background:var(--white);
 }
 
@@ -581,154 +836,238 @@ section.block{
 
 .clear-filters{
     margin-top:16px;
+
     background:none;
+
     border:none;
+
     color:var(--muted);
+
     font-size:12.5px;
+
     text-decoration:underline;
+
     padding:0;
 }
 
-/* ================= BLOG GRID ================= */
+
+/* =========================================================
+   BLOG GRID
+========================================================= */
 
 .grid-status{
     text-align:center;
+
     color:var(--muted);
+
     font-size:14px;
+
     margin-bottom:22px;
 }
 
 .blog-grid{
     display:grid;
+
     grid-template-columns:repeat(3,1fr);
+
     gap:22px;
 }
 
 @media(max-width:900px){
+
     .blog-grid{
         grid-template-columns:1fr 1fr;
     }
+
 }
 
 @media(max-width:600px){
+
     .blog-grid{
         grid-template-columns:1fr;
     }
+
 }
 
 .blog-card{
     background:var(--white);
+
     border:1px solid var(--border);
+
     border-radius:20px;
+
     overflow:hidden;
-    transition:transform .25s ease,box-shadow .25s ease;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+
     display:flex;
+
     flex-direction:column;
 }
 
 .blog-card:hover{
     transform:translateY(-5px);
-    box-shadow:0 20px 40px rgba(22,77,54,.15);
+
+    box-shadow:
+        0 20px 40px rgba(22,77,54,.15);
 }
 
 .dish-visual{
     position:relative;
+
     height:170px;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     font-size:52px;
+
     color:rgba(255,255,255,.92);
+
+    overflow:hidden;
 }
 
 .dish-visual img{
     width:100%;
     height:100%;
+
     object-fit:cover;
+
     position:absolute;
+
     inset:0;
 }
 
 .flavour-pill{
     position:absolute;
+
     top:12px;
     left:12px;
+
     padding:5px 12px;
+
     border-radius:100px;
+
     font-size:10.5px;
+
     font-weight:700;
+
     color:var(--white);
+
     letter-spacing:.5px;
+
     text-transform:uppercase;
+
     background:rgba(0,0,0,.28);
+
     backdrop-filter:blur(3px);
 }
 
 .blog-body{
     padding:18px 18px 16px;
+
     flex:1;
+
     display:flex;
+
     flex-direction:column;
 }
 
 .blog-body h3{
     margin:0 0 6px;
+
     color:var(--green);
+
     font-family:var(--serif);
+
     font-size:20px;
+
     cursor:pointer;
 }
 
 .blog-author{
     color:var(--gold);
+
     font-size:11.5px;
+
     font-weight:700;
+
     letter-spacing:.5px;
+
     text-transform:uppercase;
+
     margin-bottom:10px;
 }
 
 .blog-excerpt{
     color:var(--muted);
+
     font-size:13.5px;
+
     line-height:1.55;
+
     flex:1;
+
     display:-webkit-box;
+
     -webkit-line-clamp:3;
+
     -webkit-box-orient:vertical;
+
     overflow:hidden;
 }
 
 .blog-foot{
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
+
     margin-top:16px;
 }
 
 .read-link{
     color:var(--orange);
+
     font-weight:700;
+
     font-size:13px;
+
     cursor:pointer;
 }
 
 .like-btn{
     display:flex;
+
     align-items:center;
+
     gap:6px;
+
     background:var(--ivory);
+
     border:1px solid var(--border);
+
     border-radius:100px;
+
     padding:7px 13px;
+
     font-size:13px;
+
     font-weight:700;
+
     color:var(--ink);
 }
 
 .like-btn.liked{
     background:var(--f-tangy);
+
     border-color:var(--f-tangy);
+
     color:var(--white);
 }
 
@@ -742,66 +1081,49 @@ section.block{
 
 .empty-state{
     grid-column:1/-1;
+
     text-align:center;
+
     padding:50px 20px;
+
     background:var(--paper);
+
     border:1px dashed var(--border);
+
     border-radius:20px;
+
     color:var(--muted);
 }
 
 .empty-state a{
     color:var(--orange);
+
     font-weight:700;
+
     text-decoration:underline;
 }
 
-/* ================= LOADING ================= */
 
-.loading-state{
-    grid-column:1/-1;
-    text-align:center;
-    padding:60px 20px;
-    color:var(--muted);
-}
-
-.loading-spinner{
-    width:38px;
-    height:38px;
-    margin:0 auto 15px;
-    border:3px solid rgba(22,77,54,.15);
-    border-top-color:var(--green);
-    border-radius:50%;
-    animation:spinLoader .8s linear infinite;
-}
-
-@keyframes spinLoader{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-.error-state{
-    grid-column:1/-1;
-    text-align:center;
-    padding:50px 20px;
-    background:var(--paper);
-    border:1px solid rgba(198,40,40,.25);
-    border-radius:20px;
-    color:#9b2929;
-}
-
-/* ================= MODAL ================= */
+/* =========================================================
+   MODAL
+========================================================= */
 
 .modal{
     position:fixed;
+
     inset:0;
+
     z-index:200;
+
     display:none;
+
     align-items:center;
     justify-content:center;
+
     padding:20px;
+
     background:rgba(10,28,20,.72);
+
     backdrop-filter:blur(6px);
 }
 
@@ -811,43 +1133,68 @@ section.block{
 
 .modal-box{
     width:100%;
+
     max-width:680px;
+
     max-height:88vh;
+
     overflow:auto;
+
     background:var(--paper);
+
     border-radius:22px;
-    box-shadow:0 25px 80px rgba(0,0,0,.3);
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.3);
 }
 
 .modal-visual{
     height:230px;
+
     position:relative;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     font-size:70px;
+
     color:rgba(255,255,255,.9);
+
+    overflow:hidden;
 }
 
 .modal-visual img{
     width:100%;
     height:100%;
+
     object-fit:cover;
+
     position:absolute;
+
     inset:0;
 }
 
 .modal-close{
     position:absolute;
+
     top:14px;
     right:14px;
+
     width:38px;
     height:38px;
+
     border-radius:50%;
+
     background:rgba(0,0,0,.35);
+
     color:var(--white);
+
     border:none;
+
     font-size:20px;
+
     z-index:2;
 }
 
@@ -857,146 +1204,253 @@ section.block{
 
 .modal-content .flavour-pill{
     position:static;
+
     display:inline-block;
+
     margin-bottom:12px;
 }
 
 .modal-content h2{
     margin:0 0 4px;
+
     color:var(--green);
+
     font-family:var(--serif);
+
     font-size:30px;
 }
 
 .modal-author{
     color:var(--gold);
+
     font-size:12px;
+
     font-weight:700;
+
     letter-spacing:.5px;
+
     text-transform:uppercase;
+
     margin-bottom:16px;
 }
 
 .modal-text{
     color:var(--ink);
+
     font-size:15.5px;
+
     line-height:1.75;
+
     white-space:pre-wrap;
 }
 
 .modal-foot{
     margin-top:22px;
+
     display:flex;
+
     justify-content:flex-end;
 }
 
-/* ================= FOOTER ================= */
+
+/* =========================================================
+   FOOTER
+========================================================= */
 
 footer{
     padding:50px 20px;
+
     text-align:center;
+
     border-top:1px solid var(--border);
+
     margin-top:20px;
 }
 
 .footer-title{
     color:var(--green);
+
     font-family:var(--serif);
+
     font-size:22px;
+
     font-weight:700;
 }
 
 .footer-tagline{
     margin-top:6px;
+
     color:var(--orange);
+
     font-size:12px;
+
     letter-spacing:1px;
 }
 
 .footer-text{
     margin-top:14px;
+
     color:var(--muted);
+
     font-size:12.5px;
+
     letter-spacing:1px;
+
     text-transform:uppercase;
 }
 
-/* ================= MOBILE ================= */
 
-@media(max-width:650px){
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-state{
+    grid-column:1/-1;
+
+    text-align:center;
+
+    padding:70px 20px;
+
+    color:var(--muted);
+
+    background:var(--paper);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+}
+
+.loading-spinner{
+    width:38px;
+    height:38px;
+
+    margin:0 auto 15px;
+
+    border-radius:50%;
+
+    border:3px solid var(--paper-dark);
+
+    border-top-color:var(--green);
+
+    animation:spinLoader .8s linear infinite;
+}
+
+@keyframes spinLoader{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+@media(max-width:700px){
 
     .nav{
-        align-items:flex-start;
+        flex-direction:column;
+
+        align-items:center;
     }
 
     .nav-links{
-        justify-content:flex-end;
+        justify-content:center;
     }
 
-    .nav-link{
-        padding:8px 10px;
-        font-size:11px;
-    }
-
-    .brand-name{
-        font-size:17px;
-    }
-
-    .brand-tagline{
-        font-size:7px;
-    }
-
-    .cloud{
-        transform:scale(.82);
+    .hero{
+        padding-top:55px;
     }
 
     .sky{
-        height:240px;
+        height:430px;
     }
 
-    .modal-content{
-        padding:22px;
+    .cloud{
+        transform:scale(.9);
     }
 
-    .modal-visual{
-        height:190px;
+    .cloud:hover{
+        transform:translateY(-6px) scale(.94);
     }
+
 }
 
 </style>
 </head>
 
+
 <body>
 
-<!-- ================= NAV ================= -->
+
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
 
 <div class="topbar">
+
     <nav class="nav page">
 
         <div class="brand">
 
             <div class="brand-mark">
-                <img src="favicon.jpg" alt="ANJUMAN ए TAREEKH Logo">
+                <img
+                    src="favicon.jpg"
+                    alt="ANJUMAN ए TAREEKH Logo"
+                >
             </div>
 
             <div class="brand-text">
-                <div class="brand-name">ANJUMAN ए TAREEKH</div>
-                <div class="brand-tagline">Research Meets Zaika</div>
+
+                <div class="brand-name">
+                    ANJUMAN ए TAREEKH
+                </div>
+
+                <div class="brand-tagline">
+                    Research Meets Zaika
+                </div>
+
             </div>
 
         </div>
 
+
         <div class="nav-links">
-            <a class="nav-link active" href="index.html">Home</a>
-            <a class="nav-link" href="students.html">Researchers</a>
-            <a class="nav-link" href="blogs.html">Blogs</a>
+
+            <a
+                class="nav-link active"
+                href="index.html"
+            >
+                Home
+            </a>
+
+            <a
+                class="nav-link"
+                href="students.html"
+            >
+                Researchers
+            </a>
+
+            <a
+                class="nav-link"
+                href="blogs.html"
+            >
+                Blogs
+            </a>
+
         </div>
 
     </nav>
+
 </div>
 
 
-<!-- ================= HERO ================= -->
+
+<!-- =========================================================
+     HERO
+========================================================= -->
 
 <header class="hero">
 
@@ -1004,23 +1458,35 @@ footer{
         Exploring the Culinary Heritage of Lucknow
     </div>
 
+
     <h1>
         Our Food.
-        <span>Our Zaika.</span><br>
+        <span>Our Zaika.</span>
+        <br>
         Our Pride.
     </h1>
 
+
     <p class="hero-subtitle">
-        A student research project uncovering the stories, spices and streets
-        behind Lucknow's vegetarian classics — from Basket Chaat to Nimish —
-        one blog at a time.
+        A student research project uncovering the stories, spices and
+        streets behind Lucknow's vegetarian classics — from Basket Chaat
+        to Nimish — one blog at a time.
     </p>
 
+
     <div class="hero-ctas">
-        <a href="#wheelSection" class="btn btn-solid">
+
+        <a
+            href="#wheelSection"
+            class="btn btn-solid"
+        >
             Spin the Taste Wheel
         </a>
+
     </div>
+
+
+    <!-- COMMUNITY FAVOURITES -->
 
     <div class="sky" id="sky">
 
@@ -1035,9 +1501,15 @@ footer{
 </header>
 
 
-<!-- ================= TASTE WHEEL ================= -->
 
-<section class="block" id="wheelSection">
+<!-- =========================================================
+     TASTE WHEEL
+========================================================= -->
+
+<section
+    class="block"
+    id="wheelSection"
+>
 
     <div class="page">
 
@@ -1052,8 +1524,8 @@ footer{
             </h2>
 
             <p>
-                Spin the wheel or tick a flavour below — we'll surface the
-                research blogs that match.
+                Spin the wheel or tick a flavour below —
+                we'll surface the research blogs that match.
             </p>
 
         </div>
@@ -1061,30 +1533,51 @@ footer{
 
         <div class="wheel-wrap">
 
+
+            <!-- WHEEL -->
+
             <div>
 
                 <div class="wheel-stage">
 
                     <div class="wheel-pointer"></div>
 
-                    <div class="wheel" id="tasteWheel">
+                    <div
+                        class="wheel"
+                        id="tasteWheel"
+                    >
 
                         <div class="wheel-hub">
-                            <span class="wheel-hub-emoji">🍽️</span>
+
+                            <span class="wheel-hub-emoji">
+                                🍽️
+                            </span>
+
                         </div>
 
                     </div>
 
                 </div>
 
-                <button class="spin-btn" id="spinBtn">
+
+                <button
+                    class="spin-btn"
+                    id="spinBtn"
+                >
                     Spin the Wheel
                 </button>
 
-                <div class="spin-result" id="spinResult"></div>
+
+                <div
+                    class="spin-result"
+                    id="spinResult"
+                ></div>
 
             </div>
 
+
+
+            <!-- FILTERS -->
 
             <div class="flavour-panel">
 
@@ -1096,34 +1589,49 @@ footer{
                     Choose one, choose all, or tell us something new.
                 </p>
 
-                <div class="flavour-grid" id="flavourGrid"></div>
+
+                <div
+                    class="flavour-grid"
+                    id="flavourGrid"
+                ></div>
 
 
                 <div class="custom-row">
 
-                    <label class="flavour-check" style="width:100%;">
+                    <label
+                        class="flavour-check"
+                        style="width:100%;"
+                    >
 
-                        <input type="checkbox" id="customCheck">
+                        <input
+                            type="checkbox"
+                            id="customCheck"
+                        >
 
                         <span
                             class="flavour-swatch"
-                            style="background:var(--muted);">
-                        </span>
+                            style="background:var(--muted);"
+                        ></span>
 
                         Something Else (Custom Flavour)
 
                     </label>
 
+
                     <input
                         type="text"
                         id="customInput"
                         class="custom-input"
-                        placeholder="e.g. smoky, nutty, festive...">
+                        placeholder="e.g. smoky, nutty, festive..."
+                    >
 
                 </div>
 
 
-                <button class="clear-filters" id="clearFilters">
+                <button
+                    class="clear-filters"
+                    id="clearFilters"
+                >
                     Clear all filters
                 </button>
 
@@ -1136,23 +1644,36 @@ footer{
 </section>
 
 
-<!-- ================= BLOGS ================= -->
 
-<section class="block" style="padding-top:10px;">
+<!-- =========================================================
+     BLOG GRID
+========================================================= -->
+
+<section
+    class="block"
+    style="padding-top:10px;"
+>
 
     <div class="page">
 
-        <div class="grid-status" id="gridStatus">
+        <div
+            class="grid-status"
+            id="gridStatus"
+        >
             Loading research blogs...
         </div>
 
-        <div class="blog-grid" id="blogGrid">
+
+        <div
+            class="blog-grid"
+            id="blogGrid"
+        >
 
             <div class="loading-state">
 
                 <div class="loading-spinner"></div>
 
-                Loading research stories...
+                Loading published research stories...
 
             </div>
 
@@ -1163,7 +1684,10 @@ footer{
 </section>
 
 
-<!-- ================= FOOTER ================= -->
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
 
 <footer>
 
@@ -1186,15 +1710,28 @@ footer{
 </footer>
 
 
-<!-- ================= BLOG MODAL ================= -->
 
-<div class="modal" id="blogModal">
+<!-- =========================================================
+     BLOG MODAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="blogModal"
+>
 
     <div class="modal-box">
 
-        <div class="modal-visual" id="modalVisual">
 
-            <button class="modal-close" id="modalClose">
+        <div
+            class="modal-visual"
+            id="modalVisual"
+        >
+
+            <button
+                class="modal-close"
+                id="modalClose"
+            >
                 ×
             </button>
 
@@ -1203,19 +1740,39 @@ footer{
 
         <div class="modal-content">
 
-            <span class="flavour-pill" id="modalPill"></span>
+            <span
+                class="flavour-pill"
+                id="modalPill"
+            ></span>
 
-            <h2 id="modalTitle"></h2>
 
-            <div class="modal-author" id="modalAuthor"></div>
+            <h2
+                id="modalTitle"
+            ></h2>
 
-            <div class="modal-text" id="modalText"></div>
+
+            <div
+                class="modal-author"
+                id="modalAuthor"
+            ></div>
+
+
+            <div
+                class="modal-text"
+                id="modalText"
+            ></div>
+
 
             <div class="modal-foot">
 
-                <button class="like-btn" id="modalLikeBtn">
+                <button
+                    class="like-btn"
+                    id="modalLikeBtn"
+                >
 
-                    <span class="heart">♡</span>
+                    <span class="heart">
+                        ♡
+                    </span>
 
                     <span id="modalLikeCount">
                         0
@@ -1232,19 +1789,20 @@ footer{
 </div>
 
 
+
 <script>
 
-/* ================================================================
-   CONFIGURATION
-   ================================================================ */
+/* =========================================================
+   SUPABASE EDGE FUNCTION
+========================================================= */
 
-const BLOGS_ENDPOINT =
+const BLOGS_URL =
     "https://xitmexidjgacikjpheji.supabase.co/functions/v1/list-published-blogs";
 
 
-/* ================================================================
+/* =========================================================
    FLAVOURS
-   ================================================================ */
+========================================================= */
 
 const FLAVOURS = [
 
@@ -1293,18 +1851,28 @@ const FLAVOURS = [
 ];
 
 
-/* ================================================================
+/* =========================================================
    DYNAMIC BLOG DATA
-   ================================================================ */
+========================================================= */
+
+/*
+    IMPORTANT:
+
+    There are NO hardcoded blogs here.
+
+    Blogs come from:
+
+    list-published-blogs
+
+    through POST.
+*/
 
 let BLOGS = [];
 
-let blogsLoaded = false;
 
-
-/* ================================================================
-   LOCAL LIKE STORAGE
-   ================================================================ */
+/* =========================================================
+   LOCAL LIKES
+========================================================= */
 
 function getLikedSet(){
 
@@ -1318,7 +1886,7 @@ function getLikedSet(){
             )
         );
 
-    }catch(e){
+    }catch(error){
 
         return new Set();
 
@@ -1346,18 +1914,18 @@ function getLikeCount(blog){
 
     if(stored !== null){
 
-        const parsed = parseInt(
+        const number = parseInt(
             stored,
             10
         );
 
-        if(Number.isFinite(parsed)){
-            return parsed;
-        }
+        return Number.isFinite(number)
+            ? number
+            : Number(blog.likes || 0);
 
     }
 
-    return Number(blog.likes) || 0;
+    return Number(blog.likes || 0);
 
 }
 
@@ -1381,116 +1949,61 @@ function isLiked(blog){
 }
 
 
-/* ================================================================
-   NORMALIZE EDGE FUNCTION RESPONSE
-   ================================================================ */
+function toggleLike(blog){
 
-function normalizeBlogsResponse(data){
+    const liked =
+        getLikedSet();
 
-    /*
-       Supports common response formats:
+    const key =
+        String(blog.id);
 
-       {
-          "blogs":[...]
-       }
+    const current =
+        getLikeCount(blog);
 
-       or
 
-       [...]
-    */
+    if(liked.has(key)){
 
-    let rawBlogs = [];
+        liked.delete(key);
 
-    if(Array.isArray(data)){
+        setLikeCount(
+            blog,
+            Math.max(0,current - 1)
+        );
 
-        rawBlogs = data;
+    }else{
 
-    }else if(
-        data &&
-        Array.isArray(data.blogs)
-    ){
+        liked.add(key);
 
-        rawBlogs = data.blogs;
-
-    }else if(
-        data &&
-        Array.isArray(data.data)
-    ){
-
-        rawBlogs = data.data;
-
-    }else if(
-        data &&
-        data.blog
-    ){
-
-        rawBlogs = [data.blog];
+        setLikeCount(
+            blog,
+            current + 1
+        );
 
     }
 
 
-    return rawBlogs.map((blog,index) => {
+    saveLikedSet(liked);
 
-        return {
+    renderClouds();
 
-            id:
-                blog.id ??
-                blog.blog_id ??
-                blog.uuid ??
-                index + 1,
+    renderGrid();
 
-            blog_name:
-                blog.blog_name ??
-                blog.title ??
-                blog.name ??
-                "Untitled Story",
 
-            author:
-                blog.author ??
-                blog.username ??
-                blog.author_name ??
-                "Anonymous Researcher",
+    if(
+        currentModalBlog &&
+        String(currentModalBlog.id) === key
+    ){
 
-            content:
-                blog.content ??
-                blog.body ??
-                blog.description ??
-                "",
+        openModal(blog);
 
-            flavor:
-                String(
-                    blog.flavor ??
-                    blog.flavour ??
-                    "savory"
-                ).toLowerCase().trim(),
-
-            image:
-                blog.image_url ??
-                blog.image ??
-                blog.imageUrl ??
-                null,
-
-            likes:
-                Number(
-                    blog.likes ??
-                    blog.like_count ??
-                    0
-                ),
-
-            created_at:
-                blog.created_at ??
-                null
-
-        };
-
-    });
+    }
 
 }
 
 
-/* ================================================================
-   FETCH BLOGS
-   ================================================================ */
+/* =========================================================
+   LOAD BLOGS
+========================================================= */
 
 async function loadBlogs(){
 
@@ -1505,95 +2018,221 @@ async function loadBlogs(){
         );
 
 
-    blogGrid.innerHTML = `
-
-        <div class="loading-state">
-
-            <div class="loading-spinner"></div>
-
-            Loading research stories...
-
-        </div>
-
-    `;
-
     gridStatus.textContent =
         "Loading research blogs...";
 
 
+    blogGrid.innerHTML = `
+        <div class="loading-state">
+
+            <div class="loading-spinner"></div>
+
+            Loading published research stories...
+
+        </div>
+    `;
+
+
     try{
+
+        console.log(
+            "Loading blogs from:",
+            BLOGS_URL
+        );
+
+
+        /*
+         * IMPORTANT:
+         *
+         * The Edge Function is POST-only.
+         */
 
         const response =
             await fetch(
-                BLOGS_ENDPOINT,
+                BLOGS_URL,
                 {
-                    method:"GET",
+                    method:"POST",
+
                     headers:{
-                        "Accept":"application/json"
+                        "Content-Type":
+                            "application/json"
                     },
-                    cache:"no-store"
+
+                    body:JSON.stringify({})
                 }
             );
+
+
+        const responseText =
+            await response.text();
+
+
+        console.log(
+            "list-published-blogs HTTP:",
+            response.status
+        );
+
+
+        console.log(
+            "list-published-blogs response:",
+            responseText
+        );
+
+
+        let result;
+
+
+        try{
+
+            result =
+                JSON.parse(
+                    responseText
+                );
+
+        }catch(error){
+
+            throw new Error(
+                "The Edge Function returned invalid JSON: " +
+                responseText.substring(0,300)
+            );
+
+        }
 
 
         if(!response.ok){
 
             throw new Error(
-                "Server returned HTTP " +
-                response.status
+                result.error ||
+                result.message ||
+                `Server returned HTTP ${response.status}`
             );
 
         }
 
 
-        const data =
-            await response.json();
+        /*
+         * Accept several possible response structures.
+         */
 
+        if(Array.isArray(result)){
+
+            BLOGS = result;
+
+        }else if(
+            Array.isArray(result.blogs)
+        ){
+
+            BLOGS = result.blogs;
+
+        }else if(
+            Array.isArray(result.data)
+        ){
+
+            BLOGS = result.data;
+
+        }else if(
+            Array.isArray(result.results)
+        ){
+
+            BLOGS = result.results;
+
+        }else{
+
+            console.error(
+                "Unexpected Edge Function response:",
+                result
+            );
+
+            throw new Error(
+                "Edge Function did not return a blogs array."
+            );
+
+        }
+
+
+        /*
+         * Normalize database fields.
+         */
 
         BLOGS =
-            normalizeBlogsResponse(
-                data
+            BLOGS.map(
+                (blog,index) => {
+
+                    return {
+
+                        id:
+                            blog.id ??
+                            blog.blog_id ??
+                            blog.uuid ??
+                            index,
+
+
+                        blog_name:
+                            blog.blog_name ??
+                            blog.title ??
+                            blog.name ??
+                            "Untitled Story",
+
+
+                        author:
+                            blog.author ??
+                            blog.author_name ??
+                            "Anonymous",
+
+
+                        content:
+                            blog.content ??
+                            blog.blog_content ??
+                            blog.body ??
+                            "",
+
+
+                        flavor:
+                            String(
+                                blog.flavor ??
+                                blog.flavour ??
+                                "savory"
+                            ).toLowerCase(),
+
+
+                        image:
+                            blog.image ??
+                            blog.image_url ??
+                            blog.imageUrl ??
+                            null,
+
+
+                        likes:
+                            Number(
+                                blog.likes ??
+                                blog.like_count ??
+                                0
+                            ),
+
+
+                        created_at:
+                            blog.created_at ??
+                            null
+
+                    };
+
+                }
             );
 
 
-        blogsLoaded = true;
+        console.log(
+            "Published blogs:",
+            BLOGS
+        );
 
 
-        if(!BLOGS.length){
+        /*
+         * Render everything.
+         */
 
-            gridStatus.textContent =
-                "No published research blogs yet.";
-
-            blogGrid.innerHTML = `
-
-                <div class="empty-state">
-
-                    No research stories have been
-                    published yet.
-
-                    <br><br>
-
-                    <a href="portal.html">
-                        Write a research blog →
-                    </a>
-
-                </div>
-
-            `;
-
-            renderClouds();
-
-            return;
-
-        }
-
-
-        gridStatus.textContent =
-            `Showing all ${BLOGS.length} research blogs`;
-
+        renderClouds();
 
         renderGrid();
-        renderClouds();
 
 
     }catch(error){
@@ -1604,21 +2243,24 @@ async function loadBlogs(){
         );
 
 
+        BLOGS = [];
+
+
         gridStatus.textContent =
-            "Unable to load research blogs.";
+            "Could not load research blogs.";
 
 
         blogGrid.innerHTML = `
 
-            <div class="error-state">
+            <div class="empty-state">
 
                 <strong>
-                    Could not load the research stories.
+                    Unable to load the research stories.
                 </strong>
 
                 <br><br>
 
-                Please try refreshing the page.
+                Please try again in a moment.
 
             </div>
 
@@ -1629,9 +2271,9 @@ async function loadBlogs(){
 }
 
 
-/* ================================================================
-   FLAVOUR UI
-   ================================================================ */
+/* =========================================================
+   FLAVOUR FILTERS
+========================================================= */
 
 const flavourGrid =
     document.getElementById(
@@ -1646,36 +2288,46 @@ let customFlavourText = "";
 let customActive = false;
 
 
-FLAVOURS.forEach(f => {
+/*
+ * Build flavour checkboxes.
+ */
 
-    const label =
-        document.createElement(
-            "label"
-        );
+FLAVOURS.forEach(
+    f => {
 
-    label.className =
-        "flavour-check";
+        const label =
+            document.createElement(
+                "label"
+            );
 
-
-    label.innerHTML = `
-
-        <input
-            type="checkbox"
-            data-flavour="${f.key}">
-
-        <span
-            class="flavour-swatch"
-            style="background:${f.color};">
-        </span>
-
-        ${f.label}
-
-    `;
+        label.className =
+            "flavour-check";
 
 
-    label
-        .querySelector("input")
-        .addEventListener(
+        label.innerHTML = `
+
+            <input
+                type="checkbox"
+                data-flavour="${f.key}"
+            >
+
+            <span
+                class="flavour-swatch"
+                style="background:${f.color};"
+            ></span>
+
+            ${f.label}
+
+        `;
+
+
+        const checkbox =
+            label.querySelector(
+                "input"
+            );
+
+
+        checkbox.addEventListener(
             "change",
             function(){
 
@@ -1693,18 +2345,24 @@ FLAVOURS.forEach(f => {
 
                 }
 
+
                 renderGrid();
 
             }
         );
 
 
-    flavourGrid.appendChild(
-        label
-    );
+        flavourGrid.appendChild(
+            label
+        );
 
-});
+    }
+);
 
+
+/* =========================================================
+   CUSTOM FLAVOUR
+========================================================= */
 
 const customCheck =
     document.getElementById(
@@ -1723,6 +2381,7 @@ customCheck.addEventListener(
 
         customActive =
             this.checked;
+
 
         customInput.classList.toggle(
             "show",
@@ -1752,11 +2411,16 @@ customInput.addEventListener(
                 .trim()
                 .toLowerCase();
 
+
         renderGrid();
 
     }
 );
 
+
+/* =========================================================
+   CLEAR FILTERS
+========================================================= */
 
 document
     .getElementById(
@@ -1768,9 +2432,11 @@ document
 
             selectedFlavours.clear();
 
-            customActive = false;
+            customActive =
+                false;
 
-            customFlavourText = "";
+            customFlavourText =
+                "";
 
             customCheck.checked =
                 false;
@@ -1788,9 +2454,12 @@ document
                     "input"
                 )
                 .forEach(
-                    input =>
+                    input => {
+
                         input.checked =
-                            false
+                            false;
+
+                    }
                 );
 
 
@@ -1800,9 +2469,9 @@ document
     );
 
 
-/* ================================================================
-   WHEEL
-   ================================================================ */
+/* =========================================================
+   TASTE WHEEL
+========================================================= */
 
 const wheelEl =
     document.getElementById(
@@ -1839,6 +2508,19 @@ function buildWheel(){
         `conic-gradient(${stops})`;
 
 
+    /*
+     * Remove old labels.
+     */
+
+    wheelEl
+        .querySelectorAll(
+            ".wheel-seg-label"
+        )
+        .forEach(
+            el => el.remove()
+        );
+
+
     FLAVOURS.forEach(
         (f,i) => {
 
@@ -1861,10 +2543,14 @@ function buildWheel(){
 
 
             label.innerHTML = `
-                <span style="margin-left:34px;">
+
+                <span
+                    style="margin-left:34px;"
+                >
                     ${f.emoji}
                     ${f.label.split(" & ")[0]}
                 </span>
+
             `;
 
 
@@ -1885,15 +2571,12 @@ let wheelRotation = 0;
 
 
 document
-    .getElementById("spinBtn")
+    .getElementById(
+        "spinBtn"
+    )
     .addEventListener(
         "click",
         function(){
-
-            if(!BLOGS.length){
-                return;
-            }
-
 
             const pick =
                 Math.floor(
@@ -1913,9 +2596,14 @@ document
 
             wheelRotation +=
                 extraTurns +
-                (360 -
-                    (wheelRotation % 360)) +
-                (360 - targetMid);
+                (
+                    360 -
+                    (wheelRotation % 360)
+                ) +
+                (
+                    360 -
+                    targetMid
+                );
 
 
             wheelEl.style.transform =
@@ -1930,7 +2618,8 @@ document
                 .getElementById(
                     "spinResult"
                 )
-                .textContent = "";
+                .textContent =
+                "";
 
 
             setTimeout(
@@ -1984,10 +2673,12 @@ document
                         .querySelector(
                             ".flavour-panel"
                         )
-                        .scrollIntoView({
-                            behavior:"smooth",
-                            block:"center"
-                        });
+                        .scrollIntoView(
+                            {
+                                behavior:"smooth",
+                                block:"center"
+                            }
+                        );
 
                 },
                 3600
@@ -1997,9 +2688,9 @@ document
     );
 
 
-/* ================================================================
-   FLAVOUR INFORMATION
-   ================================================================ */
+/* =========================================================
+   FLAVOUR INFO
+========================================================= */
 
 function flavourInfo(key){
 
@@ -2008,8 +2699,7 @@ function flavourInfo(key){
             f => f.key === key
         ) ||
         {
-            key:key,
-            label:key || "Other",
+            label:key || "Food",
             color:"var(--muted)",
             emoji:"🍴"
         }
@@ -2018,27 +2708,9 @@ function flavourInfo(key){
 }
 
 
-/* ================================================================
-   SAFE HTML ESCAPING
-   ================================================================ */
-
-function escapeHTML(value){
-
-    return String(
-        value ?? ""
-    )
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-/* ================================================================
-   IMAGE VISUAL
-   ================================================================ */
+/* =========================================================
+   BLOG IMAGE / VISUAL
+========================================================= */
 
 function dishVisual(blog){
 
@@ -2057,22 +2729,19 @@ function dishVisual(blog){
 
             <div
                 class="dish-visual"
-                style="
-                    background:
-                    linear-gradient(
-                        135deg,
-                        ${fi.color},
-                        var(--green-dark)
-                    );
-                "
+                style="background:${fi.color};"
             >
 
                 <img
-                    src="${escapeHTML(blog.image)}"
-                    alt="${escapeHTML(blog.blog_name)}"
+                    src="${escapeHtml(blog.image)}"
+                    alt="${escapeHtml(blog.blog_name)}"
                     loading="lazy"
                     onerror="this.style.display='none';"
                 >
+
+                <span>
+                    ${fi.emoji}
+                </span>
 
             </div>
 
@@ -2094,9 +2763,7 @@ function dishVisual(blog){
                 );
             "
         >
-
             ${fi.emoji}
-
         </div>
 
     `;
@@ -2104,9 +2771,42 @@ function dishVisual(blog){
 }
 
 
-/* ================================================================
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
    FILTER MATCHING
-   ================================================================ */
+========================================================= */
 
 function matchesFilters(blog){
 
@@ -2119,6 +2819,10 @@ function matchesFilters(blog){
         customFlavourText.length > 0;
 
 
+    /*
+     * No filters.
+     */
+
     if(
         !anyCommonChecked &&
         !customReady
@@ -2129,10 +2833,16 @@ function matchesFilters(blog){
     }
 
 
+    /*
+     * Normal flavour filter.
+     */
+
     if(
         anyCommonChecked &&
         selectedFlavours.has(
-            blog.flavor
+            String(
+                blog.flavor
+            ).toLowerCase()
         )
     ){
 
@@ -2141,19 +2851,31 @@ function matchesFilters(blog){
     }
 
 
+    /*
+     * Custom search.
+     */
+
     if(customReady){
 
-        const haystack =
-            (
-                blog.blog_name +
-                " " +
-                blog.content +
-                " " +
-                blog.flavor +
-                " " +
-                blog.author
+        const haystack = (
+
+            String(
+                blog.blog_name || ""
+            ) +
+            " " +
+            String(
+                blog.content || ""
+            ) +
+            " " +
+            String(
+                blog.flavor || ""
+            ) +
+            " " +
+            String(
+                blog.author || ""
             )
-            .toLowerCase();
+
+        ).toLowerCase();
 
 
         if(
@@ -2174,22 +2896,32 @@ function matchesFilters(blog){
 }
 
 
-/* ================================================================
+/* =========================================================
    RENDER BLOG GRID
-   ================================================================ */
+========================================================= */
+
+const blogGrid =
+    document.getElementById(
+        "blogGrid"
+    );
+
+const gridStatus =
+    document.getElementById(
+        "gridStatus"
+    );
+
 
 function renderGrid(){
-
-    if(!blogsLoaded){
-        return;
-    }
-
 
     const filtered =
         BLOGS.filter(
             matchesFilters
         );
 
+
+    /*
+     * Custom filter with no result.
+     */
 
     if(
         customActive &&
@@ -2206,13 +2938,9 @@ function renderGrid(){
             <div class="empty-state">
 
                 Nobody has written about
-
                 <strong>
-                    ${escapeHTML(
-                        customFlavourText
-                    )}
+                    ${escapeHtml(customFlavourText)}
                 </strong>
-
                 yet.
 
                 <br><br>
@@ -2230,30 +2958,27 @@ function renderGrid(){
     }
 
 
-    if(filtered.length === BLOGS.length){
+    /*
+     * No blogs at all.
+     */
+
+    if(BLOGS.length === 0){
 
         gridStatus.textContent =
-            `Showing all ${BLOGS.length} research blogs`;
+            "No published research blogs yet.";
 
-    }else{
-
-        gridStatus.textContent =
-            `Showing ${filtered.length} of ${BLOGS.length} research blogs`;
-
-    }
-
-
-    blogGrid.innerHTML = "";
-
-
-    if(!filtered.length){
 
         blogGrid.innerHTML = `
 
             <div class="empty-state">
 
-                No research stories match
-                your selected flavour.
+                No published research stories yet.
+
+                <br><br>
+
+                <a href="portal.html">
+                    Go to the research portal →
+                </a>
 
             </div>
 
@@ -2263,6 +2988,26 @@ function renderGrid(){
 
     }
 
+
+    /*
+     * Status.
+     */
+
+    gridStatus.textContent =
+        filtered.length === BLOGS.length
+
+            ? `Showing all ${filtered.length} research blogs`
+
+            : `Showing ${filtered.length} of ${BLOGS.length} research blogs`;
+
+
+    blogGrid.innerHTML =
+        "";
+
+
+    /*
+     * Render cards.
+     */
 
     filtered.forEach(
         blog => {
@@ -2306,27 +3051,35 @@ function renderGrid(){
                             background:${fi.color};
                         "
                     >
-                        ${escapeHTML(fi.label)}
+                        ${escapeHtml(fi.label)}
                     </span>
 
+
                     <h3>
-                        ${escapeHTML(
+                        ${escapeHtml(
                             blog.blog_name
                         )}
                     </h3>
 
+
                     <div class="blog-author">
+
                         By
-                        ${escapeHTML(
+                        ${escapeHtml(
                             blog.author
                         )}
+
                     </div>
 
+
                     <div class="blog-excerpt">
-                        ${escapeHTML(
+
+                        ${escapeHtml(
                             blog.content
                         )}
+
                     </div>
+
 
                     <div class="blog-foot">
 
@@ -2334,13 +3087,23 @@ function renderGrid(){
                             Read full story →
                         </span>
 
+
                         <button
-                            class="like-btn ${liked ? "liked" : ""}"
-                            type="button"
+                            class="like-btn ${
+                                liked
+                                    ? "liked"
+                                    : ""
+                            }"
                         >
 
                             <span class="heart">
-                                ${liked ? "♥" : "♡"}
+
+                                ${
+                                    liked
+                                        ? "♥"
+                                        : "♡"
+                                }
+
                             </span>
 
                             <span class="count">
@@ -2356,21 +3119,13 @@ function renderGrid(){
             `;
 
 
-            const visual =
-                card.querySelector(
-                    ".dish-visual"
-                );
-
-
-            if(visual){
-                visual.style.position =
-                    "relative";
-            }
-
+            /*
+             * Open modal.
+             */
 
             card
                 .querySelector(
-                    ".read-link"
+                    ".dish-visual"
                 )
                 .addEventListener(
                     "click",
@@ -2390,17 +3145,29 @@ function renderGrid(){
 
             card
                 .querySelector(
+                    ".read-link"
+                )
+                .addEventListener(
+                    "click",
+                    () => openModal(blog)
+                );
+
+
+            /*
+             * Like.
+             */
+
+            card
+                .querySelector(
                     ".like-btn"
                 )
                 .addEventListener(
                     "click",
-                    e => {
+                    event => {
 
-                        e.stopPropagation();
+                        event.stopPropagation();
 
-                        toggleLike(
-                            blog
-                        );
+                        toggleLike(blog);
 
                     }
                 );
@@ -2416,77 +3183,9 @@ function renderGrid(){
 }
 
 
-/* ================================================================
-   LIKES
-   ================================================================ */
-
-function toggleLike(blog){
-
-    const liked =
-        getLikedSet();
-
-
-    const current =
-        getLikeCount(blog);
-
-
-    const id =
-        String(blog.id);
-
-
-    if(liked.has(id)){
-
-        liked.delete(id);
-
-        setLikeCount(
-            blog,
-            Math.max(
-                0,
-                current - 1
-            )
-        );
-
-    }else{
-
-        liked.add(id);
-
-        setLikeCount(
-            blog,
-            current + 1
-        );
-
-    }
-
-
-    saveLikedSet(
-        liked
-    );
-
-
-    renderClouds();
-
-    renderGrid();
-
-
-    if(
-        currentModalBlog &&
-        String(
-            currentModalBlog.id
-        ) === id
-    ){
-
-        openModal(
-            blog
-        );
-
-    }
-
-}
-
-
-/* ================================================================
-   COMMUNITY FAVOURITES
-   ================================================================ */
+/* =========================================================
+   COMMUNITY CLOUDS
+========================================================= */
 
 const cloudLayer =
     document.getElementById(
@@ -2526,12 +3225,40 @@ const cloudPositions = [
 
 function renderClouds(){
 
-    if(!BLOGS.length){
+    const ranked =
+        [...BLOGS]
+            .map(
+                blog => ({
+                    blog:blog,
+                    count:getLikeCount(blog)
+                })
+            )
+            .sort(
+                (a,b) =>
+                    b.count -
+                    a.count
+            )
+            .slice(
+                0,
+                5
+            );
+
+
+    cloudLayer.innerHTML =
+        "";
+
+
+    if(
+        ranked.length === 0
+    ){
 
         cloudLayer.innerHTML = `
 
             <div class="sky-empty">
-                No community favourites yet.
+
+                No liked blogs yet —
+                be the first to like one below!
+
             </div>
 
         `;
@@ -2539,24 +3266,6 @@ function renderClouds(){
         return;
 
     }
-
-
-    const ranked =
-        [...BLOGS]
-        .map(
-            blog => ({
-                blog:blog,
-                count:getLikeCount(blog)
-            })
-        )
-        .sort(
-            (a,b) =>
-                b.count - a.count
-        )
-        .slice(0,5);
-
-
-    cloudLayer.innerHTML = "";
 
 
     ranked.forEach(
@@ -2594,7 +3303,7 @@ function renderClouds(){
 
 
             el.style.animationDelay =
-                (i * .6) + "s";
+                (i * 0.6) + "s";
 
 
             el.style.animationDuration =
@@ -2612,15 +3321,17 @@ function renderClouds(){
                     ${fi.emoji}
                 </div>
 
+
                 <div>
 
                     <div class="cloud-title">
 
-                        ${escapeHTML(
+                        ${escapeHtml(
                             r.blog.blog_name
                         )}
 
                     </div>
+
 
                     <div class="cloud-likes">
 
@@ -2651,9 +3362,9 @@ function renderClouds(){
 }
 
 
-/* ================================================================
-   MODAL
-   ================================================================ */
+/* =========================================================
+   BLOG MODAL
+========================================================= */
 
 let currentModalBlog =
     null;
@@ -2683,13 +3394,20 @@ function openModal(blog){
         );
 
 
-    visual.innerHTML =
-        `<button
+    /*
+     * Reset modal visual.
+     */
+
+    visual.innerHTML = `
+
+        <button
             class="modal-close"
             id="modalClose"
-            type="button">
+        >
             ×
-        </button>`;
+        </button>
+
+    `;
 
 
     if(
@@ -2698,18 +3416,38 @@ function openModal(blog){
     ){
 
         visual.style.background =
-            "none";
+            fi.color;
 
 
-        visual.innerHTML += `
+        const image =
+            document.createElement(
+                "img"
+            );
 
-            <img
-                src="${escapeHTML(blog.image)}"
-                alt="${escapeHTML(blog.blog_name)}"
-                onerror="this.style.display='none';"
-            >
 
-        `;
+        image.src =
+            blog.image;
+
+
+        image.alt =
+            blog.blog_name;
+
+
+        image.onerror =
+            function(){
+
+                this.style.display =
+                    "none";
+
+                visual.innerHTML +=
+                    fi.emoji;
+
+            };
+
+
+        visual.appendChild(
+            image
+        );
 
     }else{
 
@@ -2736,6 +3474,10 @@ function openModal(blog){
             closeModal
         );
 
+
+    /*
+     * Text.
+     */
 
     document
         .getElementById(
@@ -2766,7 +3508,8 @@ function openModal(blog){
             "modalAuthor"
         )
         .textContent =
-        "By " + blog.author;
+        "By " +
+        blog.author;
 
 
     document
@@ -2776,6 +3519,10 @@ function openModal(blog){
         .textContent =
         blog.content;
 
+
+    /*
+     * Like button.
+     */
 
     const liked =
         isLiked(blog);
@@ -2819,10 +3566,12 @@ function openModal(blog){
 
 
     likeBtn.onclick =
-        () => toggleLike(
-            blog
-        );
+        () => toggleLike(blog);
 
+
+    /*
+     * Show.
+     */
 
     blogModal.classList.add(
         "show"
@@ -2852,12 +3601,16 @@ function closeModal(){
 }
 
 
+/*
+ * Close when clicking outside.
+ */
+
 blogModal.addEventListener(
     "click",
-    function(e){
+    function(event){
 
         if(
-            e.target === this
+            event.target === this
         ){
 
             closeModal();
@@ -2868,12 +3621,16 @@ blogModal.addEventListener(
 );
 
 
+/*
+ * Escape key.
+ */
+
 document.addEventListener(
     "keydown",
-    function(e){
+    function(event){
 
         if(
-            e.key === "Escape" &&
+            event.key === "Escape" &&
             blogModal.classList.contains(
                 "show"
             )
@@ -2887,11 +3644,30 @@ document.addEventListener(
 );
 
 
-/* ================================================================
-   INITIALIZE
-   ================================================================ */
+/* =========================================================
+   INITIALIZATION
+========================================================= */
 
-loadBlogs();
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        /*
+         * Build wheel first.
+         */
+
+        buildWheel();
+
+
+        /*
+         * Then load real blogs
+         * from Supabase.
+         */
+
+        loadBlogs();
+
+    }
+);
 
 </script>
 
