@@ -445,6 +445,46 @@
                 >
 
 
+                <label for="blogFlavor">
+                    Flavour Category
+                </label>
+
+                <select id="blogFlavor" required>
+                    <option value="" disabled selected>Choose the closest flavour</option>
+                    <option value="tangy">Chatpata &amp; Tangy</option>
+                    <option value="savory">Spiced &amp; Savory</option>
+                    <option value="rich">Buttery &amp; Rich</option>
+                    <option value="sweet">Sweet &amp; Milky</option>
+                    <option value="chilled">Creamy &amp; Chilled</option>
+                    <option value="herbal">Herbal &amp; Fresh</option>
+                    <option value="custom">Something Else (type below)</option>
+                </select>
+
+                <input
+                    type="text"
+                    id="blogFlavorCustom"
+                    placeholder="Name your custom flavour, e.g. smoky, nutty..."
+                    style="display:none; margin-top:10px;"
+                >
+
+                <label for="blogImage">
+                    Dish Photo (paste an image link)
+                </label>
+
+                <input
+                    type="url"
+                    id="blogImage"
+                    placeholder="https://... (a link to a photo of your dish)"
+                >
+
+                <div id="blogImagePreviewWrap" style="display:none; margin-top:10px;">
+                    <img
+                        id="blogImagePreview"
+                        alt="Dish preview"
+                        style="width:100%; max-height:220px; object-fit:cover; border-radius:10px; border:1px solid #e4ddcf;"
+                    >
+                </div>
+
                 <label for="blogContent">
                     Content
                 </label>
@@ -571,6 +611,38 @@
     let workerUsername = "";
     let workerPassword = "";
     let workerNameValue = "";
+
+
+    /*
+    ==========================================
+    FLAVOUR + PHOTO FIELDS (Create Blog form)
+    ==========================================
+    */
+
+    const blogFlavorSelect = document.getElementById("blogFlavor");
+    const blogFlavorCustom = document.getElementById("blogFlavorCustom");
+
+    blogFlavorSelect.addEventListener("change", function() {
+        blogFlavorCustom.style.display =
+            this.value === "custom" ? "block" : "none";
+    });
+
+    const blogImageInput = document.getElementById("blogImage");
+    const blogImagePreviewWrap = document.getElementById("blogImagePreviewWrap");
+    const blogImagePreview = document.getElementById("blogImagePreview");
+
+    blogImageInput.addEventListener("input", function() {
+
+        const url = this.value.trim();
+
+        if (!url) {
+            blogImagePreviewWrap.style.display = "none";
+            return;
+        }
+
+        blogImagePreview.src = url;
+        blogImagePreviewWrap.style.display = "block";
+    });
 
 
     
@@ -729,6 +801,20 @@
             const content =
                 document.getElementById("blogContent").value.trim();
 
+            const flavorChoice =
+                document.getElementById("blogFlavor").value;
+
+            const flavorCustomText =
+                document.getElementById("blogFlavorCustom").value.trim();
+
+            const flavor =
+                flavorChoice === "custom"
+                    ? (flavorCustomText || "custom")
+                    : flavorChoice;
+
+            const imageUrl =
+                document.getElementById("blogImage").value.trim();
+
             const message =
                 document.getElementById("blogMessage");
 
@@ -757,7 +843,18 @@
                             blog_name: blogName,
 
                             content: content,
-                            published: true
+                            published: true,
+
+                            /*
+                            NOTE: the "flavor" and "image_url" fields
+                            below will only be saved once the
+                            create-blog Edge Function and the blogs
+                            table are updated to accept them (see
+                            comment in index.html's DATA LAYER
+                            section for the exact columns needed).
+                            */
+                            flavor: flavor,
+                            image_url: imageUrl || null
 
                         })
 
@@ -795,6 +892,9 @@
                 document
                     .getElementById("blogForm")
                     .reset();
+
+                blogFlavorCustom.style.display = "none";
+                blogImagePreviewWrap.style.display = "none";
 
 
             } catch (error) {
@@ -922,14 +1022,6 @@
                 error.message || "Could not load your blogs.";
         }
     }
-
-
-    /*
-    ==========================================
-    OPEN EDIT BLOG
-    ==========================================
-    */
-
     function openEditBlog(blog) {
 
         document.getElementById("editBlogId").value =
@@ -949,14 +1041,6 @@
 
         document.body.style.overflow = "hidden";
     }
-
-
-    /*
-    ==========================================
-    CLOSE EDIT MODAL
-    ==========================================
-    */
-
     function closeEditBlog() {
 
         document.getElementById("editModal")
@@ -981,14 +1065,6 @@
             }
 
         });
-
-
-    /*
-    ==========================================
-    UPDATE BLOG
-    ==========================================
-    */
-
     document.getElementById("editBlogForm")
         .addEventListener("submit", async function(event) {
 
@@ -1074,14 +1150,6 @@
             }
 
         });
-
-
-    /*
-    ==========================================
-    DELETE BLOG
-    ==========================================
-    */
-
     async function deleteBlog(blogId, blogName) {
 
         if (!workerUsername || !workerPassword) {
@@ -1130,31 +1198,11 @@
             alert("Could not connect to server.");
         }
     }
-
-
-    /*
-    ==========================================
-    REFRESH BLOGS
-    ==========================================
-    */
-
     document.getElementById("refreshBlogsButton")
         .addEventListener("click", loadMyBlogs);
-
-
-    /*
-    ==========================================
-    LOGOUT
-    ==========================================
-    */
-
     document
         .getElementById("logoutButton")
         .addEventListener("click", function() {
-
-            /*
-            Destroy credentials from memory.
-            */
 
             workerUsername = "";
             workerPassword = "";
@@ -1165,28 +1213,13 @@
             document.getElementById("blogsEmpty").style.display = "none";
             closeEditBlog();
 
-
-            /*
-            Hide portal
-            */
-
             document
                 .getElementById("portalSection")
                 .style.display = "none";
 
-
-            /*
-            Show login
-            */
-
             document
                 .getElementById("loginSection")
                 .style.display = "block";
-
-
-            /*
-            Clear login form
-            */
 
             document
                 .getElementById("loginForm")
