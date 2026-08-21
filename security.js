@@ -56,7 +56,7 @@ Have a great day.
             if (SETTINGS.showAlertOnRightClick) {
 
                 alert(
-                    `PM. Securities
+                    `
 
 Right click has been disabled.
 
