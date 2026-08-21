@@ -2601,16 +2601,12 @@ document
                 4 * 360;
 
 
-            wheelRotation +=
-                extraTurns +
-                (
-                    360 -
-                    (wheelRotation % 360)
-                ) +
-                (
-                    360 -
-                    targetMid
-                );
+       const currentAngle = wheelRotation % 360;
+const targetAngle = 360 - targetMid;
+
+wheelRotation +=
+    extraTurns +
+    ((targetAngle - currentAngle + 360) % 360);
 
 
             wheelEl.style.transform =
