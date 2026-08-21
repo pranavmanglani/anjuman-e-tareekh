@@ -14,7 +14,7 @@
         detectDevTools: true,
         clearConsole: true,
         showConsoleBanner: true,
-        showAlertOnRightClick: true,
+        showAlertOnRightClick:false,
         showAlertOnDevTools: true
     };
 
@@ -55,7 +55,7 @@ Have a great day.
 
             if (SETTINGS.showAlertOnRightClick) {
 
-                alert(
+                alert()
                     `
 
 Right click has been disabled.
@@ -81,18 +81,14 @@ feel free to inspect responsibly.`
         document.addEventListener("keydown", function (e) {
 
             const key = e.key.toLowerCase();
+if (
+    e.key === "F12" ||
 
-            if (
-                e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey &&
+        ["i", "j", "c"].includes(key)) ||
 
-                (e.ctrlKey && e.shiftKey && key === "i") ||
-
-                (e.ctrlKey && e.shiftKey && key === "j") ||
-
-                (e.ctrlKey && e.shiftKey && key === "c") ||
-
-                (e.ctrlKey && key === "u")
-            ) {
+    (e.ctrlKey && key === "u")
+) {
 
                 e.preventDefault();
 
