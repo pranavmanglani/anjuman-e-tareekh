@@ -14,7 +14,7 @@
         detectDevTools: true,
         clearConsole: true,
         showConsoleBanner: true,
-        showAlertOnRightClick:false,
+        showAlertOnRightClick: true,
         showAlertOnDevTools: true
     };
 
@@ -55,8 +55,8 @@ Have a great day.
 
             if (SETTINGS.showAlertOnRightClick) {
 
-                alert()
-                    `
+                alert(
+                    `PM. Securities
 
 Right click has been disabled.
 
@@ -81,21 +81,25 @@ feel free to inspect responsibly.`
         document.addEventListener("keydown", function (e) {
 
             const key = e.key.toLowerCase();
-if (
-    e.key === "F12" ||
 
-    (e.ctrlKey && e.shiftKey &&
-        ["i", "j", "c"].includes(key)) ||
+            if (
+                e.key === "F12" ||
 
-    (e.ctrlKey && key === "u")
-) {
+                (e.ctrlKey && e.shiftKey && key === "i") ||
+
+                (e.ctrlKey && e.shiftKey && key === "j") ||
+
+                (e.ctrlKey && e.shiftKey && key === "c") ||
+
+                (e.ctrlKey && key === "u")
+            ) {
 
                 e.preventDefault();
 
                 if (SETTINGS.showAlertOnDevTools) {
 
                     alert(
-                        `
+                        `PM. Securities
 
 Developer tools detected.
 
@@ -138,7 +142,7 @@ securely on the server.`
                 if (SETTINGS.showAlertOnDevTools) {
 
                     alert(
-                        `
+                        `PM. Securities
 
 Developer tools appear to be open.
 
