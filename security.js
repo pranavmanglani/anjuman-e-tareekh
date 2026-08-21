@@ -14,7 +14,7 @@
         detectDevTools: true,
         clearConsole: true,
         showConsoleBanner: true,
-        showAlertOnRightClick:true,
+        showAlertOnRightClick:false,
         showAlertOnDevTools: true
     };
 
