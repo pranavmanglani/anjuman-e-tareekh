@@ -1798,6 +1798,15 @@ footer{
 
 
 <script>
+    document.addEventListener(
+    "contextmenu",
+    function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    },
+    true
+);
 
 /* =========================================================
    SUPABASE EDGE FUNCTION
