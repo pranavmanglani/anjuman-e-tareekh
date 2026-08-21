@@ -2443,11 +2443,65 @@
 
         ========================================== */
 
-        function sanitizeArticleHTML(html) {
+      function sanitizeArticleHTML(html) {
 
-            if (!html) {
-                return "<p>No content available.</p>";
-            }
+    if (!html) {
+        return "<p>No content available.</p>";
+    }
+
+    const template = document.createElement("template");
+    template.innerHTML = html;
+
+    // Remove dangerous elements
+    template.content
+        .querySelectorAll(
+            "script, iframe, object, embed, form, style, link, meta, base"
+        )
+        .forEach(element => element.remove());
+
+    template.content
+        .querySelectorAll("*")
+        .forEach(element => {
+
+            [...element.attributes].forEach(attribute => {
+
+                const name = attribute.name.toLowerCase();
+                const value = attribute.value.trim();
+
+                // Remove inline JavaScript/event handlers
+                if (name.startsWith("on")) {
+                    element.removeAttribute(attribute.name);
+                    return;
+                }
+
+                // Remove dangerous URL schemes
+                if (
+                    ["href", "src", "action", "formaction", "xlink:href"]
+                        .includes(name)
+                ) {
+
+                    const lowerValue = value.toLowerCase();
+
+                    if (
+                        lowerValue.startsWith("javascript:") ||
+                        lowerValue.startsWith("vbscript:") ||
+                        lowerValue.startsWith("data:")
+                    ) {
+                        element.removeAttribute(attribute.name);
+                    }
+                }
+
+                // Don't allow arbitrary style attributes
+                if (name === "style") {
+                    element.removeAttribute(attribute.name);
+                }
+
+            });
+
+        });
+
+    return template.innerHTML;
+}
 
 
             /*
