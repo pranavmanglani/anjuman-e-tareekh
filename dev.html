@@ -297,31 +297,41 @@
       }
     }
 
-    async function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const status = document.getElementById('authStatus');
+    // Hardcoded Developer Credentials
+const DEV_CREDENTIALS = {
+  email: "admin@anjuman.com",
+  password: "YourSecretPassword123"
+};
 
-      status.textContent = "Authenticating...";
-      
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
+async function handleLogin(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('dibbs').value.trim();
+  const passwordInput = document.getElementById('almighty').value.trim();
+  const status = document.getElementById('authStatus');
 
-      if (error) {
-        status.textContent = "Error: " + error.message;
-      } else {
-        status.textContent = "";
-        showDashboard();
-      }
-    }
+  if (emailInput === DEV_CREDENTIALS.email && passwordInput === DEV_CREDENTIALS.password) {
+    status.textContent = "";
+    // Save session in browser memory
+    localStorage.setItem('dev_authenticated', 'true');
+    showDashboard();
+  } else {
+    status.textContent = "Error: Invalid Developer ID or Password.";
+  }
+}
 
-    async function handleLogout() {
-      await supabase.auth.signOut();
-      showLogin();
-    }
+function checkSession() {
+  const isAuth = localStorage.getItem('dev_authenticated');
+  if (isAuth === 'true') {
+    showDashboard();
+  } else {
+    showLogin();
+  }
+}
+
+async function handleLogout() {
+  localStorage.removeItem('dev_authenticated');
+  showLogin();
+}
 
     function showDashboard() {
       document.getElementById('loginView').classList.add('hidden');
