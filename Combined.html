@@ -527,9 +527,9 @@
       .nav-links { display: none; }
       .menu-btn { display: block; }
     }
-  </style>
-</head>
-<body>
+  </style
+</head
+<body
 
   <!-- Navigation -->
   <nav class="nav-page">
@@ -745,7 +745,7 @@
     let currentRotation = 0;
     let isSpinning = false;
 
-    function spinWheel() {
+    function spinWheel( {
       if (isSpinning) return;
       isSpinning = true;
 
@@ -769,20 +769,20 @@
       let degreeDifference = targetAngleInCircle - currentModulus;
       if (degreeDifference < 0) {
         degreeDifference += 360;
-      }
+    
 
       currentRotation += fullSpins + degreeDifference;
 
       wheel.style.transition = "transform 4s cubic-bezier(0.15, 0.99, 0.24, 0.99)";
       wheel.style.transform = `rotate(${currentRotation}deg)`;
 
-      setTimeout(() => {
+      setTimeout(() => 
         const winner = wheelSlices[winningIndex];
         result.innerHTML = `✨ You landed on: <br><span style="color: ${winner.color}; font-size: 1.4rem;">${winner.name}</span>`;
         isSpinning = false;
         btn.disabled = false;
       }, 4000);
-    }
+    
 
     function clearAllFilters() {
       const checkboxes = document.querySelectorAll('.flavour-panel input[type="checkbox"]');
@@ -803,6 +803,6 @@
         term.style.display = text.includes(input) ? 'block' : 'none';
       });
     }
-  </script>
-</body>
-</html>
+  </script
+</body
+</html
