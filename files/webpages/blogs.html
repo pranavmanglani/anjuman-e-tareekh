@@ -1,0 +1,2541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <link rel="icon" type="image/x-icon" href="favicon.jpg">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Tareekh Stories — Research, history, food and cultural heritage of Awadh by ANJUMAN ए TAREEKH."
+    >
+
+    <title>
+        Tareekh Stories — ANJUMAN ए TAREEKH
+    </title>
+
+
+    <!-- =========================================
+         FONTS
+    ========================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <style>
+
+        /* =========================================
+           ROOT
+        ========================================== */
+
+        :root {
+
+            --green: #164d36;
+
+            --green-dark: #0d3022;
+
+            --green-light: #276b4b;
+
+            --orange: #df6915;
+
+            --orange-light: #ef8b36;
+
+            --gold: #b99350;
+
+            --gold-light: #d6b878;
+
+            --ivory: #f8f4e9;
+
+            --paper: #fffdf7;
+
+            --paper-dark: #eee7d6;
+
+            --ink: #18251e;
+
+            --muted: #68736c;
+
+            --white: #ffffff;
+
+            --border: rgba(185,147,80,.35);
+
+            --shadow:
+                0 20px 60px rgba(22,77,54,.10);
+
+            --serif:
+                "Cormorant Garamond",
+                Georgia,
+                serif;
+
+            --sans:
+                "DM Sans",
+                Arial,
+                sans-serif;
+
+        }
+
+
+        /* =========================================
+           RESET
+        ========================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            background:
+                radial-gradient(
+                    circle at 20% 10%,
+                    rgba(185,147,80,.08),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(22,77,54,.06),
+                    transparent 35%
+                ),
+                var(--ivory);
+
+            color: var(--ink);
+
+            font-family: var(--sans);
+
+            overflow-x: hidden;
+
+        }
+
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: .035;
+
+            background-image:
+                url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
+
+            z-index: 999;
+
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        button,
+        input {
+            font: inherit;
+        }
+
+
+        button {
+            cursor: pointer;
+        }
+
+
+        /* =========================================
+           PAGE
+        ========================================== */
+
+        .page {
+
+            width: min(1240px, calc(100% - 32px));
+
+            margin: auto;
+
+        }
+
+
+        /* =========================================
+           TOP NAV
+        ========================================== */
+
+        .topbar {
+
+            padding: 18px 0;
+
+            border-bottom:
+                1px solid
+                rgba(185,147,80,.25);
+
+            animation: fadeDown .8s ease both;
+
+        }
+
+
+        .nav {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .brand-mark {
+
+            width: 48px;
+
+            height: 48px;
+
+            border-radius: 50%;
+
+            overflow: hidden;
+
+            border:
+                1px solid
+                var(--gold);
+
+            background: var(--white);
+
+        }
+
+
+        .brand-mark img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+        }
+
+
+        .brand-text {
+
+            line-height: 1;
+
+        }
+
+
+        .brand-name {
+
+            font-family: var(--serif);
+
+            font-weight: 700;
+
+            font-size: 22px;
+
+            color: var(--green);
+
+        }
+
+
+        .brand-tagline {
+
+            margin-top: 5px;
+
+            font-size: 8px;
+
+            letter-spacing: 2px;
+
+            color: var(--orange);
+
+            text-transform: uppercase;
+
+        }
+
+
+        .nav-link {
+
+            border: 1px solid transparent;
+
+            padding: 9px 15px;
+
+            border-radius: 100px;
+
+            color: var(--green);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition: .25s ease;
+
+        }
+
+          .nav-link.active{
+          background:var(--green);
+
+          color:var(--white);
+        }
+
+        .nav-link:hover {
+
+            border-color: var(--gold);
+
+            background: rgba(185,147,80,.08);
+
+        }
+
+
+        /* =========================================
+           HERO
+        ========================================== */
+
+        .hero {
+
+            position: relative;
+
+            text-align: center;
+
+            padding:
+                90px
+                20px
+                75px;
+
+            overflow: hidden;
+
+        }
+
+
+        .hero::before {
+
+            content: "✦";
+
+            position: absolute;
+
+            top: 30px;
+
+            left: 10%;
+
+            color: var(--gold);
+
+            font-size: 18px;
+
+            animation: float 4s ease-in-out infinite;
+
+        }
+
+
+        .hero::after {
+
+            content: "✦";
+
+            position: absolute;
+
+            right: 12%;
+
+            bottom: 40px;
+
+            color: var(--orange);
+
+            font-size: 13px;
+
+            animation: float 5s ease-in-out infinite reverse;
+
+        }
+
+
+        .eyebrow {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: var(--orange);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+
+            animation: fadeUp .7s .1s ease both;
+
+        }
+
+
+        .eyebrow::before,
+        .eyebrow::after {
+
+            content: "";
+
+            width: 45px;
+
+            height: 1px;
+
+            background: var(--gold);
+
+        }
+
+
+        .hero h1 {
+
+            margin: 20px 0 8px;
+
+            color: var(--green);
+
+            font-family: var(--serif);
+
+            font-size: clamp(58px, 9vw, 112px);
+
+            line-height: .78;
+
+            font-weight: 600;
+
+            letter-spacing: -3px;
+
+            animation: fadeUp .8s .2s ease both;
+
+        }
+
+
+        .hero h1 span {
+
+            color: var(--orange);
+
+            font-style: italic;
+
+        }
+
+
+        .hero-subtitle {
+
+            max-width: 650px;
+
+            margin: 28px auto 0;
+
+            color: var(--muted);
+
+            font-family: var(--serif);
+
+            font-size: clamp(19px, 2.5vw, 25px);
+
+            line-height: 1.45;
+
+            animation: fadeUp .8s .35s ease both;
+
+        }
+
+
+        .ornament {
+
+            margin: 28px auto 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            color: var(--gold);
+
+            animation: fadeUp .8s .45s ease both;
+
+        }
+
+
+        .ornament-line {
+
+            width: 80px;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold)
+                );
+
+        }
+
+
+        .ornament-line:last-child {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--gold),
+                    transparent
+                );
+
+        }
+
+
+        /* =========================================
+           SEARCH
+        ========================================== */
+
+        .toolbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 35px;
+
+            animation: fadeUp .8s .55s ease both;
+
+        }
+
+
+        .filters {
+
+            display: flex;
+
+            gap: 7px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .filter {
+
+            border: 1px solid var(--border);
+
+            background: rgba(255,255,255,.55);
+
+            color: var(--green);
+
+            padding: 9px 16px;
+
+            border-radius: 100px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            transition: .25s ease;
+
+        }
+
+
+        .filter:hover {
+
+            transform: translateY(-2px);
+
+            border-color: var(--gold);
+
+        }
+
+
+        .filter.active {
+
+            background: var(--green);
+
+            color: white;
+
+            border-color: var(--green);
+
+            box-shadow:
+                0 6px 18px rgba(22,77,54,.18);
+
+        }
+
+
+        .search {
+
+            position: relative;
+
+            width: min(280px, 100%);
+
+        }
+
+
+        .search input {
+
+            width: 100%;
+
+            padding:
+                11px
+                16px
+                11px
+                42px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 100px;
+
+            outline: none;
+
+            background: rgba(255,255,255,.7);
+
+            color: var(--ink);
+
+            transition: .25s ease;
+
+        }
+
+
+        .search input:focus {
+
+            border-color: var(--gold);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(185,147,80,.10);
+
+        }
+
+
+        .search-icon {
+
+            position: absolute;
+
+            left: 16px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--gold);
+
+        }
+
+
+        /* =========================================
+           BLOG GRID
+        ========================================== */
+
+        #blogsGrid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 22px;
+
+            padding-bottom: 90px;
+
+        }
+
+
+        /* =========================================
+           BLOG CARD
+        ========================================== */
+
+        .blog-card {
+
+            position: relative;
+
+            min-height: 350px;
+
+            padding: 30px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.92),
+                    rgba(249,244,232,.85)
+                );
+
+            border:
+                1px solid
+                rgba(185,147,80,.32);
+
+            box-shadow: 0 8px 30px rgba(22,77,54,.06);
+
+            overflow: hidden;
+
+            cursor: pointer;
+
+            transition:
+                transform .45s cubic-bezier(.2,.8,.2,1),
+                box-shadow .45s ease,
+                border-color .45s ease;
+
+            animation: cardIn .7s both;
+
+        }
+
+
+        .blog-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+
+            height: 180px;
+
+            right: -80px;
+
+            top: -80px;
+
+            border:
+                1px solid
+                rgba(185,147,80,.2);
+
+            border-radius: 50%;
+
+            transition: .5s ease;
+
+        }
+
+
+        .blog-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 5px;
+
+            height: 0;
+
+            left: 0;
+
+            top: 0;
+
+            background:
+                linear-gradient(
+                    var(--orange),
+                    var(--gold)
+                );
+
+            transition: .45s ease;
+
+        }
+
+
+        .blog-card:hover {
+
+            transform:
+                translateY(-10px)
+                rotateX(1deg);
+
+            box-shadow:
+                0 25px 60px
+                rgba(22,77,54,.14);
+
+            border-color:
+                rgba(185,147,80,.75);
+
+        }
+
+
+        .blog-card:hover::before {
+
+            transform: scale(1.5);
+
+        }
+
+
+        .blog-card:hover::after {
+
+            height: 100%;
+
+        }
+
+
+        .card-number {
+
+            font-family: var(--serif);
+
+            font-size: 18px;
+
+            color: var(--gold);
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .card-category {
+
+            display: inline-block;
+
+            margin-top: 25px;
+
+            color: var(--orange);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .card-title {
+
+            margin:
+                9px
+                0
+                14px;
+
+            max-width: 95%;
+
+            color: var(--green);
+
+            font-family: var(--serif);
+
+            font-size: 32px;
+
+            line-height: .98;
+
+            font-weight: 600;
+
+        }
+
+
+        .card-excerpt {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            display: -webkit-box;
+
+            -webkit-line-clamp: 4;
+
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+
+        }
+
+
+        .card-footer {
+
+            margin-top: 30px;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid
+                rgba(185,147,80,.22);
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            font-size: 10px;
+
+            color: var(--muted);
+
+        }
+
+
+        .read {
+
+            color: var(--green);
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            transition: .25s ease;
+
+        }
+
+
+        .blog-card:hover .read {
+
+            color: var(--orange);
+
+            transform: translateX(4px);
+
+        }
+
+
+        /* =========================================
+           LOADING
+        ========================================== */
+
+        .loading {
+
+            grid-column: 1 / -1;
+
+            min-height: 350px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-direction: column;
+
+            gap: 20px;
+
+            color: var(--muted);
+
+        }
+
+
+        .loader {
+
+            width: 42px;
+
+            height: 42px;
+
+            border:
+                2px solid
+                rgba(185,147,80,.25);
+
+            border-top-color:
+                var(--orange);
+
+            border-right-color:
+                var(--green);
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+
+        }
+
+
+        /* =========================================
+           ARTICLE VIEW
+        ========================================== */
+
+        #articleView {
+
+            display: none;
+
+            padding-bottom: 100px;
+
+            animation: articleIn .6s ease both;
+
+        }
+
+
+        .back-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            border: 1px solid var(--border);
+
+            background: rgba(255,255,255,.65);
+
+            color: var(--green);
+
+            padding: 10px 18px;
+
+            border-radius: 100px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition: .25s ease;
+
+            margin-bottom: 40px;
+
+        }
+
+
+        .back-button:hover {
+
+            background: var(--green);
+
+            color: white;
+
+            transform: translateX(-4px);
+
+        }
+
+
+        .article-shell {
+
+            max-width: 900px;
+
+            margin: auto;
+
+            background: var(--paper);
+
+            border:
+                1px solid
+                rgba(185,147,80,.35);
+
+            box-shadow:
+                0 30px 90px
+                rgba(22,77,54,.10);
+
+            padding:
+                clamp(28px, 6vw, 75px);
+
+            position: relative;
+
+        }
+
+
+        .article-shell::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 14px;
+
+            border:
+                1px solid
+                rgba(185,147,80,.14);
+
+            pointer-events: none;
+
+        }
+
+
+        .article-meta {
+
+            position: relative;
+
+            text-align: center;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .article-category {
+
+            color: var(--orange);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .article-title {
+
+            margin:
+                15px
+                auto
+                15px;
+
+            max-width: 800px;
+
+            color: var(--green);
+
+            font-family: var(--serif);
+
+            font-size: clamp(45px, 7vw, 78px);
+
+            line-height: .9;
+
+            font-weight: 600;
+
+        }
+
+
+        .article-byline {
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+        .article-divider {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin: 35px 0;
+
+            color: var(--gold);
+
+        }
+
+
+        .article-divider span {
+
+            width: 50px;
+
+            height: 1px;
+
+            background: var(--gold);
+
+        }
+
+
+        .article-content {
+
+            position: relative;
+
+            color: #344039;
+
+            font-family: var(--serif);
+
+            font-size: 21px;
+
+            line-height: 1.8;
+
+        }
+
+
+        .article-content p {
+
+            margin:
+                0
+                0
+                1.3em;
+
+        }
+
+
+        .article-content h2 {
+
+            color: var(--green);
+
+            font-size: 34px;
+
+            line-height: 1;
+
+            margin:
+                1.5em
+                0
+                .6em;
+
+        }
+
+
+        .article-content h3 {
+
+            color: var(--green);
+
+            font-size: 27px;
+
+        }
+
+
+        .article-content strong {
+
+            color: var(--green);
+
+        }
+
+
+        .article-content blockquote {
+
+            margin:
+                35px
+                0;
+
+            padding:
+                20px
+                25px;
+
+            border-left:
+                3px solid
+                var(--orange);
+
+            background:
+                rgba(185,147,80,.08);
+
+            color: var(--green);
+
+            font-style: italic;
+
+        }
+
+
+        /* =========================================
+           EMPTY STATE
+        ========================================== */
+
+        .empty {
+
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            padding: 90px 20px;
+
+        }
+
+
+        .empty-symbol {
+
+            font-family: var(--serif);
+
+            color: var(--gold);
+
+            font-size: 60px;
+
+        }
+
+
+        .empty h2 {
+
+            font-family: var(--serif);
+
+            color: var(--green);
+
+            font-size: 38px;
+
+            margin: 10px 0;
+
+        }
+
+
+        .empty p {
+
+            color: var(--muted);
+
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================== */
+
+        footer {
+
+            border-top:
+                1px solid
+                rgba(185,147,80,.25);
+
+            padding:
+                35px
+                0
+                50px;
+
+            text-align: center;
+
+        }
+
+
+        .footer-title {
+
+            color: var(--green);
+
+            font-family: var(--serif);
+
+            font-size: 27px;
+
+        }
+
+
+        .footer-tagline {
+
+            margin-top: 7px;
+
+            color: var(--orange);
+
+            font-size: 9px;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .footer-text {
+
+            margin-top: 18px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+        /* =========================================
+           ANIMATIONS
+        ========================================== */
+
+        @keyframes fadeDown {
+
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        @keyframes fadeUp {
+
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        @keyframes cardIn {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(35px)
+                    scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+        }
+
+
+        @keyframes articleIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 900px) {
+
+            #blogsGrid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .page {
+
+                width:
+                    min(
+                        100% - 22px,
+                        1240px
+                    );
+
+            }
+
+
+            .topbar {
+
+                padding: 12px 0;
+
+            }
+
+
+            .brand-mark {
+
+                width: 42px;
+
+                height: 42px;
+
+            }
+
+
+            .brand-name {
+
+                font-size: 18px;
+
+            }
+
+
+            .brand-tagline {
+
+                font-size: 6px;
+
+                letter-spacing: 1.4px;
+
+            }
+
+
+            .nav-link {
+
+                font-size: 11px;
+
+                padding: 8px 11px;
+
+            }
+
+
+            .hero {
+
+                padding:
+                    65px
+                    10px
+                    55px;
+
+            }
+
+
+            .hero h1 {
+
+                letter-spacing: -2px;
+
+            }
+
+
+            .toolbar {
+
+                align-items: stretch;
+
+            }
+
+
+            .filters {
+
+                width: 100%;
+
+                overflow-x: auto;
+
+                flex-wrap: nowrap;
+
+                padding-bottom: 5px;
+
+            }
+
+
+            .filter {
+
+                white-space: nowrap;
+
+            }
+
+
+            .search {
+
+                width: 100%;
+
+            }
+
+
+            #blogsGrid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .blog-card {
+
+                min-height: 310px;
+
+            }
+
+
+            .card-title {
+
+                font-size: 34px;
+
+            }
+
+
+            .article-shell {
+
+                padding:
+                    35px
+                    22px;
+
+            }
+
+
+            .article-shell::before {
+
+                inset: 8px;
+
+            }
+
+
+            .article-content {
+
+                font-size: 19px;
+
+            }
+
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <header class="topbar">
+
+        <div class="page nav">
+
+            <a href="index.html" class="brand">
+
+                <div class="brand-mark">
+
+                    <img
+                        src="favicon.jpg"
+                        alt="ANJUMAN ए TAREEKH"
+                    >
+
+                </div>
+                <div class="brand-text">
+                    <div class="brand-name">
+                        ANJUMAN ए TAREEKH
+                    </div>
+                    <div class="brand-tagline">
+                        Research Meets Zaika
+                    </div>
+                </div>
+            </a>
+        <nav class="nav-links">
+            <a
+                class="nav-link"
+                href="index.html"
+            >
+                Home
+            </a>
+
+            <a
+                class="nav-link"
+                href="journey.html"
+            >
+                Journey
+            </a>
+            
+            <a
+                class="nav-link"
+                href="researchers.html"
+            >
+                Researchers
+            </a>
+
+            <a
+                class="nav-link active"
+                href="blogs.html"
+            >
+                Blogs
+            </a>
+        </div>
+
+    </header>
+
+
+    <main class="page">
+
+
+        <!-- =====================================
+             BLOG LIST VIEW
+        ====================================== -->
+
+        <section id="blogListView">
+
+
+            <!-- HERO -->
+
+            <div class="hero">
+
+                <div class="eyebrow">
+                    The Living Archive
+                </div>
+
+
+                <h1>
+                    Tareekh
+                    <span>Stories</span>
+                </h1>
+
+
+                <p class="hero-subtitle">
+
+                    TAREEKH AUR ANJUMAN — RESEARCH MEETS ZAIKA
+
+                </p>
+
+
+                <div class="ornament">
+
+                    <div class="ornament-line"></div>
+
+                    ✦
+
+                    <div class="ornament-line"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOOLBAR -->
+
+            <div class="toolbar">
+
+                <div class="filters">
+
+                    <button
+                        class="filter active"
+                        data-category="all"
+                    >
+                        All Stories
+                    </button>
+
+                    <button
+                        class="filter"
+                        data-category="tareekh"
+                    >
+                        Tareekh
+                    </button>
+
+                    <button
+                        class="filter"
+                        data-category="zaiqa"
+                    >
+                        Zaiqa
+                    </button>
+
+                    <button
+                        class="filter"
+                        data-category="virasat"
+                    >
+                        Virasat
+                    </button>
+
+                    <button
+                        class="filter"
+                        data-category="research"
+                    >
+                        Research
+                    </button>
+
+                </div>
+
+
+                <div class="search">
+
+                    <span class="search-icon">
+                        ⌕
+                    </span>
+
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search stories..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- BLOG GRID -->
+
+            <div id="blogsGrid">
+
+                <div class="loading">
+
+                    <div class="loader"></div>
+
+                    <div>
+                        Opening the archive...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             ARTICLE VIEW
+        ====================================== -->
+
+        <section id="articleView">
+
+            <button
+                id="backButton"
+                class="back-button"
+            >
+                ← Back to Stories
+            </button>
+
+
+            <article class="article-shell">
+
+                <div class="article-meta">
+
+                    <div
+                        id="articleCategory"
+                        class="article-category"
+                    >
+                    </div>
+
+
+                    <h1
+                        id="articleTitle"
+                        class="article-title"
+                    >
+                    </h1>
+
+
+                    <div
+                        id="articleByline"
+                        class="article-byline"
+                    >
+                    </div>
+
+
+                    <div class="article-divider">
+
+                        <span></span>
+
+                        ✦
+
+                        <span></span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="articleContent"
+                    class="article-content"
+                >
+                </div>
+
+            </article>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <div class="page">
+
+            <div class="footer-title">
+                ANJUMAN ए TAREEKH
+            </div>
+
+            <div class="footer-tagline">
+                Tareekh Aur Anjuman — Research Meets Zaika
+            </div>
+
+            <div class="footer-text">
+
+                Explore • Research • Create • Document
+                • Share • Lead • Preserve
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <script>
+
+
+        /* =========================================
+           CONFIGURATION
+        ========================================== */
+
+        const GET_BLOGS_URL =
+            "https://xitmexidjgacikjpheji.supabase.co/functions/v1/get-blogs";
+
+
+        /* =========================================
+           DATA
+        ========================================== */
+
+        let blogs = [];
+
+        let currentCategory = "all";
+
+        let currentSearch = "";
+
+
+        /* =========================================
+           DOM
+        ========================================== */
+
+        const blogListView =
+            document.getElementById("blogListView");
+
+        const articleView =
+            document.getElementById("articleView");
+
+        const blogsGrid =
+            document.getElementById("blogsGrid");
+
+        const searchInput =
+            document.getElementById("searchInput");
+
+        const backButton =
+            document.getElementById("backButton");
+
+
+        /* =========================================
+           LOAD BLOGS
+        ========================================== */
+
+        async function loadBlogs() {
+
+            blogsGrid.innerHTML = `
+
+                <div class="loading">
+
+                    <div class="loader"></div>
+
+                    <div>
+                        Opening the archive...
+                    </div>
+
+                </div>
+
+            `;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        GET_BLOGS_URL,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({})
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !result.success
+                ) {
+
+                    throw new Error(
+                        result.error ||
+                        "Unable to load stories."
+                    );
+
+                }
+
+
+                blogs =
+                    Array.isArray(result.blogs)
+                        ? result.blogs
+                        : [];
+
+
+                renderBlogs();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Blog loading error:",
+                    error
+                );
+
+
+                blogsGrid.innerHTML = `
+
+                    <div class="empty">
+
+                        <div class="empty-symbol">
+                            ⚠
+                        </div>
+
+                        <h2>
+                            The archive is unavailable
+                        </h2>
+
+                        <p>
+                            We could not connect to
+                            the research archive.
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        /* =========================================
+           CATEGORY
+        ========================================== */
+
+        function getCategory(blog) {
+
+            const text =
+                (
+                    blog.blog_name +
+                    " " +
+                    blog.content
+                ).toLowerCase();
+
+
+            if (
+                text.includes("food") ||
+                text.includes("recipe") ||
+                text.includes("cuisine") ||
+                text.includes("kebab") ||
+                text.includes("biryani") ||
+                text.includes("zaiqa")
+            ) {
+
+                return "zaiqa";
+
+            }
+
+
+            if (
+                text.includes("research") ||
+                text.includes("study") ||
+                text.includes("field")
+            ) {
+
+                return "research";
+
+            }
+
+
+            if (
+                text.includes("heritage") ||
+                text.includes("building") ||
+                text.includes("monument") ||
+                text.includes("haveli")
+            ) {
+
+                return "virasat";
+
+            }
+
+
+            return "tareekh";
+
+        }
+
+
+        /* =========================================
+           EXCERPT
+        ========================================== */
+
+        function createExcerpt(text) {
+
+            if (!text) {
+                return "";
+            }
+
+
+            const clean =
+                text
+                    .replace(/<[^>]*>/g, "")
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+
+            if (clean.length <= 180) {
+                return clean;
+            }
+
+
+            return (
+                clean.substring(0, 180)
+                + "…"
+            );
+
+        }
+
+
+        /* =========================================
+           DATE
+        ========================================== */
+
+        function formatDate(dateString) {
+
+            if (!dateString) {
+                return "";
+            }
+
+
+            const date =
+                new Date(dateString);
+
+
+            return date.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+        }
+
+
+        /* =========================================
+           RENDER BLOGS
+        ========================================== */
+
+        function renderBlogs() {
+
+            const filtered =
+                blogs.filter(blog => {
+
+                    const category =
+                        getCategory(blog);
+
+
+                    const matchesCategory =
+                        currentCategory === "all" ||
+                        category === currentCategory;
+
+
+                    const searchText =
+                        currentSearch.toLowerCase();
+
+
+                    const matchesSearch =
+                        !searchText ||
+                        (
+                            blog.blog_name +
+                            " " +
+                            blog.content +
+                            " " +
+                            (blog.author || "")
+                        )
+                        .toLowerCase()
+                        .includes(searchText);
+
+
+                    return (
+                        matchesCategory &&
+                        matchesSearch
+                    );
+
+                });
+
+
+            if (!filtered.length) {
+
+                blogsGrid.innerHTML = `
+
+                    <div class="empty">
+
+                        <div class="empty-symbol">
+                            ❧
+                        </div>
+
+                        <h2>
+                            No stories found
+                        </h2>
+
+                        <p>
+                            Try another category
+                            or search term.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            blogsGrid.innerHTML = "";
+
+
+            filtered.forEach(
+                (blog, index) => {
+
+                    const category =
+                        getCategory(blog);
+
+
+                    const card =
+                        document.createElement("article");
+
+
+                    card.className =
+                        "blog-card";
+
+
+                    card.style.animationDelay =
+                        `${index * 80}ms`;
+
+
+                    card.innerHTML = `
+
+                        <div>
+
+                            <div class="card-number">
+                                ${String(index + 1)
+                                    .padStart(2, "0")}
+                            </div>
+
+
+                            <div class="card-category">
+                                ${category}
+                            </div>
+
+
+                            <h2 class="card-title">
+                                ${escapeHTML(
+                                    blog.blog_name
+                                )}
+                            </h2>
+
+
+                            <p class="card-excerpt">
+                                ${escapeHTML(
+                                    createExcerpt(
+                                        blog.content
+                                    )
+                                )}
+                            </p>
+
+                        </div>
+
+
+                        <div class="card-footer">
+
+                            <span>
+                                ${
+                                    escapeHTML(
+                                        blog.author ||
+                                        "ANJUMAN Research"
+                                    )
+                                }
+                            </span>
+
+                            <span class="read">
+                                Read Story →
+                            </span>
+
+                        </div>
+
+                    `;
+
+
+                    card.addEventListener(
+                        "click",
+                        () => openBlog(blog)
+                    );
+
+
+                    blogsGrid.appendChild(card);
+
+                }
+            );
+
+        }
+
+
+        /* =========================================
+           OPEN BLOG
+        ========================================== */
+
+        function openBlog(blog) {
+
+            document.body.style.overflow =
+                "hidden";
+
+
+            setTimeout(() => {
+
+                blogListView.style.display =
+                    "none";
+
+                articleView.style.display =
+                    "block";
+
+                document.body.style.overflow =
+                    "";
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "instant"
+                });
+
+
+                document.getElementById(
+                    "articleCategory"
+                ).textContent =
+                    getCategory(blog);
+
+
+                document.getElementById(
+                    "articleTitle"
+                ).textContent =
+                    blog.blog_name;
+
+
+                document.getElementById(
+                    "articleByline"
+                ).textContent =
+                    `${blog.author || "ANJUMAN Research"} • ${
+                        formatDate(blog.created_at)
+                    }`;
+
+
+                document.getElementById(
+                    "articleContent"
+                ).innerHTML =
+                    sanitizeArticleHTML(
+                        blog.content
+                    );
+
+            }, 120);
+
+        }
+
+
+        /* =========================================
+           BACK
+        ========================================== */
+
+        backButton.addEventListener(
+            "click",
+            () => {
+
+                articleView.style.display =
+                    "none";
+
+                blogListView.style.display =
+                    "block";
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+
+        /* =========================================
+           FILTERS
+        ========================================== */
+
+        document
+            .querySelectorAll(".filter")
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                ".filter"
+                            )
+                            .forEach(btn =>
+                                btn.classList.remove(
+                                    "active"
+                                )
+                            );
+
+
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        currentCategory =
+                            button.dataset.category;
+
+
+                        renderBlogs();
+
+                    }
+                );
+
+            });
+
+
+        /* =========================================
+           SEARCH
+        ========================================== */
+
+        searchInput.addEventListener(
+            "input",
+            () => {
+
+                currentSearch =
+                    searchInput.value;
+
+                renderBlogs();
+
+            }
+        );
+
+
+        /* =========================================
+           HTML ESCAPE
+        ========================================== */
+
+        function escapeHTML(value) {
+
+            if (value === null ||
+                value === undefined) {
+
+                return "";
+
+            }
+
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =========================================
+           ARTICLE CONTENT
+
+           Allows basic editorial HTML.
+
+           Your portal can eventually store:
+
+           <p>...</p>
+           <h2>...</h2>
+           <strong>...</strong>
+           <blockquote>...</blockquote>
+
+        ========================================== */
+
+        function sanitizeArticleHTML(html) {
+
+            if (!html) {
+                return "<p>No content available.</p>";
+            }
+
+
+            /*
+             * Remove dangerous elements.
+             */
+
+            const template =
+                document.createElement("template");
+
+
+            template.innerHTML = html;
+
+
+            const dangerous =
+                template.content.querySelectorAll(
+                    "script, iframe, object, embed, form, style, link"
+                );
+
+
+            dangerous.forEach(
+                element => element.remove()
+            );
+
+
+            /*
+             * Remove dangerous event attributes.
+             */
+
+            template.content
+                .querySelectorAll("*")
+                .forEach(element => {
+
+                    [...element.attributes]
+                        .forEach(attribute => {
+
+                            if (
+                                attribute.name
+                                    .toLowerCase()
+                                    .startsWith("on")
+                            ) {
+
+                                element.removeAttribute(
+                                    attribute.name
+                                );
+
+                            }
+
+                        });
+
+                });
+
+
+            return template.innerHTML;
+
+        }
+
+
+        /* =========================================
+           START
+        ========================================== */
+
+        window.addEventListener(
+            "DOMContentLoaded",
+            loadBlogs
+        );
+
+
+    </script>
+
+</body>
+
+</html>
