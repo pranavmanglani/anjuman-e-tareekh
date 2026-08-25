@@ -1323,740 +1323,1376 @@
       </div>
 
     </div>
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
 
-    .brand-name {
-      font-family: var(--font-heading);
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: var(--accent-gold);
-      letter-spacing: 0.5px;
-    }
 
-    .brand-tagline {
-      font-size: 0.75rem;
-      color: #dfd0be;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+    <div
+      class="nav-links"
+      id="navLinks"
+    >
 
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-    }
+      <a
+        href="index.html"
+        class="nav-link active"
+      >
+        Home
+      </a>
 
-    .nav-link {
-      color: #f3e5ab;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: color 0.3s ease;
-    }
+      <a
+        href="journey.html"
+        class="nav-link"
+      >
+        Journey
+      </a>
 
-    .nav-link:hover, .nav-link.active {
-      color: var(--accent-gold);
-      border-bottom: 2px solid var(--accent-gold);
-      padding-bottom: 2px;
-    }
+      <a
+        href="student.html"
+        class="nav-link"
+      >
+        Research
+      </a>
 
-    .menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--accent-gold);
-      font-size: 1.8rem;
-      cursor: pointer;
-    }
+      <a
+        href="blogs.html"
+        class="nav-link"
+      >
+        Blogs
+      </a>
 
-    /* Hero Section with Maroon Slices */
-    .hero-section {
-      position: relative;
-      background: linear-gradient(135deg, var(--maroon-dark) 0%, var(--maroon-primary) 100%);
-      color: var(--bg-cream);
-      padding: 5rem 2rem 6rem;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .maroon-slice {
-      position: absolute;
-      top: -50px;
-      right: -50px;
-      width: 300px;
-      height: 300px;
-      background: var(--maroon-slice);
-      transform: rotate(45deg);
-      opacity: 0.4;
-      pointer-events: none;
-    }
-
-    .eyebrow {
-      font-family: var(--font-heading);
-      font-style: italic;
-      color: var(--accent-gold);
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .hero-section h1 {
-      font-family: var(--font-heading);
-      font-size: 3.5rem;
-      font-weight: 700;
-      line-height: 1.15;
-      margin-bottom: 1.25rem;
-    }
-
-    .hero-section h1 span {
-      color: var(--accent-gold);
-      font-style: italic;
-    }
-
-    .hero-subtitle {
-      max-width: 650px;
-      margin: 0 auto 2rem;
-      font-size: 1.1rem;
-      color: #e2d5c5;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 0.85rem 2rem;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .btn-solid {
-      background: var(--accent-gold);
-      color: var(--maroon-dark);
-      border: 2px solid var(--accent-gold);
-    }
-
-    .btn-solid:hover {
-      background: transparent;
-      color: var(--accent-gold);
-    }
-
-    /* Dynamic Sky Section */
-    .sky {
-      background: linear-gradient(180deg, var(--maroon-light) 0%, var(--maroon-primary) 100%);
-      padding: 2rem 1rem;
-      text-align: center;
-      color: var(--gold-light);
-      position: relative;
-    }
-
-    .sky-label {
-      font-family: var(--font-heading);
-      letter-spacing: 2px;
-      font-size: 1.1rem;
-    }
-
-    /* Container Standard Layout */
-    .page-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 4rem 1.5rem;
-    }
-
-    .block-head {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .block-head h2 {
-      font-family: var(--font-heading);
-      font-size: 2.5rem;
-      color: var(--maroon-primary);
-    }
-
-    /* Wheel & Flavour Section */
-    .wheel-wrap {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-    }
-
-    .wheel-stage {
-      position: relative;
-      width: 320px;
-      height: 320px;
-      margin: 0 auto 1.5rem;
-    }
-
-    .wheel-pointer {
-      position: absolute;
-      top: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 15px solid transparent;
-      border-right: 15px solid transparent;
-      border-top: 25px solid var(--accent-gold);
-      z-index: 10;
-      filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.4));
-    }
-
-    .wheel {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 8px solid var(--maroon-primary);
-      position: relative;
-      overflow: hidden;
-      transition: transform 4s cubic-bezier(0.15, 0.99, 0.24, 0.99);
-      
-      /* Colorful Conic Gradient Slices */
-      background: conic-gradient(
-        #d4af37 0deg 60deg,     /* Vibrant Gold */
-        #a83232 60deg 120deg,   /* Rich Red */
-        #6b1d28 120deg 180deg,  /* Deep Maroon */
-        #e67e22 180deg 240deg,  /* Warm Amber */
-        #8e44ad 240deg 300deg,  /* Royal Plum */
-        #d35400 300deg 360deg   /* Copper Orange */
-      );
-      box-shadow: 0 0 20px rgba(74, 14, 23, 0.3);
-    }
-
-    .wheel-labels {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .wheel-hub {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 60px;
-      height: 60px;
-      background: var(--accent-gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      z-index: 3;
-    }
-
-    .spin-btn {
-      display: block;
-      margin: 0 auto;
-      padding: 0.75rem 2rem;
-      background: var(--maroon-primary);
-      color: var(--accent-gold);
-      border: 2px solid var(--accent-gold);
-      border-radius: 25px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .spin-btn:hover {
-      background: var(--maroon-dark);
-      transform: scale(1.05);
-    }
-
-    .spin-result {
-      text-align: center;
-      margin-top: 1rem;
-      font-family: var(--font-heading);
-      font-size: 1.25rem;
-      color: var(--maroon-primary);
-      font-weight: 600;
-      min-height: 60px;
-    }
-
-    .flavour-panel {
-      background: var(--card-bg);
-      padding: 2rem;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
-
-    .flavour-panel h3 {
-      font-family: var(--font-heading);
-      color: var(--maroon-primary);
-      font-size: 1.8rem;
-    }
-
-    .hint {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
-    }
-
-    .flavour-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .flavour-check {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-
-    .custom-row {
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .custom-input {
-      padding: 0.6rem 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-family: var(--font-body);
-    }
-
-    .clear-filters {
-      margin-top: 1.5rem;
-      background: none;
-      border: none;
-      color: var(--maroon-light);
-      text-decoration: underline;
-      cursor: pointer;
-      font-size: 0.85rem;
-    }
-
-    /* Culinary Section with Dynamic Unsplash Cards */
-    .dark-section {
-      background-color: var(--maroon-dark);
-      color: var(--bg-cream);
-      padding: 4rem 1.5rem;
-    }
-
-    .dish-grid, .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .dish-card, .blog-card {
-      background: var(--card-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      color: var(--text-dark);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-    }
-
-    .dish-card:hover, .blog-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card-image {
-      height: 200px;
-      width: 100%;
-      object-fit: cover;
-    }
-
-    .card-content {
-      padding: 1.5rem;
-    }
-
-    .card-content h3 {
-      font-family: var(--font-heading);
-      color: var(--maroon-primary);
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    /* Glossary Section */
-    .glossary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .term {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      padding: 1rem;
-      border-radius: 6px;
-      text-align: left;
-    }
-
-    .term strong {
-      display: block;
-      color: var(--maroon-primary);
-      font-family: var(--font-heading);
-      font-size: 1.2rem;
-    }
-
-    .search-input {
-      width: 100%;
-      max-width: 400px;
-      padding: 0.75rem 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      margin-top: 1rem;
-    }
-
-    /* Merged Unified Footer */
-    footer {
-      background: var(--maroon-dark);
-      color: #dfd0be;
-      padding: 4rem 2rem 2rem;
-      border-top: 3px solid var(--accent-gold);
-    }
-
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 3rem;
-      margin-bottom: 3rem;
-    }
-
-    .footer-title {
-      font-family: var(--font-heading);
-      font-size: 2.2rem;
-      color: var(--accent-gold);
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-copy {
-      font-size: 0.95rem;
-      color: #b8a690;
-    }
-
-    .footer-links h4 {
-      font-family: var(--font-heading);
-      color: var(--accent-gold);
-      margin-bottom: 1rem;
-    }
-
-    .footer-links a {
-      display: block;
-      color: #dfd0be;
-      text-decoration: none;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    .footer-bottom {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(212, 175, 55, 0.2);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      font-size: 0.8rem;
-    }
-
-    @media (max-width: 768px) {
-      .wheel-wrap { grid-template-columns: 1fr; }
-      .footer-container { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      .menu-btn { display: block; }
-    }
-  </style
-</head
-<body
-
-  <!-- Navigation -->
-  <nav class="nav-page">
-    <div class="brand">
-      <div class="brand-mark">👑</div>
-      <div>
-        <div class="brand-name">Zaika Heritage</div>
-        <div class="brand-tagline">Royal Flavours & Culinary Art</div>
-      </div>
     </div>
-    <div class="nav-links" id="navLinks">
-      <a href="index.html" class="nav-link active">Home</a>
-      <a href="journey.html" class="nav-link">Journey</a>
-      <a href="student.html" class="nav-link">Reasearchers</a>
-      <a href="research.html" class="nav-link">Research Work</a>
-    </div>
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+
+    <button
+      class="menu-btn"
+      onclick="toggleMenu()"
+      aria-label="Open navigation"
+    >
+      ☰
+    </button>
+
   </nav>
 
-  <!-- Hero Section -->
-  <section class="hero-section" id="hero">
+
+  <!-- =========================================================
+       HERO
+  ========================================================= -->
+
+  <section
+    class="hero-section"
+    id="hero"
+  >
+
     <div class="maroon-slice"></div>
-    <div class="eyebrow">A Tradition of Taste</div>
-    <h1>Discover the Art of <span>Royal Dining</span></h1>
-    <p class="hero-subtitle">Explore heritage recipes, authentic spices, and timeless cooking methods crafted for true culinary connoisseurs.</p>
-    <a href="#wheelSection" class="btn btn-solid">Spin the Taste Wheel</a>
+
+
+    <div class="eyebrow">
+      A Tradition of Taste
+    </div>
+
+
+    <h1>
+      Discover the Art of
+      <span>Royal Dining</span>
+    </h1>
+
+
+    <p class="hero-subtitle">
+      Explore heritage recipes, authentic spices,
+      and timeless cooking methods crafted for
+      true culinary connoisseurs.
+    </p>
+
+
+    <a
+      href="#wheelSection"
+      class="btn btn-solid"
+    >
+      Spin the Taste Wheel
+    </a>
+
   </section>
 
-  <!-- Dynamic Banner -->
-  <div class="sky">
-    <div class="sky-label">✨ CRAFTED WITH AUTHENTIC HERITAGE INGREDIENTS ✨</div>
-  </div>
 
-  <!-- MAIN TASTE WHEEL SECTION -->
-  <main class="page-container" id="wheelSection">
-    <div class="block-head">
-      <div class="eyebrow">The Taste Wheel</div>
-      <h2>What are you craving?</h2>
-      <p>Spin the wheel or select your preferred flavour profile to discover curated dishes.</p>
+  <!-- =========================================================
+       FLOATING COMMUNITY FAVOURITES
+  ========================================================= -->
+
+  <section
+    class="sky"
+    id="sky"
+  >
+
+    <div class="sky-label">
+      ✨ COMMUNITY FAVOURITES ✨
     </div>
+
+    <div id="cloudLayer"></div>
+
+  </section>
+
+
+  <!-- =========================================================
+       TASTE WHEEL
+  ========================================================= -->
+
+  <main
+    class="page-container"
+    id="wheelSection"
+  >
+
+    <div class="block-head">
+
+      <div class="eyebrow">
+        The Taste Wheel
+      </div>
+
+      <h2>
+        What are you craving?
+      </h2>
+
+      <p>
+        Spin the wheel or select your preferred
+        flavour profile to discover curated dishes.
+      </p>
+
+    </div>
+
 
     <div class="wheel-wrap">
-      <!-- WHEEL STAGE -->
+
+
+      <!-- =====================================================
+           WHEEL
+      ===================================================== -->
+
       <div>
+
         <div class="wheel-stage">
+
           <div class="wheel-pointer"></div>
-          
-          <div class="wheel" id="tasteWheel">
-            <!-- SVG Overlay for Curved Slice Labels -->
-            <svg class="wheel-labels" viewBox="0 0 300 300">
+
+
+          <div
+            class="wheel"
+            id="tasteWheel"
+          >
+
+            <svg
+              class="wheel-labels"
+              viewBox="0 0 300 300"
+            >
+
               <defs>
+
                 <style>
+
                   .slice-text {
-                    font-family: 'Cormorant Garamond', serif;
+                    font-family:
+                      'Cormorant Garamond',
+                      serif;
+
                     font-weight: 700;
+
                     font-size: 13px;
+
                     fill: #ffffff;
+
                     text-anchor: middle;
-                    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.8));
+
+                    filter:
+                      drop-shadow(
+                        1px 1px 2px
+                        rgba(0,0,0,0.8)
+                      );
                   }
+
                 </style>
+
               </defs>
 
-              <!-- Slice Labels Rotated at 60-degree increments -->
-              <text x="150" y="45" class="slice-text" transform="rotate(30, 150, 150)">Saffron Sweets</text>
-              <text x="150" y="45" class="slice-text" transform="rotate(90, 150, 150)">Basket Chaat</text>
-              <text x="150" y="45" class="slice-text" transform="rotate(150, 150, 150)">Dum Biryani</text>
-              <text x="150" y="45" class="slice-text" transform="rotate(210, 150, 150)">Awadhi Spices</text>
-              <text x="150" y="45" class="slice-text" transform="rotate(270, 150, 150)">Galouti Kebab</text>
-              <text x="150" y="45" class="slice-text" transform="rotate(330, 150, 150)">Sheermal</text>
+
+              <text
+                x="150"
+                y="45"
+                class="slice-text"
+                transform="rotate(30,150,150)"
+              >
+                Saffron Sweets
+              </text>
+
+
+              <text
+                x="150"
+                y="45"
+                class="slice-text"
+                transform="rotate(90,150,150)"
+              >
+                Basket Chaat
+              </text>
+
+
+              <text
+                x="150"
+                y="45"
+                class="slice-text"
+                transform="rotate(150,150,150)"
+              >
+                Dum Biryani
+              </text>
+
+
+              <text
+                x="150"
+                y="45"
+                class="slice-text"
+                transform="rotate(210,150,150)"
+              >
+                Awadhi Spices
+              </text>
+
+
+              <text
+                x="150"
+                y="45"
+                class="slice-text"
+                transform="rotate(270,150,150)"
+              >
+                Veg Kebab
+              </text>
+
+
+              <text
+                x="150"
+                y="45"
+                class="slice-text"
+                transform="rotate(330,150,150)"
+              >
+                Sheermal
+              </text>
+
             </svg>
 
-            <!-- Center Hub -->
-            <div class="wheel-hub">🍽️</div>
+
+            <div class="wheel-hub">
+              🍽️
+            </div>
+
           </div>
+
         </div>
 
-        <button class="spin-btn" id="spinBtn" onclick="spinWheel()">Spin the Wheel</button>
-        <div class="spin-result" id="spinResult"></div>
+
+        <button
+          class="spin-btn"
+          id="spinBtn"
+          onclick="spinWheel()"
+        >
+          Spin the Wheel
+        </button>
+
+
+        <div
+          class="spin-result"
+          id="spinResult"
+        ></div>
+
       </div>
 
-      <!-- FILTERS PANEL -->
+
+      <!-- =====================================================
+           FILTER PANEL
+      ===================================================== -->
+
       <div class="flavour-panel">
-        <h3>Pick a Flavour Profile</h3>
-        <p class="hint">Choose options below or filter by custom preference.</p>
-        
-        <div class="flavour-grid" id="flavourGrid">
-          <label class="flavour-check"><input type="checkbox" value="Rich & Royal"> Rich & Royal</label>
-          <label class="flavour-check"><input type="checkbox" value="Tangy & Spicy"> Tangy & Spicy</label>
-          <label class="flavour-check"><input type="checkbox" value="Slow Cooked"> Slow Cooked</label>
-          <label class="flavour-check"><input type="checkbox" value="Sweet & Fragrant"> Sweet & Fragrant</label>
+
+        <h3>
+          Pick a Flavour Profile
+        </h3>
+
+
+        <p class="hint">
+          Choose options below or filter by
+          custom preference.
+        </p>
+
+
+        <div
+          class="flavour-grid"
+          id="flavourGrid"
+        >
+
+          <label class="flavour-check">
+
+            <input
+              type="checkbox"
+              value="Rich & Royal"
+            >
+
+            Rich & Royal
+
+          </label>
+
+
+          <label class="flavour-check">
+
+            <input
+              type="checkbox"
+              value="Tangy & Spicy"
+            >
+
+            Tangy & Spicy
+
+          </label>
+
+
+          <label class="flavour-check">
+
+            <input
+              type="checkbox"
+              value="Slow Cooked"
+            >
+
+            Slow Cooked
+
+          </label>
+
+
+          <label class="flavour-check">
+
+            <input
+              type="checkbox"
+              value="Sweet & Fragrant"
+            >
+
+            Sweet & Fragrant
+
+          </label>
+
         </div>
+
 
         <div class="custom-row">
+
           <label class="flavour-check">
-            <input type="checkbox" id="customCheck"> Custom Search
+
+            <input
+              type="checkbox"
+              id="customCheck"
+            >
+
+            Custom Search
+
           </label>
-          <input type="text" id="customInput" class="custom-input" placeholder="e.g. smoky, nutty, festive...">
+
+
+          <input
+            type="text"
+            id="customInput"
+            class="custom-input"
+            placeholder="e.g. smoky, nutty, festive..."
+          >
+
         </div>
 
-        <button class="clear-filters" id="clearFilters" onclick="clearAllFilters()">Clear all filters</button>
+
+        <button
+          class="clear-filters"
+          id="clearFilters"
+          onclick="clearAllFilters()"
+        >
+          Clear all filters
+        </button>
+
       </div>
+
     </div>
+
   </main>
 
-  <!-- Culinary Highlights Section -->
-  <section class="dark-section" id="dishes">
-    <div class="page-container" style="padding: 0;">
+
+  <!-- =========================================================
+       CULINARY HIGHLIGHTS
+  ========================================================= -->
+
+  <section
+    class="dark-section"
+    id="dishes"
+  >
+
+    <div
+      class="page-container"
+      style="padding:0;"
+    >
+
       <div class="block-head">
-        <div class="eyebrow" style="color: var(--accent-gold);">Featured Delicacies</div>
-        <h2>Signature Culinary Creations</h2>
+
+        <div
+          class="eyebrow"
+          style="color:var(--accent-gold);"
+        >
+          Featured Delicacies
+        </div>
+
+        <h2>
+          Signature Culinary Creations
+        </h2>
+
       </div>
+
 
       <div class="dish-grid">
+
+
+        <!-- BIRYANI -->
+
         <div class="dish-card">
-          <img src="https://images.unsplash.com/photo-1563379091339-03246963d96c?auto=format&fit=crop&w=900&q=85" alt="Awadhi Biryani" class="card-image">
+
+          <div class="card-image-placeholder">
+            🍛
+            </div>
+
           <div class="card-content">
-            <h3>Awadhi Dum Biryani</h3>
-            <p>Aromatic long-grain basmati rice cooked on slow dum with succulent meat and saffron infusion.</p>
+
+            <h3>
+              Awadhi Dum Biryani
+            </h3>
+
+            <p>
+              Aromatic long-grain basmati rice
+              cooked on slow dum with and saffron infusion.
+            </p>
+
           </div>
+
         </div>
+
+
+        <!-- GALOUTI -->
+
         <div class="dish-card">
-          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=85" alt="Galouti Kebab" class="card-image">
+
+          <img
+            src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=85"
+            alt="Veg Kebab"
+            class="card-image"
+            loading="lazy"
+          >
+
           <div class="card-content">
-            <h3>Galouti Kebab</h3>
-            <p>Finely minced delicacy spiced with over 150 ingredients, melting effortlessly on the tongue.</p>
+
+            <h3>
+              Veg Kebab
+            </h3>
+
+            <p>
+              Finely minced delicacy spiced
+              with a remarkable blend of
+              traditional Awadhi spices.
+            </p>
+
           </div>
+
         </div>
+
+
+        <!-- SHEERMAL -->
+
         <div class="dish-card">
-          <img src="https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?auto=format&fit=crop&w=900&q=85" alt="Sheermal" class="card-image">
+
+          <img
+            src="https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?auto=format&fit=crop&w=900&q=85"
+            alt="Sheermal"
+            class="card-image"
+            loading="lazy"
+          >
+
           <div class="card-content">
-            <h3>Saffron Sheermal</h3>
-            <p>Traditional flatbread flavored with saffron and milk, baked in a clay tandoor.</p>
+
+            <h3>
+              Saffron Sheermal
+            </h3>
+
+            <p>
+              Traditional flatbread flavoured
+              with saffron and milk, traditionally
+              baked for royal Awadhi meals.
+            </p>
+
           </div>
+
         </div>
+
+
+        <!-- BASKET CHAAT -->
+
         <div class="dish-card">
-          <div class="card-image-placeholder">🥙</div>
-          <div class="card-content">
-            <h3>Galouti Kebab</h3>
-            <p>Finely minced delicacy spiced with over 150 ingredients, melting effortlessly on the tongue.</p>
+
+          <div class="card-image-placeholder">
+            🥗
           </div>
+
+          <div class="card-content">
+
+            <h3>
+              Basket Chaat
+            </h3>
+
+            <p>
+              A famous Lucknowi street delicacy
+              served in a crisp edible basket
+              with tangy chutneys and spices.
+            </p>
+
+          </div>
+
         </div>
+
       </div>
+
     </div>
+
   </section>
 
- <!-- Glossary Section -->
-  <section class="page-container" id="glossary">
+
+  <!-- =========================================================
+       GLOSSARY
+  ========================================================= -->
+
+  <section
+    class="page-container"
+    id="glossary"
+  >
+
     <div class="block-head">
-      <div class="eyebrow">Culinary Glossary</div>
-      <h2>Kitchen Terminology</h2>
-      <input type="text" class="search-input" id="searchInput" placeholder="Search a culinary term..." onkeyup="filterGlossary()">
+
+      <div class="eyebrow">
+        Culinary Glossary
+      </div>
+
+      <h2>
+        Kitchen Terminology
+      </h2>
+
+
+      <input
+        type="text"
+        class="search-input"
+        id="searchInput"
+        placeholder="Search a culinary term..."
+        onkeyup="filterGlossary()"
+      >
+
     </div>
 
-    <div class="glossary-grid" id="glossaryGrid">
-      <div class="term"><strong>Bhunao</strong><span>A slow process of frying and reducing spices.</span></div>
-      <div class="term"><strong>Deg</strong><span>A large traditional copper or iron cooking vessel.</span></div>
-      <div class="term"><strong>Dum</strong><span>Slow cooking sealed under pressure using dough.</span></div>
-      <div class="term"><strong>Kewra</strong><span>A fragrant floral distillate used in desserts and rice.</span></div>
+
+    <div
+      class="glossary-grid"
+      id="glossaryGrid"
+    >
+
+      <div class="term">
+
+        <strong>
+          Bhunao
+        </strong>
+
+        <span>
+          A slow process of frying and
+          reducing spices.
+        </span>
+
+      </div>
+
+
+      <div class="term">
+
+        <strong>
+          Deg
+        </strong>
+
+        <span>
+          A large traditional copper or
+          iron cooking vessel.
+        </span>
+
+      </div>
+
+
+      <div class="term">
+
+        <strong>
+          Dum
+        </strong>
+
+        <span>
+          Slow cooking sealed under
+          pressure using dough.
+        </span>
+
+      </div>
+
+
+      <div class="term">
+
+        <strong>
+          Kewra
+        </strong>
+
+        <span>
+          A fragrant floral distillate
+          used in desserts and rice.
+        </span>
+
+      </div>
+
+
+      <div class="term">
+
+        <strong>
+          Zafrani
+        </strong>
+
+        <span>
+          A preparation or dish flavoured
+          with saffron.
+        </span>
+
+      </div>
+
+
+      <div class="term">
+
+        <strong>
+          Tarka
+        </strong>
+
+        <span>
+          Aromatic tempering of spices
+          added to a dish.
+        </span>
+
+      </div>
+
     </div>
+
   </section>
 
-  <!-- Merged Footer -->
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================= -->
+
   <footer>
+
     <div class="footer-container">
+
+
       <div>
-        <h2 class="footer-title">The Lost Taste<br><em>of Awadh</em></h2>
+
+        <h2 class="footer-title">
+
+          The Lost Taste
+          <br>
+
+          <em>
+            of Awadh
+          </em>
+
+        </h2>
+
+
         <p class="footer-copy">
-          A Culinary Awadh Project by<br>
-          Passion Project — Group of Passion Projects
+
+          A Culinary Awadh Project by
+          <br>
+
+          Passion Project —
+          Group of Passion Projects
+
         </p>
+
       </div>
 
-      <div class="footer-links">
-        <h4>Explore</h4>
-        <a href="#story">About</a>
-        <a href="#archive">Archive</a>
-        <a href="#blog">Blog</a>
-        <a href="#glossary">Glossary</a>
-      </div>
 
       <div class="footer-links">
-        <h4>Follow</h4>
-        <a href="#">Instagram ↗</a>
-        <a href="#">Contact ↗</a>
-        <a href="#">The Team ↗</a>
+
+        <h4>
+          Explore
+        </h4>
+
+        <a href="#hero">
+          About
+        </a>
+
+        <a href="#dishes">
+          Archive
+        </a>
+
+        <a href="blogs.html">
+          Blog
+        </a>
+
+        <a href="#glossary">
+          Glossary
+        </a>
+
       </div>
+
+
+      <div class="footer-links">
+
+        <h4>
+          Follow
+        </h4>
+
+        <a href="#">
+          Instagram ↗
+        </a>
+
+        <a href="#">
+          Contact ↗
+        </a>
+
+        <a href="#">
+          The Team ↗
+        </a>
+
+      </div>
+
     </div>
+
 
     <div class="footer-bottom">
+
       <div>
-        © 2026 PASSION PROJECT • © ANJUMAN E TARIKH<br>
-        © Pranav • Yash • Divyansh • Tejas • Tanush • Sanvi<br>
-        © TAREEKH-E-WEBKARS • © City Montessori School Kanpur Road
+
+        © 2026 PASSION PROJECT
+        • © ANJUMAN E TARIKH
+
+        <br>
+
+        © Pranav • Yash • Divyansh
+        • Tejas • Tanush • Sanvi
+
+        <br>
+
+        © TAREEKH-E-WEBKARS
+        • © City Montessori School Kanpur Road
+
       </div>
-      <strong>Preserve the flavour. Preserve the story. Preserve Awadh.</strong>
-      <a href="#top" style="color:var(--accent-gold); text-decoration:none;">↑ Back to top</a>
+
+
+      <strong>
+        Preserve the flavour.
+        Preserve the story.
+        Preserve Awadh.
+      </strong>
+
+
+      <a
+        href="#top"
+        style="
+          color:var(--accent-gold);
+          text-decoration:none;
+        "
+      >
+        ↑ Back to top
+      </a>
+
     </div>
+
   </footer>
 
 
-  <!-- JavaScript Mechanics -->
+  <!-- =========================================================
+       JAVASCRIPT
+  ========================================================= -->
+
   <script>
+
+
+    /* =========================================================
+       WHEEL DATA
+    ========================================================= */
+
     const wheelSlices = [
-      { name: "Saffron & Royal Sweets", color: "#d4af37" },
-      { name: "Street Chaat & Tangy Zaika", color: "#a83232" },
-      { name: "Slow-cooked Dum Biryani", color: "#6b1d28" },
-      { name: "Fragrant Awadhi Spices", color: "#e67e22" },
-      { name: "Melt-in-mouth Galouti Kebab", color: "#8e44ad" },
-      { name: "Baked Sheermal & Breads", color: "#d35400" }
+
+      {
+        name:
+          "Saffron & Royal Sweets",
+        color:
+          "#d4af37"
+      },
+
+      {
+        name:
+          "Street Chaat & Tangy Zaika",
+        color:
+          "#a83232"
+      },
+
+      {
+        name:
+          "Slow-cooked Dum Biryani",
+        color:
+          "#6b1d28"
+      },
+
+      {
+        name:
+          "Fragrant Awadhi Spices",
+        color:
+          "#e67e22"
+      },
+
+      {
+        name:
+          "Melt-in-mouth Veg Kebab",
+        color:
+          "#8e44ad"
+      },
+
+      {
+        name:
+          "Baked Sheermal & Breads",
+        color:
+          "#d35400"
+      }
+
     ];
 
+
     let currentRotation = 0;
+
     let isSpinning = false;
 
-    function spinWheel( {
-      if (isSpinning) return;
+
+    /* =========================================================
+       SPIN WHEEL
+    ========================================================= */
+
+    function spinWheel() {
+
+      if (isSpinning)
+        return;
+
+
       isSpinning = true;
 
-      const wheel = document.getElementById('tasteWheel');
-      const result = document.getElementById('spinResult');
-      const btn = document.getElementById('spinBtn');
+
+      const wheel =
+        document.getElementById(
+          "tasteWheel"
+        );
+
+
+      const result =
+        document.getElementById(
+          "spinResult"
+        );
+
+
+      const btn =
+        document.getElementById(
+          "spinBtn"
+        );
+
 
       btn.disabled = true;
-      result.innerText = "Spinning the Zaika Wheel...";
 
-      const sliceCount = wheelSlices.length;
-      const sliceAngle = 360 / sliceCount; // 60 deg per slice
-      const winningIndex = Math.floor(Math.random() * sliceCount);
 
-      // Calculating rotation so top pointer accurately aligns with landed slice
-      const targetSliceCenter = (winningIndex * sliceAngle) + (sliceAngle / 2);
-      const targetAngleInCircle = (360 - targetSliceCenter) % 360;
+      result.innerText =
+        "Spinning the Zaika Wheel...";
 
-      const fullSpins = 5 * 360;
-      const currentModulus = currentRotation % 360;
-      let degreeDifference = targetAngleInCircle - currentModulus;
-      if (degreeDifference < 0) {
-        degreeDifference += 360;
-    
 
-      currentRotation += fullSpins + degreeDifference;
+      const sliceCount =
+        wheelSlices.length;
 
-      wheel.style.transition = "transform 4s cubic-bezier(0.15, 0.99, 0.24, 0.99)";
-      wheel.style.transform = `rotate(${currentRotation}deg)`;
 
-      setTimeout(() => 
-        const winner = wheelSlices[winningIndex];
-        result.innerHTML = `✨ You landed on: <br><span style="color: ${winner.color}; font-size: 1.4rem;">${winner.name}</span>`;
-        isSpinning = false;
-        btn.disabled = false;
-      }, 4000);
-    
+      const sliceAngle =
+        360 / sliceCount;
+
+
+      const winningIndex =
+        Math.floor(
+          Math.random() *
+          sliceCount
+        );
+
+
+      const targetSliceCenter =
+        winningIndex *
+        sliceAngle +
+        sliceAngle / 2;
+
+
+      const targetAngleInCircle =
+        (360 -
+          targetSliceCenter) %
+        360;
+
+
+      const fullSpins =
+        5 * 360;
+
+
+      const currentModulus =
+        currentRotation % 360;
+
+
+      let degreeDifference =
+        targetAngleInCircle -
+        currentModulus;
+
+
+      if (
+        degreeDifference < 0
+      ) {
+
+        degreeDifference +=
+          360;
+
+      }
+
+
+      currentRotation +=
+        fullSpins +
+        degreeDifference;
+
+
+      wheel.style.transition =
+        "transform 4s cubic-bezier(0.15,0.99,0.24,0.99)";
+
+
+      wheel.style.transform =
+        `rotate(${currentRotation}deg)`;
+
+
+      setTimeout(
+        () => {
+
+          const winner =
+            wheelSlices[
+              winningIndex
+            ];
+
+
+          result.innerHTML = `
+
+            ✨ You landed on:
+
+            <br>
+
+            <span
+              style="
+                color:${winner.color};
+                font-size:1.4rem;
+              "
+            >
+              ${winner.name}
+            </span>
+
+          `;
+
+
+          isSpinning =
+            false;
+
+
+          btn.disabled =
+            false;
+
+        },
+        4000
+      );
+
+    }
+
+
+    /* =========================================================
+       CLEAR FILTERS
+    ========================================================= */
 
     function clearAllFilters() {
-      const checkboxes = document.querySelectorAll('.flavour-panel input[type="checkbox"]');
-      checkboxes.forEach(cb => cb.checked = false);
-      document.getElementById('customInput').value = '';
+
+      const checkboxes =
+        document.querySelectorAll(
+          '.flavour-panel input[type="checkbox"]'
+        );
+
+
+      checkboxes.forEach(
+        checkbox => {
+
+          checkbox.checked =
+            false;
+
+        }
+      );
+
+
+      document.getElementById(
+        "customInput"
+      ).value = "";
+
+
+      document.getElementById(
+        "customInput"
+      ).style.display =
+        "block";
+
     }
+
+
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
 
     function toggleMenu() {
-      const links = document.getElementById('navLinks');
-      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+
+      const links =
+        document.getElementById(
+          "navLinks"
+        );
+
+
+      links.classList.toggle(
+        "mobile-open"
+      );
+
     }
 
+
+    /* =========================================================
+       GLOSSARY SEARCH
+    ========================================================= */
+
     function filterGlossary() {
-      const input = document.getElementById('searchInput').value.toLowerCase();
-      const terms = document.querySelectorAll('.term');
-      terms.forEach(term => {
-        const text = term.innerText.toLowerCase();
-        term.style.display = text.includes(input) ? 'block' : 'none';
-      });
+
+      const input =
+        document
+          .getElementById(
+            "searchInput"
+          )
+          .value
+          .toLowerCase();
+
+
+      const terms =
+        document.querySelectorAll(
+          ".term"
+        );
+
+
+      terms.forEach(
+        term => {
+
+          const text =
+            term.innerText
+              .toLowerCase();
+
+
+          term.style.display =
+            text.includes(input)
+              ? "block"
+              : "none";
+
+        }
+      );
+
     }
+
+
+    /* =========================================================
+       FLOATING COMMUNITY CLOUD DATA
+    ========================================================= */
+
+    const cloudData = [
+
+      {
+        title:
+          "Awadhi Dum Biryani",
+
+        likes:
+          128,
+
+        emoji:
+          "🍚",
+
+        color:
+          "#6b1d28"
+      },
+
+
+      {
+        title:
+          "Veg Kebab",
+
+        likes:
+          114,
+
+        emoji:
+          "🥙",
+
+        color:
+          "#8e44ad"
+      },
+
+
+      {
+        title:
+          "Saffron Sheermal",
+
+        likes:
+          96,
+
+        emoji:
+          "🫓",
+
+        color:
+          "#d35400"
+      },
+
+
+      {
+        title:
+          "Basket Chaat",
+
+        likes:
+          87,
+
+        emoji:
+          "🥗",
+
+        color:
+          "#a83232"
+      },
+
+
+      {
+        title:
+          "Royal Saffron Sweets",
+
+        likes:
+          74,
+
+        emoji:
+          "🍮",
+
+        color:
+          "#d4af37"
+      }
+
+    ];
+
+
+    /* =========================================================
+       CLOUD POSITIONS
+    ========================================================= */
+
+    const cloudPositions = [
+
+      {
+        top:
+          "65px",
+
+        left:
+          "7%"
+      },
+
+
+      {
+        top:
+          "125px",
+
+        left:
+          "27%"
+      },
+
+
+      {
+        top:
+          "70px",
+
+        left:
+          "48%"
+      },
+
+
+      {
+        top:
+          "130px",
+
+        left:
+          "69%"
+      },
+
+
+      {
+        top:
+          "55px",
+
+        left:
+          "86%"
+      }
+
+    ];
+
+
+    /* =========================================================
+       RENDER CLOUDS
+    ========================================================= */
+
+    function renderClouds() {
+
+      const cloudLayer =
+        document.getElementById(
+          "cloudLayer"
+        );
+
+
+      if (!cloudLayer)
+        return;
+
+
+      cloudLayer.innerHTML =
+        "";
+
+
+      cloudData.forEach(
+        (item,index) => {
+
+          const position =
+            cloudPositions[
+              index
+            ];
+
+
+          const cloud =
+            document.createElement(
+              "div"
+            );
+
+
+          cloud.className =
+            "cloud";
+
+
+          cloud.style.top =
+            position.top;
+
+
+          cloud.style.left =
+            position.left;
+
+
+          cloud.style.animationDelay =
+            `${index * 0.6}s`;
+
+
+          cloud.style.animationDuration =
+            `${5 + index}s`;
+
+
+          cloud.innerHTML = `
+
+            <div
+              class="cloud-thumb"
+              style="
+                background:${item.color};
+              "
+            >
+              ${item.emoji}
+            </div>
+
+
+            <div>
+
+              <div class="cloud-title">
+                ${item.title}
+              </div>
+
+              <div class="cloud-likes">
+                ♥ ${item.likes} likes
+              </div>
+
+            </div>
+
+          `;
+
+
+          /* =====================================================
+             CLOUD CLICK
+          ===================================================== */
+
+          cloud.addEventListener(
+            "click",
+            () => {
+
+              const result =
+                document.getElementById(
+                  "spinResult"
+                );
+
+
+              if (result) {
+
+                result.innerHTML = `
+
+                  ✨ Community favourite:
+
+                  <br>
+
+                  <span
+                    style="
+                      color:${item.color};
+                      font-size:1.4rem;
+                    "
+                  >
+                    ${item.title}
+                  </span>
+
+                `;
+
+              }
+
+
+              document
+                .getElementById(
+                  "wheelSection"
+                )
+                ?.scrollIntoView({
+                  behavior:
+                    "smooth"
+                });
+
+            }
+          );
+
+
+          cloudLayer.appendChild(
+            cloud
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =========================================================
+       INITIALIZE
+    ========================================================= */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        renderClouds();
+
+      }
+    );
+
   </script>
+
 </body>
 </html>
