@@ -142,7 +142,7 @@
 
     .hero {
         position: relative;
-        padding: 80px 20px 50px;
+        padding: 60px 20px 40px;
         text-align: center;
     }
 
@@ -185,23 +185,25 @@
         animation: fadeUp .8s .35s ease both;
     }
 
-    /* FOLDER GRID CONTAINER */
+    /* COMPACT FOLDER GRID CONTAINER */
     .folders-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        display: flex;
+        justify-content: center;
         gap: 40px;
-        padding: 40px 0 90px;
+        flex-wrap: wrap;
+        padding: 20px 0 90px;
     }
 
-    /* INTERACTIVE FOLDER CARD */
+    /* COMPACT INTERACTIVE FOLDER CARD */
     .folder-card {
         position: relative;
+        width: 280px;
         background: var(--paper);
         border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 30px 24px 24px;
+        border-radius: 16px;
+        padding: 15px 15px 20px;
         cursor: pointer;
-        box-shadow: 0 12px 30px rgba(22,77,54,.06);
+        box-shadow: 0 10px 25px rgba(22,77,54,.05);
         transition: transform .35s ease, box-shadow .35s ease;
         display: flex;
         flex-direction: column;
@@ -210,25 +212,25 @@
 
     .folder-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 22px 45px rgba(22,77,54,.14);
+        box-shadow: 0 20px 35px rgba(22,77,54,.12);
     }
 
     .folder-tab {
         position: absolute;
-        top: -14px;
-        left: 30px;
-        width: 120px;
-        height: 14px;
+        top: -12px;
+        left: 20px;
+        width: 100px;
+        height: 12px;
         background: var(--gold);
-        border-radius: 8px 8px 0 0;
+        border-radius: 6px 6px 0 0;
     }
 
-    /* SPIRAL PHOTO CONTAINER */
+    /* UNCHANGED SPIRAL PHOTO CONTAINER */
     .spiral-container {
         position: relative;
         width: 220px;
         height: 220px;
-        margin: 20px 0 30px;
+        margin: 10px 0 20px;
     }
 
     .spiral-photo {
@@ -242,7 +244,6 @@
         transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* Spiral offsets */
     .spiral-photo:nth-child(1) {
         top: 20px;
         left: 15px;
@@ -264,7 +265,6 @@
         z-index: 3;
     }
 
-    /* Hover motion effect on spiral photos */
     .folder-card:hover .spiral-photo:nth-child(1) {
         transform: rotate(-18deg) translate(-12px, -10px);
     }
@@ -280,17 +280,17 @@
     .folder-title {
         color: var(--green);
         font-family: var(--serif);
-        font-size: 26px;
+        font-size: 22px;
         font-weight: 700;
         margin: 0;
         text-align: center;
     }
 
-    /* FULLSCREEN LIGHTBOX MODAL */
+    /* MODAL OVERLAY MATCHING WEBSITE COLOR */
     .modal-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(13, 48, 34, 0.92);
+        background: rgba(248, 244, 233, 0.95);
         backdrop-filter: blur(8px);
         z-index: 10000;
         display: none;
@@ -308,29 +308,29 @@
 
     .modal-container {
         position: relative;
-        max-width: 1100px;
+        max-width: 1000px;
         width: 100%;
-        max-height: 90vh;
+        max-height: 85vh;
         overflow-y: auto;
         background: var(--paper);
-        border: 1px solid var(--gold);
+        border: 1px solid var(--border);
         border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+        padding: 35px;
+        box-shadow: 0 20px 50px rgba(22, 77, 54, 0.1);
     }
 
     .modal-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
         border-bottom: 1px solid var(--border);
         padding-bottom: 15px;
     }
 
     .modal-title {
         font-family: var(--serif);
-        font-size: 32px;
+        font-size: 30px;
         color: var(--green);
         margin: 0;
     }
@@ -340,8 +340,8 @@
         color: var(--white);
         border: none;
         font-size: 24px;
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
         cursor: pointer;
         display: flex;
@@ -356,22 +356,59 @@
 
     .modal-gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 20px;
     }
 
     .modal-gallery img {
         width: 100%;
-        height: 250px;
+        height: 220px;
         object-fit: cover;
         border-radius: 12px;
         border: 1px solid var(--border);
-        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-        transition: transform .3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        cursor: zoom-in;
+        transition: transform .3s ease, box-shadow .3s ease;
     }
 
     .modal-gallery img:hover {
-        transform: scale(1.03);
+        transform: scale(1.04);
+        box-shadow: 0 10px 25px rgba(22, 77, 54, 0.15);
+    }
+
+    /* FULL-SCREEN EXPANDED PHOTO LIGHTBOX */
+    .photo-lightbox {
+        position: fixed;
+        inset: 0;
+        background: rgba(13, 48, 34, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 20000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .photo-lightbox.active {
+        display: flex;
+    }
+
+    .photo-lightbox img {
+        max-width: 90vw;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    .photo-lightbox-close {
+        position: absolute;
+        top: 25px;
+        right: 35px;
+        color: var(--white);
+        font-size: 36px;
+        cursor: pointer;
+        user-select: none;
     }
 
     footer {
@@ -449,7 +486,7 @@
     </section>
   </main>
 
-  <!-- LIGHTBOX MODALS -->
+  <!-- FOLDER MODAL 1 -->
   <div class="modal-overlay" id="modal-team-establishment" onclick="closeFolderOnOverlay(event, 'team-establishment')">
     <div class="modal-container">
       <div class="modal-header">
@@ -457,14 +494,15 @@
         <button class="close-btn" onclick="closeFolder('team-establishment')">&times;</button>
       </div>
       <div class="modal-gallery">
-        <img src="../photos/photo1.jpg" alt="Photo 1" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo1.jpg</text></svg>'">
-        <img src="../photos/photo2.jpg" alt="Photo 2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo2.jpg</text></svg>'">
-        <img src="../photos/photo3.jpg" alt="Photo 3" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo3.jpg</text></svg>'">
-        <img src="../photos/photo4.jpg" alt="Photo 4" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo4.jpg</text></svg>'">
+        <img src="../photos/photo1.jpg" alt="Photo 1" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo1.jpg</text></svg>'">
+        <img src="../photos/photo2.jpg" alt="Photo 2" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo2.jpg</text></svg>'">
+        <img src="../photos/photo3.jpg" alt="Photo 3" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo3.jpg</text></svg>'">
+        <img src="../photos/photo4.jpg" alt="Photo 4" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo4.jpg</text></svg>'">
       </div>
     </div>
   </div>
 
+  <!-- FOLDER MODAL 2 -->
   <div class="modal-overlay" id="modal-official-meeting" onclick="closeFolderOnOverlay(event, 'official-meeting')">
     <div class="modal-container">
       <div class="modal-header">
@@ -472,12 +510,18 @@
         <button class="close-btn" onclick="closeFolder('official-meeting')">&times;</button>
       </div>
       <div class="modal-gallery">
-        <img src="../photos/m1.jpg" alt="Meeting 1" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m1.jpg</text></svg>'">
-        <img src="../photos/m2.jpg" alt="Meeting 2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m2.jpg</text></svg>'">
-        <img src="../photos/m3.jpg" alt="Meeting 3" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m3.jpg</text></svg>'">
-        <img src="../photos/m4.jpg" alt="Meeting 4" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m4.jpg</text></svg>'">
+        <img src="../photos/m1.jpg" alt="Meeting 1" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m1.jpg</text></svg>'">
+        <img src="../photos/m2.jpg" alt="Meeting 2" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m2.jpg</text></svg>'">
+        <img src="../photos/m3.jpg" alt="Meeting 3" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m3.jpg</text></svg>'">
+        <img src="../photos/m4.jpg" alt="Meeting 4" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m4.jpg</text></svg>'">
       </div>
     </div>
+  </div>
+
+  <!-- SINGLE PHOTO FULL-SCREEN EXPAND LIGHTBOX -->
+  <div class="photo-lightbox" id="photo-lightbox" onclick="closeExpandedImage()">
+    <span class="photo-lightbox-close">&times;</span>
+    <img id="expanded-photo-img" src="" alt="Expanded View">
   </div>
 
   <footer>
@@ -501,6 +545,15 @@
       if (event.target === event.currentTarget) {
         closeFolder(folderId);
       }
+    }
+
+    function expandImage(src) {
+      document.getElementById('expanded-photo-img').src = src;
+      document.getElementById('photo-lightbox').classList.add('active');
+    }
+
+    function closeExpandedImage() {
+      document.getElementById('photo-lightbox').classList.remove('active');
     }
   </script>
 
