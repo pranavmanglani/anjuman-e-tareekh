@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="favicon.jpg">
+
+    <title>404 — ANJUMAN ए TAREEKH</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =====================================================
+           ROOT
+        ===================================================== */
+
+        :root {
+            --green: #173b2c;
+            --green-dark: #0d281e;
+            --green-light: #24553f;
+
+            --gold: #b28a48;
+            --gold-light: #d2b477;
+
+            --ivory: #f5f1e8;
+            --paper: #fbf8f0;
+            --paper-dark: #e9e2d5;
+
+            --ink: #1d211e;
+            --muted: #777064;
+
+            --serif: "Cormorant Garamond", Georgia, serif;
+            --sans: "DM Sans", Arial, sans-serif;
+        }
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 50% 35%,
+                    rgba(178,138,72,.08),
+                    transparent 32%
+                ),
+                var(--ivory);
+
+            color: var(--ink);
+
+            font-family: var(--sans);
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           PAPER GRAIN
+        ===================================================== */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: .18;
+
+            background-image:
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+
+            z-index: 50;
+        }
+
+
+        /* =====================================================
+           DECORATIVE BACKGROUND
+        ===================================================== */
+
+        .orb {
+            position: fixed;
+
+            width: 420px;
+            height: 420px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(178,138,72,.14);
+
+            pointer-events: none;
+
+            animation: breathe 7s ease-in-out infinite;
+        }
+
+        .orb.one {
+            top: -220px;
+            right: -180px;
+        }
+
+        .orb.two {
+            bottom: -250px;
+            left: -220px;
+
+            width: 500px;
+            height: 500px;
+
+            animation-delay: -3s;
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: .55;
+            }
+
+            50% {
+                transform: scale(1.06);
+                opacity: 1;
+            }
+
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        main {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 50px 22px;
+
+            position: relative;
+        }
+
+
+        .wrapper {
+            width: 100%;
+            max-width: 850px;
+
+            text-align: center;
+
+            position: relative;
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+
+            text-decoration: none;
+
+            color: var(--green);
+
+            margin-bottom: 42px;
+
+            animation: fadeDown .8s ease both;
+        }
+
+        .brand-main {
+            font-family: var(--serif);
+
+            font-size: clamp(27px, 5vw, 42px);
+
+            font-weight: 600;
+
+            letter-spacing: .5px;
+        }
+
+        .brand-sub {
+            margin-top: 3px;
+
+            font-family: var(--sans);
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 4px;
+
+            color: var(--gold);
+        }
+
+
+        /* =====================================================
+           404 NUMBER
+        ===================================================== */
+
+        .error-number {
+            position: relative;
+
+            display: inline-block;
+
+            font-family: var(--serif);
+
+            font-size: clamp(150px, 30vw, 310px);
+
+            line-height: .72;
+
+            font-weight: 600;
+
+            letter-spacing: -15px;
+
+            color: var(--green);
+
+            user-select: none;
+
+            animation: numberReveal 1s cubic-bezier(.16,1,.3,1) both;
+        }
+
+        .error-number::after {
+            content: "404";
+
+            position: absolute;
+
+            inset: 8px 0 0 8px;
+
+            z-index: -1;
+
+            color: transparent;
+
+            -webkit-text-stroke: 1px rgba(178,138,72,.35);
+
+            transform: translate(15px, 15px);
+        }
+
+
+        /* =====================================================
+           GOLD LINE
+        ===================================================== */
+
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 14px;
+
+            margin: 45px auto 25px;
+
+            animation: fadeUp .8s .35s ease both;
+        }
+
+        .ornament-line {
+            width: min(130px, 20vw);
+            height: 1px;
+
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--gold)
+            );
+        }
+
+        .ornament-line.right {
+            background: linear-gradient(
+                90deg,
+                var(--gold),
+                transparent
+            );
+        }
+
+        .ornament-symbol {
+            color: var(--gold);
+
+            font-size: 17px;
+
+            transform: rotate(45deg);
+
+            display: inline-block;
+        }
+
+
+        /* =====================================================
+           TEXT
+        ===================================================== */
+
+        .kicker {
+            color: var(--gold);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 4px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 12px;
+
+            animation: fadeUp .8s .45s ease both;
+        }
+
+        h1 {
+            margin: 0;
+
+            color: var(--green);
+
+            font-family: var(--serif);
+
+            font-size: clamp(38px, 6vw, 66px);
+
+            font-weight: 600;
+
+            line-height: 1;
+
+            animation: fadeUp .8s .52s ease both;
+        }
+
+        .description {
+            max-width: 530px;
+
+            margin: 20px auto 0;
+
+            color: var(--muted);
+
+            font-size: 15px;
+
+            line-height: 1.8;
+
+            animation: fadeUp .8s .62s ease both;
+        }
+
+
+        /* =====================================================
+           BUTTON
+        ===================================================== */
+
+        .actions {
+            margin-top: 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            animation: fadeUp .8s .72s ease both;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 170px;
+
+            padding: 14px 22px;
+
+            border-radius: 999px;
+
+            text-decoration: none;
+
+            font-family: var(--sans);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: .3px;
+
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease,
+                background .25s ease;
+        }
+
+        .button-primary {
+            color: white;
+
+            background: var(--green);
+
+            box-shadow:
+                0 10px 30px rgba(23,59,44,.18);
+        }
+
+        .button-primary:hover {
+            transform: translateY(-3px);
+
+            background: var(--green-light);
+
+            box-shadow:
+                0 16px 35px rgba(23,59,44,.25);
+        }
+
+        .button-secondary {
+            color: var(--green);
+
+            border: 1px solid rgba(23,59,44,.2);
+
+            background: rgba(255,255,255,.35);
+        }
+
+        .button-secondary:hover {
+            transform: translateY(-3px);
+
+            background: white;
+
+            border-color: rgba(178,138,72,.5);
+
+            box-shadow:
+                0 10px 25px rgba(23,59,44,.08);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer-note {
+            margin-top: 55px;
+
+            color: #999285;
+
+            font-size: 10px;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+            animation: fadeUp .8s .82s ease both;
+        }
+
+
+        /* =====================================================
+           FLOATING DECORATION
+        ===================================================== */
+
+        .floating {
+            position: absolute;
+
+            color: var(--gold);
+
+            opacity: .32;
+
+            font-family: var(--serif);
+
+            pointer-events: none;
+
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating.one {
+            top: 20%;
+            left: 8%;
+
+            font-size: 30px;
+        }
+
+        .floating.two {
+            top: 32%;
+            right: 9%;
+
+            font-size: 22px;
+
+            animation-delay: -2s;
+        }
+
+        .floating.three {
+            bottom: 19%;
+            left: 14%;
+
+            font-size: 18px;
+
+            animation-delay: -4s;
+        }
+
+        .floating.four {
+            bottom: 25%;
+            right: 15%;
+
+            font-size: 28px;
+
+            animation-delay: -1s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(5deg);
+            }
+
+        }
+
+
+        /* =====================================================
+           ANIMATIONS
+        ===================================================== */
+
+        @keyframes fadeDown {
+
+            from {
+                opacity: 0;
+                transform: translateY(-18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        @keyframes fadeUp {
+
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        @keyframes numberReveal {
+
+            from {
+                opacity: 0;
+                transform: scale(.82) translateY(25px);
+                filter: blur(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            main {
+                padding: 35px 20px;
+            }
+
+            .brand {
+                margin-bottom: 30px;
+            }
+
+            .error-number {
+                letter-spacing: -7px;
+            }
+
+            .ornament {
+                margin-top: 35px;
+            }
+
+            .description {
+                font-size: 14px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .floating {
+                display: none;
+            }
+
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION
+        ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+
+
+    <!-- Decorative elements -->
+
+    <div class="floating one">✦</div>
+    <div class="floating two">◆</div>
+    <div class="floating three">✧</div>
+    <div class="floating four">✦</div>
+
+
+    <main>
+
+        <div class="wrapper">
+
+
+            <!-- BRAND -->
+
+            <a href="/" class="brand">
+
+                <span class="brand-main">
+                    ANJUMAN ए TAREEKH
+                </span>
+
+                <span class="brand-sub">
+                    TAREEKH AUR ANJUMAN — RESEARCH MEETS ZAIKA
+                </span>
+
+            </a>
+
+
+            <!-- ERROR -->
+
+            <div class="error-number">
+                404
+            </div>
+
+
+            <!-- ORNAMENT -->
+
+            <div class="ornament">
+
+                <span class="ornament-line"></span>
+
+                <span class="ornament-symbol">
+                    ◆
+                </span>
+
+                <span class="ornament-line right"></span>
+
+            </div>
+
+
+            <!-- MESSAGE -->
+
+            <div class="kicker">
+                A Missing Chapter
+            </div>
+
+            <h1>
+                This page has wandered off.
+            </h1>
+
+            <p class="description">
+                The page you're looking for isn't in our records.
+                Perhaps it belongs to another chapter, another story,
+                or simply took a wrong turn through the streets of Awadh.
+            </p>
+
+
+            <!-- ACTIONS -->
+
+            <div class="actions">
+
+                <a
+                    href="/"
+                    class="button button-primary"
+                >
+                    ← Return Home
+                </a>
+
+                <a
+                    href="javascript:history.back()"
+                    class="button button-secondary"
+                >
+                    Go Back
+                </a>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="footer-note">
+                Awadh • Lucknow • History • Culinary Heritage
+            </div>
+
+        </div>
+
+    </main>
+
+
+</body>
+</html>
