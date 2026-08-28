@@ -1925,13 +1925,9 @@ function getLikeCount(blog){
 
 async function toggleLike(blog){
     const key = String(blog.id);
-    const liked = getLikedSet();
-
-    /* like-blog is an increment endpoint, so do not send another
-       request from this browser after it has already liked the blog. */
-    if(liked.has(key)){
-        return;
-    }
+    const likedSet = getLikedSet();
+    const currentlyLiked = likedSet.has(key);
+    const action = currentlyLiked ? "unlike" : "like";
 
     const buttons = document.querySelectorAll(
         `.like-btn[data-blog-id="${CSS.escape(key)}"]`
@@ -1950,7 +1946,8 @@ async function toggleLike(blog){
                 "Content-Type":"application/json"
             },
             body:JSON.stringify({
-                blog_id: blog.id
+                blog_id: blog.id,
+                action: action
             })
         });
 
@@ -1977,7 +1974,6 @@ async function toggleLike(blog){
             );
         }
 
-        /* Support the response shapes used by the Edge Function. */
         const returnedLikes =
             result.likes ??
             result.like_count ??
@@ -1988,32 +1984,44 @@ async function toggleLike(blog){
         if(returnedLikes !== undefined && returnedLikes !== null){
             blog.likes = Number(returnedLikes);
         }else{
-            /* No count returned: reload blogs so the displayed count
-               comes directly from Supabase. */
-            liked.add(key);
-            saveLikedSet(liked);
+            /* If the function does not return the new count,
+               reload the published blogs from the database. */
+            if(action === "like"){
+                likedSet.add(key);
+            }else{
+                likedSet.delete(key);
+            }
+            saveLikedSet(likedSet);
             await loadBlogs();
             return;
         }
 
-        liked.add(key);
-        saveLikedSet(liked);
+        /* Update this browser's liked state. */
+        if(action === "like"){
+            likedSet.add(key);
+        }else{
+            likedSet.delete(key);
+        }
+        saveLikedSet(likedSet);
 
+        /* Update the card/grid immediately. */
         renderClouds();
         renderGrid();
 
+        /* Update the open modal if this is the same blog. */
         if(
             currentModalBlog &&
             String(currentModalBlog.id) === key
         ){
+            currentModalBlog = blog;
             openModal(blog);
         }
 
     }catch(error){
-        console.error("Failed to like blog:", error);
+        console.error("Failed to update blog like:", error);
         alert(
             error.message ||
-            "Could not like this blog. Please try again."
+            "Could not update this like. Please try again."
         );
     }finally{
         document.querySelectorAll(
@@ -2025,7 +2033,6 @@ async function toggleLike(blog){
         });
     }
 }
-
 
 /* =========================================================
    LOAD BLOGS
