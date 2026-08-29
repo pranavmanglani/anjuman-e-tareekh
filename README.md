@@ -1,7 +1,7 @@
 # anjuman-e-tareekh
 
 -Contributors include:
-Pranav, Divyansh, Tejas , Sanvi ,Tanush, Yash 
+Pranav, Divyansh, Tejas , Sanvi ,Tanush, Yash , Siddhi
 
 -FINAL PRODUCTION BUILD V.1 
 (do no edit this further except for minor changes every major change should be confirmed on the group before commit)
@@ -21,6 +21,6 @@ Backend Developers
 -Debugging 
   1. Tejas Tripathi
   2. Sanvi Yadav
-  3. Tanush Chalani
+  3. Tanush Chanani
 
 -PULL REQUEST CONFIGURATION IS NOW TURNED ON, ANY CHANGES MADE HAVE TO BE APPROVED BY REPOSITORY OWNER.
