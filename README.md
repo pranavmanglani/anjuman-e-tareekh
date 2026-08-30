@@ -10,8 +10,9 @@ Frontend Developers
 
 -UI & DESIGN 
   1. Divyansh Yadav 1
-  2. Yash Pratap Singh
-  3. Pranav Manglani
+  2. Pranav Manglani
+  3. Yash 
+     
 
 Backend Developers
 
@@ -22,5 +23,6 @@ Backend Developers
   1. Tejas Tripathi
   2. Sanvi Yadav
   3. Tanush Chanani
+  4. Siddhi
 
 -PULL REQUEST CONFIGURATION IS NOW TURNED ON, ANY CHANGES MADE HAVE TO BE APPROVED BY REPOSITORY OWNER.
