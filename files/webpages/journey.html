@@ -1,13 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
-<script src="security.js"></script>
 <head>
+  <script src="security.js"></script>
   <link rel="icon" type="image/x-icon" href="../photos/favicon.jpg">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Where Curiosity Found Its Roots — The Beginning of Anjuman ए Tareekh.">
-  
-  <title>Where Curiosity Found Its Roots — The Beginning of Anjuman ए Tareekh .</title>
+  <meta name="description" content="Explore the journey, meetings, events, and culinary heritage of Anjuman-e-Tareekh.">
+
+  <title>Journey & Events — Anjuman ए Tareekh</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,426 +16,656 @@
 
   <style>
     :root {
-        --green: #164d36;
-        --green-dark: #0d3022;
-        --green-light: #276b4b;
-        --orange: #df6915;
-        --orange-light: #ef8b36;
-        --gold: #b99350;
-        --gold-light: #d6b878;
-        --ivory: #f8f4e9;
-        --paper: #fffdf7;
-        --paper-dark: #eee7d6;
-        --ink: #18251e;
-        --muted: #68736c;
-        --white: #ffffff;
-        --border: rgba(185,147,80,.35);
-        --serif: "Cormorant Garamond", Georgia, serif;
-        --sans: "DM Sans", Arial, sans-serif;
+      --green: #164d36;
+      --green-dark: #0d3022;
+      --green-light: #276b4b;
+      --orange: #df6915;
+      --orange-light: #ef8b36;
+      --gold: #b99350;
+      --gold-light: #d6b878;
+      --ivory: #f8f4e9;
+      --paper: #fffdf7;
+      --paper-dark: #eee7d6;
+      --ink: #18251e;
+      --muted: #68736c;
+      --white: #ffffff;
+      --border: rgba(185,147,80,.35);
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --sans: "DM Sans", Arial, sans-serif;
     }
 
     * { box-sizing: border-box; }
+
     html { scroll-behavior: smooth; }
 
     body {
-        margin: 0;
-        background:
-            radial-gradient(circle at 15% 10%, rgba(185,147,80,.08), transparent 30%),
-            radial-gradient(circle at 90% 80%, rgba(22,77,54,.07), transparent 35%),
-            var(--ivory);
-        color: var(--ink);
-        font-family: var(--sans);
-        overflow-x: hidden;
+      margin: 0;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(185,147,80,.08), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(22,77,54,.07), transparent 35%),
+        var(--ivory);
+      color: var(--ink);
+      font-family: var(--sans);
+      overflow-x: hidden;
     }
 
     body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        opacity: .035;
-        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
-        z-index: 999;
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
+      z-index: 999;
     }
 
     a { color: inherit; text-decoration: none; }
 
     .page {
-        width: min(1240px, calc(100% - 32px));
-        margin: auto;
+      width: min(1240px, calc(100% - 32px));
+      margin: auto;
     }
 
     .topbar {
-        padding: 18px 0;
-        border-bottom: 1px solid rgba(185,147,80,.25);
-        animation: fadeDown .8s ease both;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(185,147,80,.25);
+      animation: fadeDown .8s ease both;
     }
 
     .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
     }
 
     .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .brand-mark {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 1px solid var(--gold);
-        background: white;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid var(--gold);
+      background: white;
+      flex-shrink: 0;
     }
 
     .brand-mark img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .brand-name {
-        color: var(--green);
-        font-family: var(--serif);
-        font-size: 22px;
-        font-weight: 700;
-        line-height: 1;
+      color: var(--green);
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1;
     }
 
     .brand-tagline {
-        margin-top: 5px;
-        color: var(--orange);
-        font-size: 8px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
+      margin-top: 5px;
+      color: var(--orange);
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .nav-links {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
     }
 
     .nav-link {
-        padding: 9px 15px;
-        border: 1px solid transparent;
-        border-radius: 100px;
-        color: var(--green);
-        font-size: 13px;
-        font-weight: 600;
-        transition: .25s ease;
+      padding: 9px 15px;
+      border: 1px solid transparent;
+      border-radius: 100px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 600;
+      transition: .25s ease;
     }
 
     .nav-link:hover {
-        border-color: var(--gold);
-        background: rgba(185,147,80,.08);
+      border-color: var(--gold);
+      background: rgba(185,147,80,.08);
     }
 
     .nav-link.active {
-        background: var(--green);
-        color: var(--white);
+      background: var(--green);
+      color: var(--white);
     }
 
     .hero {
-        position: relative;
-        padding: 60px 20px 40px;
-        text-align: center;
+      position: relative;
+      padding: 60px 20px 40px;
+      text-align: center;
     }
 
     .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        color: var(--orange);
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        animation: fadeUp .7s .1s ease both;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--orange);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: fadeUp .7s .1s ease both;
     }
 
-    .eyebrow::before, .eyebrow::after {
-        content: "";
-        width: 45px;
-        height: 1px;
-        background: var(--gold);
+    .eyebrow::before,
+    .eyebrow::after {
+      content: "";
+      width: 45px;
+      height: 1px;
+      background: var(--gold);
     }
 
     .hero h1 {
-        margin: 20px 0 12px;
-        color: var(--green);
-        font-family: var(--serif);
-        font-size: clamp(38px, 6vw, 68px);
-        line-height: 1.1;
-        font-weight: 600;
-        animation: fadeUp .8s .2s ease both;
+      margin: 20px 0 12px;
+      color: var(--green);
+      font-family: var(--serif);
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 1.1;
+      font-weight: 600;
+      animation: fadeUp .8s .2s ease both;
     }
 
     .hero-subtitle {
-        max-width: 720px;
-        margin: 20px auto 0;
-        color: var(--muted);
-        font-family: var(--serif);
-        font-size: clamp(18px, 2.2vw, 23px);
-        line-height: 1.5;
-        animation: fadeUp .8s .35s ease both;
+      max-width: 720px;
+      margin: 20px auto 0;
+      color: var(--muted);
+      font-family: var(--serif);
+      font-size: clamp(18px, 2.2vw, 23px);
+      line-height: 1.5;
+      animation: fadeUp .8s .35s ease both;
     }
 
-    /* COMPACT FOLDER GRID CONTAINER */
+    /* MEETING FOLDERS */
+
     .folders-grid {
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-        flex-wrap: wrap;
-        padding: 20px 0 90px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      padding: 20px 0 90px;
     }
 
-    /* COMPACT INTERACTIVE FOLDER CARD */
     .folder-card {
-        position: relative;
-        width: 280px;
-        background: var(--paper);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 15px 15px 20px;
-        cursor: pointer;
-        box-shadow: 0 10px 25px rgba(22,77,54,.05);
-        transition: transform .35s ease, box-shadow .35s ease;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      position: relative;
+      width: 280px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 15px 15px 20px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(22,77,54,.05);
+      transition: transform .35s ease, box-shadow .35s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .folder-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 35px rgba(22,77,54,.12);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 35px rgba(22,77,54,.12);
     }
 
     .folder-tab {
-        position: absolute;
-        top: -12px;
-        left: 20px;
-        width: 100px;
-        height: 12px;
-        background: var(--gold);
-        border-radius: 6px 6px 0 0;
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      width: 100px;
+      height: 12px;
+      background: var(--gold);
+      border-radius: 6px 6px 0 0;
     }
 
-    /* UNCHANGED SPIRAL PHOTO CONTAINER */
     .spiral-container {
-        position: relative;
-        width: 220px;
-        height: 220px;
-        margin: 10px 0 20px;
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 10px 0 20px;
     }
 
     .spiral-photo {
-        position: absolute;
-        width: 130px;
-        height: 130px;
-        border-radius: 12px;
-        border: 4px solid var(--white);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        object-fit: cover;
-        transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      border-radius: 12px;
+      border: 4px solid var(--white);
+      box-shadow: 0 8px 20px rgba(0,0,0,.15);
+      object-fit: cover;
+      transition: transform .4s cubic-bezier(.25,1,.5,1);
     }
 
     .spiral-photo:nth-child(1) {
-        top: 20px;
-        left: 15px;
-        transform: rotate(-12deg);
-        z-index: 1;
+      top: 20px;
+      left: 15px;
+      transform: rotate(-12deg);
+      z-index: 1;
     }
 
     .spiral-photo:nth-child(2) {
-        top: 45px;
-        left: 45px;
-        transform: rotate(6deg);
-        z-index: 2;
+      top: 45px;
+      left: 45px;
+      transform: rotate(6deg);
+      z-index: 2;
     }
 
     .spiral-photo:nth-child(3) {
-        top: 70px;
-        left: 75px;
-        transform: rotate(-4deg);
-        z-index: 3;
+      top: 70px;
+      left: 75px;
+      transform: rotate(-4deg);
+      z-index: 3;
     }
 
     .folder-card:hover .spiral-photo:nth-child(1) {
-        transform: rotate(-18deg) translate(-12px, -10px);
+      transform: rotate(-18deg) translate(-12px,-10px);
     }
 
     .folder-card:hover .spiral-photo:nth-child(2) {
-        transform: rotate(10deg) translate(0px, -15px);
+      transform: rotate(10deg) translate(0,-15px);
     }
 
     .folder-card:hover .spiral-photo:nth-child(3) {
-        transform: rotate(-10deg) translate(14px, -8px);
+      transform: rotate(-10deg) translate(14px,-8px);
     }
 
     .folder-title {
-        color: var(--green);
-        font-family: var(--serif);
-        font-size: 22px;
-        font-weight: 700;
-        margin: 0;
-        text-align: center;
+      color: var(--green);
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0;
+      text-align: center;
     }
 
-    /* MODAL OVERLAY MATCHING WEBSITE COLOR */
+    /* EVENTS SECTION */
+
+    .events-section {
+      padding: 5px 0 75px;
+      border-top: 1px solid rgba(185,147,80,.25);
+    }
+
+    .section-heading {
+      padding: 65px 15px 15px;
+      text-align: center;
+    }
+
+    .section-heading .eyebrow {
+      animation: none;
+    }
+
+    .section-heading h2 {
+      color: var(--green);
+      font-family: var(--serif);
+      font-size: clamp(36px,5vw,52px);
+      font-weight: 600;
+      margin: 18px 0 12px;
+    }
+
+    .section-description {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-family: var(--serif);
+      font-size: 19px;
+      line-height: 1.7;
+    }
+
+    .event-card {
+      overflow: visible;
+    }
+
+    .event-label {
+      display: inline-block;
+      margin: 0 0 12px;
+      padding: 7px 12px;
+      border-radius: 30px;
+      background: rgba(223,105,21,.09);
+      color: var(--orange);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .event-description {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+      text-align: center;
+      margin: 12px 0 18px;
+    }
+
+    .event-open {
+      padding: 11px 20px;
+      border: 1px solid var(--green);
+      border-radius: 30px;
+      background: var(--green);
+      color: white;
+      font: 600 12px var(--sans);
+      cursor: pointer;
+      transition: .25s ease;
+    }
+
+    .event-open:hover {
+      background: var(--orange);
+      border-color: var(--orange);
+    }
+
+    /* MODALS */
+
     .modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(248, 244, 233, 0.95);
-        backdrop-filter: blur(8px);
-        z-index: 10000;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 40px 20px;
-        opacity: 0;
-        transition: opacity 0.3s ease;
+      position: fixed;
+      inset: 0;
+      background: rgba(248,244,233,.95);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      overflow-y: auto;
     }
 
     .modal-overlay.active {
-        display: flex;
-        opacity: 1;
+      display: flex;
+      animation: modalFade .25s ease both;
     }
 
     .modal-container {
-        position: relative;
-        max-width: 1000px;
-        width: 100%;
-        max-height: 85vh;
-        overflow-y: auto;
-        background: var(--paper);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 35px;
-        box-shadow: 0 20px 50px rgba(22, 77, 54, 0.1);
+      position: relative;
+      max-width: 1000px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 35px;
+      box-shadow: 0 20px 50px rgba(22,77,54,.1);
     }
 
     .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 15px;
     }
 
     .modal-title {
-        font-family: var(--serif);
-        font-size: 30px;
-        color: var(--green);
-        margin: 0;
+      font-family: var(--serif);
+      font-size: 30px;
+      color: var(--green);
+      margin: 0;
     }
 
     .close-btn {
-        background: var(--green);
-        color: var(--white);
-        border: none;
-        font-size: 24px;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background .2s ease;
+      flex-shrink: 0;
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      font-size: 24px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s ease;
     }
 
     .close-btn:hover {
-        background: var(--orange);
+      background: var(--orange);
     }
 
-    /* MODAL GALLERY WITH FULL UNUNCUT IMAGES */
     .modal-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 20px;
     }
 
     .modal-gallery img {
-        width: 100%;
-        aspect-ratio: 4/3;
-        object-fit: contain;
-        background: var(--paper-dark);
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-        cursor: zoom-in;
-        transition: transform .3s ease, box-shadow .3s ease;
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: contain;
+      background: var(--paper-dark);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,.06);
+      cursor: zoom-in;
+      transition: transform .3s ease, box-shadow .3s ease;
     }
 
     .modal-gallery img:hover {
-        transform: scale(1.04);
-        box-shadow: 0 10px 25px rgba(22, 77, 54, 0.15);
+      transform: scale(1.03);
+      box-shadow: 0 10px 25px rgba(22,77,54,.15);
     }
 
-    /* FULL-SCREEN EXPANDED PHOTO LIGHTBOX */
+    /* EVENT ARTICLE */
+
+    .event-article {
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.95;
+      overflow-wrap: break-word;
+    }
+
+    .event-article p {
+      margin: 0 0 18px;
+    }
+
+    .event-article h3 {
+      color: var(--green);
+      font-family: var(--serif);
+      font-size: 27px;
+      line-height: 1.3;
+      margin: 30px 0 12px;
+    }
+
+    .event-highlight {
+      padding: 18px 22px;
+      border-left: 3px solid var(--gold);
+      background: rgba(185,147,80,.08);
+      border-radius: 0 10px 10px 0;
+    }
+
+    .event-dishes {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 12px;
+      margin: 20px 0 28px;
+    }
+
+    .dish-card {
+      background: var(--ivory);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 17px 12px;
+      text-align: center;
+    }
+
+    .dish-card strong {
+      display: block;
+      color: var(--green);
+      font-family: var(--serif);
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .dish-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .gallery-heading {
+      color: var(--green);
+      font-family: var(--serif);
+      font-size: 30px;
+      margin: 35px 0 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* FULL-SCREEN PHOTO LIGHTBOX */
+
     .photo-lightbox {
-        position: fixed;
-        inset: 0;
-        background: rgba(13, 48, 34, 0.95);
-        backdrop-filter: blur(10px);
-        z-index: 20000;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
+      position: fixed;
+      inset: 0;
+      background: rgba(13,48,34,.96);
+      backdrop-filter: blur(10px);
+      z-index: 20000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
     .photo-lightbox.active {
-        display: flex;
+      display: flex;
     }
 
     .photo-lightbox img {
-        max-width: 90vw;
-        max-height: 90vh;
-        object-fit: contain;
-        border-radius: 8px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.5);
     }
 
     .photo-lightbox-close {
-        position: absolute;
-        top: 25px;
-        right: 35px;
-        color: var(--white);
-        font-size: 36px;
-        cursor: pointer;
-        user-select: none;
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 38px;
+      cursor: pointer;
+      user-select: none;
+      background: transparent;
+      border: none;
     }
 
     footer {
-        padding: 35px 0 50px;
-        border-top: 1px solid rgba(185,147,80,.25);
-        text-align: center;
+      padding: 35px 0 50px;
+      border-top: 1px solid rgba(185,147,80,.25);
+      text-align: center;
     }
 
-    .footer-title { color: var(--green); font-family: var(--serif); font-size: 27px; }
-    .footer-tagline { margin-top: 7px; color: var(--orange); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; }
-    .footer-text { margin-top: 18px; color: var(--muted); font-size: 11px; }
+    .footer-title {
+      color: var(--green);
+      font-family: var(--serif);
+      font-size: 27px;
+    }
 
-    @keyframes fadeDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+    .footer-tagline {
+      margin-top: 7px;
+      color: var(--orange);
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .footer-text {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes modalFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        flex-direction: column;
+      }
+
+      .nav-links {
+        justify-content: center;
+      }
+
+      .hero {
+        padding-top: 45px;
+      }
+
+      .folders-grid {
+        gap: 32px;
+        padding-bottom: 65px;
+      }
+
+      .section-heading {
+        padding-top: 45px;
+      }
+
+      .modal-overlay {
+        padding: 12px;
+      }
+
+      .modal-container {
+        padding: 20px;
+        max-height: 94vh;
+      }
+
+      .modal-title {
+        font-size: 25px;
+      }
+
+      .event-dishes {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-gallery {
+        grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+        gap: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- NAVIGATION -->
   <header class="topbar">
     <div class="page nav">
       <a href="../../index.html" class="brand">
         <div class="brand-mark">
-          <img src="../photos/favicon.jpg" alt="ANJUMAN ए TAREEKH">
+          <img src="../photos/favicon.jpg" alt="Anjuman-e-Tareekh logo">
         </div>
         <div>
           <div class="brand-name">ANJUMAN ए TAREEKH</div>
@@ -442,7 +673,7 @@
         </div>
       </a>
 
-      <nav class="nav-links">
+      <nav class="nav-links" aria-label="Main navigation">
         <a class="nav-link" href="../../index.html">Home</a>
         <a class="nav-link active" href="journey.html">Journey</a>
         <a class="nav-link" href="researchers.html">Researchers</a>
@@ -452,124 +683,400 @@
   </header>
 
   <main class="page">
+
+    <!-- JOURNEY INTRODUCTION -->
     <section class="hero">
       <div class="eyebrow">The Origin Story</div>
-      <h1>Where Curiosity Found Its Roots — The Beginning of Anjuman ए Tareekh .</h1>
+
+      <h1>Where Curiosity Found Its Roots — The Beginning of Anjuman ए Tareekh.</h1>
+
       <p class="hero-subtitle">
-        A look back at how our initiative began — capturing the early discussions, fieldwork, and moments where our research group first took shape.
+        A look back at how our initiative began — capturing the early
+        discussions, fieldwork, and moments where our research group
+        first took shape.
       </p>
     </section>
 
-    <!-- FOLDER DISPLAY SECTION -->
-    <section class="folders-grid">
-      
-      <!-- Folder 1: Team Establishment -->
-      <article class="folder-card" onclick="openFolder('team-establishment')">
+    <!-- MEETING FOLDERS -->
+    <section class="folders-grid" aria-label="Journey and meetings">
+
+      <!-- TEAM ESTABLISHMENT -->
+      <article class="folder-card"
+               onclick="openFolder('team-establishment')"
+               role="button" tabindex="0"
+               onkeydown="handleCardKey(event,'team-establishment')">
+
         <div class="folder-tab"></div>
+
         <div class="spiral-container">
-          <img class="spiral-photo" src="../photos/photo1.jpg" alt="Team Establishment Preview 1" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'12\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo1.jpg</text></svg>'">
-          <img class="spiral-photo" src="../photos/photo2.jpg" alt="Team Establishment Preview 2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'12\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo2.jpg</text></svg>'">
-          <img class="spiral-photo" src="../photos/photo3.jpg" alt="Team Establishment Preview 3" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'12\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo3.jpg</text></svg>'">
+          <img class="spiral-photo" src="../photos/photo1.jpg" alt="Team establishment preview 1">
+          <img class="spiral-photo" src="../photos/photo2.jpg" alt="Team establishment preview 2">
+          <img class="spiral-photo" src="../photos/photo3.jpg" alt="Team establishment preview 3">
         </div>
+
         <h2 class="folder-title">Team Establishment</h2>
       </article>
 
-      <!-- Folder 2: 1st Official Meeting -->
-      <article class="folder-card" onclick="openFolder('official-meeting')">
+      <!-- FIRST OFFICIAL MEETING -->
+      <article class="folder-card"
+               onclick="openFolder('official-meeting')"
+               role="button" tabindex="0"
+               onkeydown="handleCardKey(event,'official-meeting')">
+
         <div class="folder-tab"></div>
+
         <div class="spiral-container">
-          <img class="spiral-photo" src="../photos/m1.jpg" alt="Official Meeting Preview 1" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'12\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m1.jpg</text></svg>'">
-          <img class="spiral-photo" src="../photos/m2.jpg" alt="Official Meeting Preview 2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'12\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m2.jpg</text></svg>'">
-          <img class="spiral-photo" src="../photos/m3.jpg" alt="Official Meeting Preview 3" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'12\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m3.jpg</text></svg>'">
+          <img class="spiral-photo" src="../photos/m1.jpg" alt="Official meeting preview 1">
+          <img class="spiral-photo" src="../photos/m2.jpg" alt="Official meeting preview 2">
+          <img class="spiral-photo" src="../photos/m3.jpg" alt="Official meeting preview 3">
         </div>
+
         <h2 class="folder-title">⓵ st Official Meeting 🥳</h2>
       </article>
 
-      <!-- Folder 2: Team Meeting -->
-      <article class="folder-card" onclick="openFolder('⓶ nd Meeting')">
+      <!-- SECOND MEETING -->
+      <article class="folder-card"
+               onclick="openFolder('second-meeting')"
+               role="button" tabindex="0"
+               onkeydown="handleCardKey(event,'second-meeting')">
+
         <div class="folder-tab"></div>
+
         <div class="spiral-container">
-          <img class="spiral-photo" src="../photos/n1.jpg" alt="Team Establishment Preview 1" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'12\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>n1.jpg</text></svg>'">
-          <img class="spiral-photo" src="../photos/n2.jpg" alt="Team Establishment Preview 2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'12\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>n2.jpg</text></svg>'">
-          <img class="spiral-photo" src="../photos/n3.jpg" alt="Team Establishment Preview 3" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'12\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>n3.jpg</text></svg>'">
+          <img class="spiral-photo" src="../photos/n1.jpg" alt="Second meeting preview 1">
+          <img class="spiral-photo" src="../photos/n2.jpg" alt="Second meeting preview 2">
+          <img class="spiral-photo" src="../photos/n3.jpg" alt="Second meeting preview 3">
         </div>
+
         <h2 class="folder-title">⓶ nd Meeting</h2>
       </article>
-      
+
     </section>
+
+    <!-- NEW EVENTS SECTION: AFTER ALL MEETINGS -->
+    <section class="events-section" id="events">
+
+      <div class="section-heading">
+        <div class="eyebrow">Celebrations &amp; Heritage</div>
+
+        <h2>Events &amp; Experiences</h2>
+
+        <p class="section-description">
+          Every celebration tells a story. Discover how Anjuman-e-Tareekh
+          brings together culture, history, creativity, and the culinary
+          heritage of Lucknow through memorable events.
+        </p>
+      </div>
+
+      <div class="folders-grid">
+
+        <!-- JANMASHTAMI EVENT -->
+        <article class="folder-card event-card"
+                 onclick="openFolder('janmashtami-event')"
+                 role="button" tabindex="0"
+                 onkeydown="handleCardKey(event,'janmashtami-event')">
+
+          <div class="folder-tab"></div>
+
+          <div class="spiral-container">
+            <img class="spiral-photo" src="../photos/janmashtami1.jpg"
+                 alt="Janmashtami event photograph 1">
+
+            <img class="spiral-photo" src="../photos/janmashtami2.jpg"
+                 alt="Janmashtami event photograph 2">
+
+            <img class="spiral-photo" src="../photos/janmashtami3.jpg"
+                 alt="Janmashtami event photograph 3">
+          </div>
+
+          <span class="event-label">Cultural &amp; Culinary Heritage</span>
+
+          <h2 class="folder-title">Janmashtami Celebrations</h2>
+
+          <p class="event-description">
+            Three young chefs, traditional festive delicacies,
+            and the living culinary heritage of Lucknow.
+          </p>
+
+          <button class="event-open"
+                  onclick="event.stopPropagation();openFolder('janmashtami-event')">
+            Explore Event &rarr;
+          </button>
+
+        </article>
+
+      </div>
+    </section>
+
   </main>
 
-  <!-- FOLDER MODAL 1 -->
-  <div class="modal-overlay" id="modal-team-establishment" onclick="closeFolderOnOverlay(event, 'team-establishment')">
-    <div class="modal-container">
+  <!-- TEAM ESTABLISHMENT MODAL -->
+  <div class="modal-overlay" id="modal-team-establishment"
+       onclick="closeFolderOnOverlay(event,'team-establishment')">
+
+    <div class="modal-container" role="dialog" aria-modal="true"
+         aria-labelledby="title-team">
+
       <div class="modal-header">
-        <h2 class="modal-title">Team Establishment</h2>
-        <button class="close-btn" onclick="closeFolder('team-establishment')">&times;</button>
+        <h2 class="modal-title" id="title-team">Team Establishment</h2>
+        <button class="close-btn" aria-label="Close"
+                onclick="closeFolder('team-establishment')">&times;</button>
       </div>
+
       <div class="modal-gallery">
-        <img src="../photos/photo1.jpg" alt="Photo 1" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo1.jpg</text></svg>'">
-        <img src="../photos/photo2.jpg" alt="Photo 2" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo2.jpg</text></svg>'">
-        <img src="../photos/photo3.jpg" alt="Photo 3" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo3.jpg</text></svg>'">
-        <img src="../photos/photo4.jpg" alt="Photo 4" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>photo4.jpg</text></svg>'">
+        <img src="../photos/photo1.jpg" alt="Team establishment photo 1" onclick="expandImage(this.src)">
+        <img src="../photos/photo2.jpg" alt="Team establishment photo 2" onclick="expandImage(this.src)">
+        <img src="../photos/photo3.jpg" alt="Team establishment photo 3" onclick="expandImage(this.src)">
+        <img src="../photos/photo4.jpg" alt="Team establishment photo 4" onclick="expandImage(this.src)">
       </div>
     </div>
   </div>
 
-  <!-- FOLDER MODAL 2 -->
-  <div class="modal-overlay" id="modal-official-meeting" onclick="closeFolderOnOverlay(event, 'official-meeting')">
-    <div class="modal-container">
+  <!-- FIRST OFFICIAL MEETING MODAL -->
+  <div class="modal-overlay" id="modal-official-meeting"
+       onclick="closeFolderOnOverlay(event,'official-meeting')">
+
+    <div class="modal-container" role="dialog" aria-modal="true"
+         aria-labelledby="title-meeting-one">
+
       <div class="modal-header">
-        <h2 class="modal-title">⓵ st Official Meeting</h2>
-        <button class="close-btn" onclick="closeFolder('official-meeting')">&times;</button>
+        <h2 class="modal-title" id="title-meeting-one">⓵ st Official Meeting</h2>
+        <button class="close-btn" aria-label="Close"
+                onclick="closeFolder('official-meeting')">&times;</button>
       </div>
+
       <div class="modal-gallery">
-        <img src="../photos/m1.jpg" alt="Meeting 1" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m1.jpg</text></svg>'">
-        <img src="../photos/m2.jpg" alt="Meeting 2" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m2.jpg</text></svg>'">
-        <img src="../photos/m3.jpg" alt="Meeting 3" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m3.jpg</text></svg>'">
-        <img src="../photos/m4.jpg" alt="Meeting 4" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>m4.jpg</text></svg>'">
+        <img src="../photos/m1.jpg" alt="Official meeting photo 1" onclick="expandImage(this.src)">
+        <img src="../photos/m2.jpg" alt="Official meeting photo 2" onclick="expandImage(this.src)">
+        <img src="../photos/m3.jpg" alt="Official meeting photo 3" onclick="expandImage(this.src)">
+        <img src="../photos/m4.jpg" alt="Official meeting photo 4" onclick="expandImage(this.src)">
       </div>
     </div>
   </div>
 
-  <!-- FOLDER MODAL 3 -->
-  <div class="modal-overlay" id="modal-⓶ nd Meeting" onclick="closeFolderOnOverlay(event, '⓶ nd Meeting')">
-    <div class="modal-container">
+  <!-- SECOND MEETING MODAL -->
+  <div class="modal-overlay" id="modal-second-meeting"
+       onclick="closeFolderOnOverlay(event,'second-meeting')">
+
+    <div class="modal-container" role="dialog" aria-modal="true"
+         aria-labelledby="title-meeting-two">
+
       <div class="modal-header">
-        <h2 class="modal-title">⓶ nd Meeting</h2>
-        <button class="close-btn" onclick="closeFolder('⓶ nd Meeting')">&times;</button>
+        <h2 class="modal-title" id="title-meeting-two">⓶ nd Meeting</h2>
+        <button class="close-btn" aria-label="Close"
+                onclick="closeFolder('second-meeting')">&times;</button>
       </div>
+
       <div class="modal-gallery">
-        <img src="../photos/n1.jpg" alt="Meeting 1" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>n1.jpg</text></svg>'">
-        <img src="../photos/n2.jpg" alt="Meeting 2" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>n2.jpg</text></svg>'">
-        <img src="../photos/n3.jpg" alt="Meeting 3" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>n3.jpg</text></svg>'">
-        <img src="../photos/n4.jpg" alt="Meeting 4" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>n4.jpg</text></svg>'">
-        <img src="../photos/n5.jpg" alt="Meeting 5" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>n5.jpg</text></svg>'">
-        <img src="../photos/n6.jpg" alt="Meeting 6" onclick="expandImage(this.src)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\' fill=\'%23eee7d6\'><text x=\'50%\' y=\'50%\' font-family=\'sans-serif\' font-size=\'14\' fill=\'%2368736c\' text-anchor=\'middle\' dominant-baseline=\'middle\'>n6.jpg</text></svg>'">
+        <img src="../photos/n1.jpg" alt="Second meeting photo 1" onclick="expandImage(this.src)">
+        <img src="../photos/n2.jpg" alt="Second meeting photo 2" onclick="expandImage(this.src)">
+        <img src="../photos/n3.jpg" alt="Second meeting photo 3" onclick="expandImage(this.src)">
+        <img src="../photos/n4.jpg" alt="Second meeting photo 4" onclick="expandImage(this.src)">
+        <img src="../photos/n5.jpg" alt="Second meeting photo 5" onclick="expandImage(this.src)">
+        <img src="../photos/n6.jpg" alt="Second meeting photo 6" onclick="expandImage(this.src)">
       </div>
     </div>
   </div>
 
-  <!-- SINGLE PHOTO FULL-SCREEN EXPAND LIGHTBOX -->
-  <div class="photo-lightbox" id="photo-lightbox" onclick="closeExpandedImage()">
-    <span class="photo-lightbox-close">&times;</span>
-    <img id="expanded-photo-img" src="" alt="Expanded View">
+  <!-- JANMASHTAMI EVENT MODAL -->
+  <div class="modal-overlay" id="modal-janmashtami-event"
+       onclick="closeFolderOnOverlay(event,'janmashtami-event')">
+
+    <div class="modal-container" role="dialog" aria-modal="true"
+         aria-labelledby="title-janmashtami">
+
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-janmashtami">
+          Janmashtami Celebrations
+        </h2>
+
+        <button class="close-btn" aria-label="Close event"
+                onclick="closeFolder('janmashtami-event')">&times;</button>
+      </div>
+
+      <!-- COMPLETE EVENT ARTICLE -->
+      <article class="event-article">
+
+        <p class="event-highlight">
+          <strong>
+            Tradition on a Plate: Celebrating Janmashtami and the
+            Culinary Heritage of Lucknow
+          </strong>
+        </p>
+
+        <p>
+          As part of the Janmashtami celebrations, Anjuman-e-Tareekh
+          organised a beautiful culinary event that brought together
+          the festive spirit of Janmashtami and the rich culinary
+          heritage of Lucknow. The event provided a wonderful platform
+          for students to showcase their creativity, culinary skills,
+          and appreciation for traditional Indian cuisine.
+        </p>
+
+        <h3>The Three Young Culinary Stars</h3>
+
+        <p>
+          The highlight of the event was the participation of three
+          talented students. Eva Mishra of Class 9E prepared the
+          delicate and much-loved Makkhan Malai, while Satakshi of
+          Class 9M presented Makhana Kheer. Jiya Chauhan of Class 9M
+          prepared the royal Shahi Tukda.
+        </p>
+
+        <p>
+          Each dish reflected not only the students' culinary talent
+          but also the richness and diversity of traditional cuisine
+          associated with our cultural heritage.
+        </p>
+
+        <div class="event-dishes">
+
+          <div class="dish-card">
+            <strong>Makkhan Malai</strong>
+            <span>Eva Mishra · Class 9E</span>
+          </div>
+
+          <div class="dish-card">
+            <strong>Makhana Kheer</strong>
+            <span>Satakshi · Class 9M</span>
+          </div>
+
+          <div class="dish-card">
+            <strong>Shahi Tukda</strong>
+            <span>Jiya Chauhan · Class 9M</span>
+          </div>
+
+        </div>
+
+        <h3>Appreciation and Encouragement</h3>
+
+        <p>
+          The students proudly presented their creations to Abha Anant
+          Ma'am, Principal, and Savita Mall Ma'am, Vice Principal, who
+          appreciated their efforts and enthusiasm.
+        </p>
+
+        <p>
+          The in-charges, Swarnlata Ma'am, Archana Ma'am, Diksha Ma'am,
+          and Sadaf Ma'am, also encouraged and appreciated the students
+          for their dedication and creativity. The showstoppers were
+          truly a great sight for all of us to see and get inspired from!
+        </p>
+
+        <p>
+          Adding a special touch to the event were the beautifully
+          designed badges made by Bhavya and Avishi, which made the
+          young participants stand out and added to the festive atmosphere.
+        </p>
+
+        <h3>Janmashtami and Lucknow's Living Heritage</h3>
+
+        <p>
+          Janmashtami holds a special place in Lucknow's cultural
+          landscape, reflecting the city's tradition of celebrating
+          festivals with shared joy, art, music, and food. Known for
+          its beautiful Ganga-Jamuni tehzeeb, Lucknow has long embraced
+          festivals as occasions that bring communities together.
+        </p>
+
+        <p>
+          The celebrations also carry a strong culinary connection,
+          with traditional festive dishes becoming a part of the occasion.
+          Thus, Janmashtami in Lucknow is not just a religious celebration,
+          but also a reflection of the city's living heritage, cultural
+          harmony, and love for its traditions.
+        </p>
+
+        <h3>A Celebration to Remember</h3>
+
+        <p>
+          The three young chefs truly became the showstoppers of the day,
+          turning traditional recipes into a celebration of skill, culture,
+          and creativity. Through this event, Anjuman-e-Tareekh celebrated
+          not only Janmashtami but also the living culinary heritage of
+          Lucknow, reminding us that traditions continue to thrive when
+          they are passed on to the next generation.
+        </p>
+
+      </article>
+
+      <!-- EVENT PHOTO GALLERY -->
+      <h3 class="gallery-heading">Moments from the Celebration</h3>
+
+      <div class="modal-gallery">
+        <img src="../photos/janmashtami1.jpg"
+             alt="Janmashtami celebration photograph 1"
+             onclick="expandImage(this.src)">
+
+        <img src="../photos/janmashtami2.jpg"
+             alt="Janmashtami celebration photograph 2"
+             onclick="expandImage(this.src)">
+
+        <img src="../photos/janmashtami3.jpg"
+             alt="Janmashtami celebration photograph 3"
+             onclick="expandImage(this.src)">
+
+        <img src="../photos/janmashtami4.jpg"
+             alt="Janmashtami celebration photograph 4"
+             onclick="expandImage(this.src)">
+
+        <img src="../photos/janmashtami5.jpg"
+             alt="Janmashtami celebration photograph 5"
+             onclick="expandImage(this.src)">
+
+        <img src="../photos/janmashtami6.jpg"
+             alt="Janmashtami celebration photograph 6"
+             onclick="expandImage(this.src)">
+      </div>
+
+    </div>
   </div>
 
+  <!-- FULL-SCREEN PHOTO LIGHTBOX -->
+  <div class="photo-lightbox" id="photo-lightbox"
+       onclick="closeExpandedImage()">
+
+    <button class="photo-lightbox-close"
+            aria-label="Close expanded photograph"
+            onclick="closeExpandedImage()">&times;</button>
+
+    <img id="expanded-photo-img" src="" alt="Expanded photograph">
+  </div>
+
+  <!-- FOOTER -->
   <footer>
     <div class="page">
       <div class="footer-title">ANJUMAN ए TAREEKH</div>
-      <div class="footer-tagline">Tareekh Aur Anjuman — Research Meets Zaika</div>
-      <div class="footer-text">Explore • Research • Create • Document • Share • Lead • Preserve</div>
+      <div class="footer-tagline">
+        Tareekh Aur Anjuman — Research Meets Zaika
+      </div>
+      <div class="footer-text">
+        Explore • Research • Create • Document • Share • Lead • Preserve
+      </div>
     </div>
   </footer>
 
   <script>
     function openFolder(folderId) {
-      document.getElementById('modal-' + folderId).classList.add('active');
+      const modal = document.getElementById('modal-' + folderId);
+
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
     }
 
     function closeFolder(folderId) {
-      document.getElementById('modal-' + folderId).classList.remove('active');
+      const modal = document.getElementById('modal-' + folderId);
+
+      if (modal) {
+        modal.classList.remove('active');
+
+        if (!document.querySelector('.modal-overlay.active') &&
+            !document.getElementById('photo-lightbox').classList.contains('active')) {
+          document.body.style.overflow = '';
+        }
+      }
     }
 
     function closeFolderOnOverlay(event, folderId) {
@@ -578,14 +1085,46 @@
       }
     }
 
+    function handleCardKey(event, folderId) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openFolder(folderId);
+      }
+    }
+
     function expandImage(src) {
+      const lightbox = document.getElementById('photo-lightbox');
       document.getElementById('expanded-photo-img').src = src;
-      document.getElementById('photo-lightbox').classList.add('active');
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
 
     function closeExpandedImage() {
-      document.getElementById('photo-lightbox').classList.remove('active');
+      const lightbox = document.getElementById('photo-lightbox');
+
+      lightbox.classList.remove('active');
+      document.getElementById('expanded-photo-img').src = '';
+
+      if (!document.querySelector('.modal-overlay.active')) {
+        document.body.style.overflow = '';
+      }
     }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        const lightbox = document.getElementById('photo-lightbox');
+
+        if (lightbox.classList.contains('active')) {
+          closeExpandedImage();
+        } else {
+          document.querySelectorAll('.modal-overlay.active').forEach(function(modal) {
+            modal.classList.remove('active');
+          });
+
+          document.body.style.overflow = '';
+        }
+      }
+    });
   </script>
 
 </body>
