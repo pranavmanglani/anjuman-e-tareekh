@@ -2256,7 +2256,7 @@ function openProfile(card) {
     detailGroupName.textContent = card.dataset.group || name;
     detailLeader.textContent = card.dataset.leader || "Not specified";
     detailCoLeader.textContent = card.dataset.coLeader || "Not specified";
-    detailRole.textContent = role.replace(/^\\S+\\s*/, "");
+    detailRole.textContent = role.replace(/^\S+\s*/, "");
     detailMembers.textContent = card.dataset.members || "Not specified";
 
 
