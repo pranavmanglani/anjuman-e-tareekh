@@ -565,6 +565,89 @@ a {
 }
 
 
+.research-search {
+    max-width: 680px;
+    margin: 0 auto 35px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: rgba(255,255,255,.72);
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 30px rgba(22,77,54,.04);
+    transition: border-color .25s ease, box-shadow .25s ease;
+}
+.research-search:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 10px 32px rgba(22,77,54,.09);
+}
+.search-symbol {
+    color: var(--orange);
+    font-family: var(--serif);
+    font-size: 27px;
+    line-height: 1;
+}
+.research-search input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--green);
+    font: 14px var(--sans);
+}
+.research-search input::placeholder { color: var(--muted); opacity: .85; }
+.search-count {
+    max-width: 680px;
+    margin: -20px auto 25px;
+    color: var(--muted);
+    font-size: 11px;
+    text-align: right;
+}
+.no-results {
+    display: none;
+    grid-column: 1 / -1;
+    padding: 35px 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-align: center;
+    font-family: var(--serif);
+    font-size: 21px;
+}
+.group-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 30px;
+}
+.group-detail-card {
+    padding: 18px 20px;
+    background: linear-gradient(145deg, rgba(255,255,255,.82), rgba(249,244,232,.72));
+    border: 1px solid rgba(185,147,80,.32);
+    box-shadow: 0 8px 24px rgba(22,77,54,.04);
+}
+.group-detail-card:last-child { grid-column: 1 / -1; }
+.group-detail-label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--orange);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+.group-detail-value {
+    color: var(--green);
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+@media (max-width: 650px) {
+    .research-search { padding: 12px 15px; }
+    .group-details { grid-template-columns: 1fr; }
+    .group-detail-card:last-child { grid-column: auto; }
+}
+
 .students-grid {
 
     display: grid;
@@ -1459,6 +1542,11 @@ footer {
 
 
 
+    <div class="research-search">
+        <span class="search-symbol">⌕</span>
+        <input type="search" id="researchSearch" placeholder="Search researchers, groups, roles or members..." aria-label="Search researchers and groups">
+    </div>
+
     <div class="students-grid">
 
 
@@ -1468,7 +1556,7 @@ footer {
             data-role="👑 TAREEKH RAHBEER"
             data-bio="Project Guide & Mentor steering the Tareekh research initiatives."
             data-work="Project guidance, mentorship, strategic direction, and historical supervision."
-            data-contributions="Mentorship|Project Leadership|Historical Guidance"
+            data-contributions="Mentorship|Project Leadership|Historical Guidance" data-group="Tareekh Rahbeer" data-leader="Mr. Anjan Ghosh" data-co-leader="Not specified" data-members="Mr. Anjan Ghosh"
         >
 
             <div>
@@ -1519,7 +1607,7 @@ footer {
             data-role="🌸 TAREEKH SAATHIS"
             data-bio="Senior Student Coordinators (XI-A) leading student workflows and team execution."
             data-work="Student coordination, core workflow oversight, and team leadership across all research wings."
-            data-contributions="Team Coordination|Leadership|Student Management"
+            data-contributions="Team Coordination|Leadership|Student Management" data-group="Tareekh Saathis" data-leader="Annika & Samishtha" data-co-leader="Not specified" data-members="Annika, Samishtha"
         >
 
             <div>
@@ -1569,7 +1657,7 @@ footer {
             data-role="💻 WEBSITE DEVELOPMENT"
             data-bio="Developers driving technical architecture, user experience, and web deployment."
             data-work="Website architecture, interface design, performance optimization, and custom web components."
-            data-contributions="Pranav|Divyansh|Tejas|Tanush|Siddhi"
+            data-contributions="Pranav|Divyansh|Tejas|Tanush|Siddhi" data-group="Tareekh-e-Webkars" data-leader="Pranav Manglani" data-co-leader="Not specified" data-members="Pranav, Divyansh, Tejas, Tanush, Siddhi"
         >
 
             <div>
@@ -1620,7 +1708,7 @@ footer {
             data-role="🎵 MUSIC & AUDIO"
             data-bio="Audio curators and sound engineers shaping the soundscape of Tareekh stories."
             data-work="Audio design, musical arrangements, sound editing, and heritage music integration."
-            data-contributions="Ritvija|Anant"
+            data-contributions="Ritvija|Anant" data-group="Tareekh Sur" data-leader="Not specified" data-co-leader="Not specified" data-members="Ritvija, Anant"
         >
 
             <div>
@@ -1670,7 +1758,7 @@ footer {
             data-role="🎨 CREATIVE CONTENT & DESIGN"
             data-bio="Creative directors designing visual themes, brand assets, and artistic layouts."
             data-work="Visual design, graphic creation, artwork curation, and creative direction."
-            data-contributions="Alya|Drishti|Arnavi"
+            data-contributions="Alya|Drishti|Arnavi" data-group="Tareekh Creatives" data-leader="Not specified" data-co-leader="Not specified" data-members="Alya, Drishti, Arnavi"
         >
 
             <div>
@@ -1720,7 +1808,7 @@ footer {
             data-role="📚 TAREEKH ARCHIVISTS"
             data-bio="Lead archivist managing historical records, source documentation, and data preservation."
             data-work="Archive organization, historical source verification, document cataloging, and records preservation."
-            data-contributions="Archiving|Documentation|Historical Records"
+            data-contributions="Archiving|Documentation|Historical Records" data-group="Tareekh Archivists" data-leader="Navya Gupta" data-co-leader="Not specified" data-members="Navya Gupta"
         >
 
             <div>
@@ -1770,7 +1858,7 @@ footer {
             data-role="⭐ CORE LEADERSHIP"
             data-bio="Dedicated members working directly with the Tareekh Saathis to manage ongoing operations."
             data-work="Operational support, event management, cross-department execution, and leadership development."
-            data-contributions="Open for entry|Leadership Development|Operations"
+            data-contributions="Open for entry|Leadership Development|Operations" data-group="Tareekh Core" data-leader="Not specified" data-co-leader="Not specified" data-members="Open for entry"
         >
 
             <div>
@@ -1821,7 +1909,7 @@ footer {
             data-role="🔎 RESEARCH COLLECTIVE"
             data-bio="The foundational collective of all 61 members driving the Awadhi research effort."
             data-work="Field research, interviews, culinary exploration, story writing, and heritage preservation."
-            data-contributions="All 61 Members|Common Research Responsibility|Fieldwork & Stories"
+            data-contributions="All 61 Members|Common Research Responsibility|Fieldwork & Stories" data-group="Tareekh Researchers" data-leader="Not specified" data-co-leader="Not specified" data-members="All 61 members"
         >
 
             <div>
@@ -1921,6 +2009,29 @@ footer {
 
                 <span></span>
 
+            </div>
+
+            <div class="group-details" aria-label="Group details">
+                <div class="group-detail-card">
+                    <span class="group-detail-label">Group Name</span>
+                    <div class="group-detail-value" id="detailGroupName">—</div>
+                </div>
+                <div class="group-detail-card">
+                    <span class="group-detail-label">Leader</span>
+                    <div class="group-detail-value" id="detailLeader">Not specified</div>
+                </div>
+                <div class="group-detail-card">
+                    <span class="group-detail-label">Co-Leader</span>
+                    <div class="group-detail-value" id="detailCoLeader">Not specified</div>
+                </div>
+                <div class="group-detail-card">
+                    <span class="group-detail-label">Role</span>
+                    <div class="group-detail-value" id="detailRole">—</div>
+                </div>
+                <div class="group-detail-card">
+                    <span class="group-detail-label">Members</span>
+                    <div class="group-detail-value" id="detailMembers">Not specified</div>
+                </div>
             </div>
 
 
@@ -2048,6 +2159,46 @@ const profileContributions =
         "profileContributions"
     );
 
+const researchSearch = document.getElementById("researchSearch");
+const searchCount = document.getElementById("searchCount");
+const detailGroupName = document.getElementById("detailGroupName");
+const detailLeader = document.getElementById("detailLeader");
+const detailCoLeader = document.getElementById("detailCoLeader");
+const detailRole = document.getElementById("detailRole");
+const detailMembers = document.getElementById("detailMembers");
+const studentCards = [...document.querySelectorAll(".student-card")];
+
+function filterResearchers() {
+    const query = researchSearch.value.trim().toLowerCase();
+    let visible = 0;
+
+    studentCards.forEach(card => {
+        const searchableText = [
+            card.dataset.name,
+            card.dataset.role,
+            card.dataset.bio,
+            card.dataset.work,
+            card.dataset.contributions,
+            card.dataset.group,
+            card.dataset.leader,
+            card.dataset.coLeader,
+            card.dataset.members,
+            card.textContent
+        ].join(" ").toLowerCase();
+
+        const matches = searchableText.includes(query);
+        card.style.display = matches ? "" : "none";
+        if (matches) visible++;
+    });
+
+    searchCount.textContent = query
+        ? `${visible} ${visible === 1 ? "group" : "groups"} found`
+        : `${studentCards.length} research groups`;
+}
+
+researchSearch.addEventListener("input", filterResearchers);
+filterResearchers();
+
 
 document
     .querySelectorAll(".student-card")
@@ -2101,6 +2252,12 @@ function openProfile(card) {
 
     profileRole.textContent =
         role;
+
+    detailGroupName.textContent = card.dataset.group || name;
+    detailLeader.textContent = card.dataset.leader || "Not specified";
+    detailCoLeader.textContent = card.dataset.coLeader || "Not specified";
+    detailRole.textContent = role.replace(/^\\S+\\s*/, "");
+    detailMembers.textContent = card.dataset.members || "Not specified";
 
 
     profileBio.textContent =
