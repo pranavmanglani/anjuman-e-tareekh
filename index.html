@@ -856,6 +856,8 @@ section.block{
 
 
 /* =========================================================
+   
+   
    BLOG GRID
 ========================================================= */
 
@@ -912,6 +914,36 @@ section.block{
 }
 
 .blog-card:hover{
+    transform:translateY(-5px);
+
+    box-shadow:
+        0 20px 40px rgba(22,77,54,.15);
+}
+
+
+.jingle-card{
+    background:var(--white);
+
+    border:1px solid var(--border);
+    
+    margin:30px;
+    
+    padding:10px;
+	
+    border-radius:20px;
+
+    overflow:hidden;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+.jingle-card:hover{
     transform:translateY(-5px);
 
     box-shadow:
@@ -1497,6 +1529,7 @@ footer{
     </div>
 
 
+
     <!-- COMMUNITY FAVOURITES -->
 
     <div class="sky" id="sky">
@@ -1694,7 +1727,341 @@ footer{
 
 </section>
 
+<!-- =========================================================
+     ANJUMAN E TAREEKH JINGLE
+========================================================= -->
 
+<section class="block jingle-section">
+
+    <div class="page">
+
+        <div class="block-head">
+
+            <div class="eyebrow">
+                ✦ The Sound of Our Heritage ✦
+            </div>
+
+            <h2>
+                Our Jingle.
+                <span>Our Identity.</span>
+            </h2>
+
+            <p>
+                A musical expression of ANJUMAN ए TAREEKH
+                and our journey of preserving history and culture.
+            </p>
+
+        </div>
+
+        <div class="jingle-card">
+
+            <div class="jingle-content">
+
+                <div class="jingle-label">
+                    ANJUMAN ए TAREEKH · ORIGINAL JINGLE
+                </div>
+
+                <h3>
+                    Anjuman-E-Tareekh Jingle
+                </h3>
+
+                <p class="jingle-description">
+                    Tareekh Aur Anjuman — Research Meets Zaika
+                </p>
+
+                <audio
+                    class="jingle-audio"
+                    controls
+                    preload="metadata"
+                >
+                    <source
+                        src="jingle.mp3"
+                        type="audio/mpeg"
+                    >
+
+                    Your browser does not support audio playback.
+                </audio>
+
+                <div class="jingle-footer">
+                    <span>✦ A sound that tells our story</span>
+                    <span class="jingle-note">Listen & Explore</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+
+/* =========================================================
+   JINGLE SECTION — TAREEKH STORIES THEME
+========================================================= */
+
+.jingle-section {
+    padding-top: 40px !important;
+    padding-bottom: 80px !important;
+}
+
+/* Main card */
+
+.jingle-card {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 26px;
+
+    width: min(760px, 100%);
+    margin: 0 auto;
+
+    padding: 32px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--paper),
+            var(--white)
+        );
+
+    border: 1px solid var(--border);
+    border-radius: 22px;
+
+    box-shadow:
+        0 14px 35px rgba(22, 77, 54, 0.08);
+
+    overflow: hidden;
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease,
+        border-color .3s ease;
+}
+
+.jingle-card::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 5px;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--orange),
+            var(--gold),
+            var(--green)
+        );
+}
+
+.jingle-card:hover {
+    transform: translateY(-5px);
+
+    border-color: var(--gold);
+
+    box-shadow:
+        0 22px 45px rgba(22, 77, 54, 0.13);
+}
+
+/* Music decoration */
+
+.jingle-decoration {
+    width: 112px;
+    height: 112px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            var(--green-light),
+            var(--green-dark)
+        );
+
+    border: 3px solid var(--gold);
+
+    box-shadow:
+        0 8px 22px rgba(22, 77, 54, 0.2),
+        inset 0 0 0 5px rgba(255,255,255,.08);
+}
+
+.jingle-decoration span {
+    color: var(--gold-light);
+
+    font-family: var(--serif);
+
+    font-size: 60px;
+    line-height: 1;
+
+    animation: jingleFloat 3s ease-in-out infinite;
+}
+
+@keyframes jingleFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Text */
+
+.jingle-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.jingle-label {
+    margin-bottom: 8px;
+
+    color: var(--orange);
+
+    font-family: var(--sans);
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+    line-height: 1.7;
+}
+
+.jingle-content h3 {
+    margin: 0;
+
+    color: var(--green);
+
+    font-family: var(--serif);
+
+    font-size: clamp(23px, 3vw, 31px);
+    font-weight: 700;
+
+    line-height: 1.15;
+}
+
+.jingle-description {
+    margin: 8px 0 16px;
+
+    color: var(--muted);
+
+    font-family: var(--serif);
+
+    font-size: 17px;
+    font-style: italic;
+
+    line-height: 1.5;
+}
+
+/* Native audio controls */
+
+.jingle-audio {
+    display: block;
+
+    width: 100%;
+    max-width: 460px;
+    height: 42px;
+
+    accent-color: var(--green);
+}
+
+/* Footer details */
+
+.jingle-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-top: 14px;
+    padding-top: 12px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.jingle-note {
+    color: var(--gold);
+
+    font-weight: 700;
+
+    letter-spacing: .5px;
+}
+
+/* Mobile responsiveness */
+
+@media (max-width: 600px) {
+
+    .jingle-section {
+        padding-top: 30px !important;
+        padding-bottom: 50px !important;
+    }
+
+    .jingle-card {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 20px;
+
+        padding: 26px 22px;
+    }
+
+    .jingle-decoration {
+        width: 82px;
+        height: 82px;
+    }
+
+    .jingle-decoration span {
+        font-size: 46px;
+    }
+
+    .jingle-content {
+        width: 100%;
+    }
+
+    .jingle-audio {
+        max-width: 100%;
+    }
+
+    .jingle-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .jingle-card,
+    .jingle-decoration span {
+        animation: none;
+        transition: none;
+    }
+
+    .jingle-decoration span {
+        transform: none;
+    }
+}
+
+</style>
 
 <!-- =========================================================
      FOOTER
