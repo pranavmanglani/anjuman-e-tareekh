@@ -1546,8 +1546,10 @@ footer {
         <span class="search-symbol">⌕</span>
         <input type="search" id="researchSearch" placeholder="Search researchers, groups, roles or members..." aria-label="Search researchers and groups">
     </div>
+    <div class="search-count" id="searchCount" aria-live="polite">8 research groups</div>
 
     <div class="students-grid">
+        <div class="no-results" id="noResults" role="status">No research groups match your search.</div>
 
 
         <article
@@ -2161,6 +2163,7 @@ const profileContributions =
 
 const researchSearch = document.getElementById("researchSearch");
 const searchCount = document.getElementById("searchCount");
+const noResults = document.getElementById("noResults");
 const detailGroupName = document.getElementById("detailGroupName");
 const detailLeader = document.getElementById("detailLeader");
 const detailCoLeader = document.getElementById("detailCoLeader");
@@ -2191,12 +2194,19 @@ function filterResearchers() {
         if (matches) visible++;
     });
 
-    searchCount.textContent = query
-        ? `${visible} ${visible === 1 ? "group" : "groups"} found`
-        : `${studentCards.length} research groups`;
+    if (searchCount) {
+        searchCount.textContent = query
+            ? `${visible} ${visible === 1 ? "group" : "groups"} found`
+            : `${studentCards.length} research groups`;
+    }
+    if (noResults) {
+        noResults.style.display = visible === 0 ? "block" : "none";
+    }
 }
 
-researchSearch.addEventListener("input", filterResearchers);
+if (researchSearch) {
+    researchSearch.addEventListener("input", filterResearchers);
+}
 filterResearchers();
 
 
@@ -2256,7 +2266,8 @@ function openProfile(card) {
     detailGroupName.textContent = card.dataset.group || name;
     detailLeader.textContent = card.dataset.leader || "Not specified";
     detailCoLeader.textContent = card.dataset.coLeader || "Not specified";
-    detailRole.textContent = role.replace(/^\S+\s*/, "");
+    // Remove a leading decorative emoji, without cutting the first word of text-only roles.
+    detailRole.textContent = role.replace(/^[^\p{L}\p{N}]*\s*/u, "").trim() || "Not specified";
     detailMembers.textContent = card.dataset.members || "Not specified";
 
 
