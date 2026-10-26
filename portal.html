@@ -309,6 +309,20 @@
             background:#777;
         }
 
+        .review-meta, .submission-meta { color:#8a7d68; font-size:13px; margin:8px 0 12px; }
+        .status-pill { display:inline-block; border-radius:999px; padding:5px 10px; font-size:12px; font-weight:bold; text-transform:capitalize; background:#eee7d9; color:#5c5140; }
+        .status-pending { background:#fff0c2; color:#795500; }
+        .status-approved { background:#dff3e5; color:#176b36; }
+        .status-rejected { background:#f8dddd; color:#8b1e1e; }
+        .review-actions { display:flex; gap:10px; align-items:flex-start; margin-top:14px; }
+        .review-actions button { flex:1; margin-top:0; }
+        .approve-btn { background:#176b36; }
+        .reject-btn { background:#8b2f2f; }
+        .reason-input { min-height:80px; margin:12px 0; }
+        .review-image { width:100%; max-height:220px; object-fit:cover; border-radius:10px; margin-top:12px; border:1px solid #e4ddcf; }
+        .review-content { white-space:pre-wrap; line-height:1.6; color:#444; overflow-wrap:anywhere; }
+        .section-note { color:#777; font-size:14px; line-height:1.5; }
+
         @media (max-width:600px) {
             .blogs-heading {
                 align-items:flex-start;
@@ -447,11 +461,11 @@
 
 
                 <label for="blogFlavor">
-                    Flavour Category/Caption
+                    Flavour Category
                 </label>
 
                 <select id="blogFlavor" required>
-                    <option value="" disabled selected>Choose the closest flavour or Add a caption if not a dish group</option>
+                    <option value="" disabled selected>Choose the closest flavour</option>
                     <option value="tangy">Chatpata &amp; Tangy</option>
                     <option value="savory">Spiced &amp; Savory</option>
                     <option value="rich">Buttery &amp; Rich</option>
@@ -464,7 +478,7 @@
                 <input
                     type="text"
                     id="blogFlavorCustom"
-                    placeholder="Custom caption"
+                    placeholder="Name your custom flavour, e.g. smoky, nutty..."
                     style="display:none; margin-top:10px;"
                 >
 
@@ -498,7 +512,7 @@
 
 
                 <button type="submit">
-                    Publish Blog
+                    Submit for Approval
                 </button>
 
             </form>
@@ -532,6 +546,35 @@
             <div id="myBlogsList"></div>
 
         </div>
+
+        <!-- SUBMISSION HISTORY -->
+        <div class="card" id="mySubmissionsCard">
+            <div class="blogs-heading">
+                <div>
+                    <h2>Submission History</h2>
+                    <p>Track new blogs, edits, and deletion requests.</p>
+                </div>
+                <button type="button" id="refreshSubmissionsButton" class="small-btn">Refresh</button>
+            </div>
+            <div id="submissionsLoading" class="blogs-status">Loading submission history...</div>
+            <div id="submissionsEmpty" class="blogs-status" style="display:none;">No submissions yet.</div>
+            <div id="mySubmissionsList"></div>
+        </div>
+
+        <!-- REVIEW QUEUE: only displayed to authorized reviewers -->
+        <section class="card" id="reviewQueueCard" style="display:none;">
+            <div class="blogs-heading">
+                <div>
+                    <h2>Review Queue</h2>
+                    <p>Approve or reject submissions before they affect the public site.</p>
+                </div>
+                <button type="button" id="refreshReviewQueueButton" class="small-btn">Refresh Queue</button>
+            </div>
+            <div id="reviewQueueMessage" class="message"></div>
+            <div id="reviewQueueLoading" class="blogs-status">Loading review queue...</div>
+            <div id="reviewQueueEmpty" class="blogs-status" style="display:none;">No pending submissions.</div>
+            <div id="reviewQueueList"></div>
+        </section>
 
         <!-- EDIT BLOG MODAL -->
         <div id="editModal" class="modal">
@@ -760,6 +803,7 @@
 
                 // Load only this worker's blogs.
                 await loadMyBlogs();
+                await loadReviewQueue();
 
             } catch (error) {
 
@@ -871,7 +915,7 @@
 
                     showMessage(
                         message,
-                        result.error || "Could not publish blog.",
+                        result.error || "Could not submit blog for approval.",
                         false
                     );
 
@@ -881,7 +925,7 @@
 
                 showMessage(
                     message,
-                    "Blog published successfully!",
+                    result.message || "Blog submitted for approval. It will appear publicly after a reviewer approves it.",
                     true
                 );
 
@@ -896,6 +940,7 @@
 
                 blogFlavorCustom.style.display = "none";
                 blogImagePreviewWrap.style.display = "none";
+                await loadMyBlogs();
 
 
             } catch (error) {
@@ -920,109 +965,254 @@
     */
 
     async function loadMyBlogs() {
-
         const list = document.getElementById("myBlogsList");
         const loading = document.getElementById("blogsLoading");
         const empty = document.getElementById("blogsEmpty");
+        const submissionsList = document.getElementById("mySubmissionsList");
+        const submissionsLoading = document.getElementById("submissionsLoading");
+        const submissionsEmpty = document.getElementById("submissionsEmpty");
 
-        list.innerHTML = "";
+        list.replaceChildren();
+        submissionsList.replaceChildren();
         loading.style.display = "block";
         empty.style.display = "none";
+        submissionsLoading.style.display = "block";
+        submissionsEmpty.style.display = "none";
+        empty.textContent = "You haven't published any blogs yet.";
 
         try {
-
             const response = await fetch(MANAGE_BLOGS_URL, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     username: workerUsername,
                     password: workerPassword,
                     action: "list"
                 })
             });
-
             const result = await response.json();
-
             if (!response.ok || !result.success) {
                 throw new Error(result.error || "Could not load blogs.");
             }
 
             const blogs = result.blogs || [];
-
+            const submissions = result.submissions || [];
             loading.style.display = "none";
+            submissionsLoading.style.display = "none";
 
             if (!blogs.length) {
+                empty.style.display = "block";
+            }
+
+            blogs.forEach(function(blog) {
+                const item = document.createElement("div");
+                item.className = "blog-item";
+                const date = blog.created_at ? new Date(blog.created_at).toLocaleDateString("en-IN", {
+                    day: "numeric", month: "short", year: "numeric"
+                }) : "";
+                const title = document.createElement("h3");
+                title.textContent = blog.blog_name || "Untitled";
+                const dateEl = document.createElement("div");
+                dateEl.className = "blog-date";
+                dateEl.textContent = date + (blog.published === false ? " · Unpublished" : " · Published");
+                const preview = document.createElement("div");
+                preview.className = "blog-preview";
+                preview.textContent = blog.content || "";
+                const actions = document.createElement("div");
+                actions.className = "blog-actions";
+                const edit = document.createElement("button");
+                edit.type = "button";
+                edit.className = "edit-btn";
+                edit.textContent = "Propose Edit";
+                edit.addEventListener("click", () => openEditBlog(blog));
+                const remove = document.createElement("button");
+                remove.type = "button";
+                remove.className = "delete-btn";
+                remove.textContent = "Request Deletion";
+                remove.addEventListener("click", () => deleteBlog(blog.id, blog.blog_name));
+                actions.append(edit, remove);
+                item.append(title, dateEl, preview, actions);
+                list.appendChild(item);
+            });
+
+            if (!submissions.length) {
+                submissionsEmpty.style.display = "block";
+            } else {
+                submissions.forEach(function(submission) {
+                    const item = document.createElement("div");
+                    item.className = "blog-item";
+                    const title = document.createElement("h3");
+                    title.textContent = submission.blog_name || "Untitled submission";
+                    const meta = document.createElement("div");
+                    meta.className = "submission-meta";
+                    const when = submission.created_at ? new Date(submission.created_at).toLocaleString("en-IN") : "";
+                    meta.textContent = (submission.submission_type || "submission") + " · " + when + " · ";
+                    const pill = document.createElement("span");
+                    pill.className = "status-pill status-" + (submission.status || "pending");
+                    pill.textContent = submission.status || "pending";
+                    meta.appendChild(pill);
+                    const preview = document.createElement("div");
+                    preview.className = "blog-preview";
+                    preview.textContent = submission.content || "";
+                    item.append(title, meta, preview);
+                    if (submission.review_reason) {
+                        const reason = document.createElement("p");
+                        reason.className = "section-note";
+                        reason.textContent = "Reviewer note: " + submission.review_reason;
+                        item.appendChild(reason);
+                    }
+                    submissionsList.appendChild(item);
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            loading.style.display = "none";
+            submissionsLoading.style.display = "none";
+            empty.style.display = "block";
+            empty.textContent = error.message || "Could not load your blogs.";
+        }
+    }
+
+    async function loadReviewQueue() {
+        const card = document.getElementById("reviewQueueCard");
+        const loading = document.getElementById("reviewQueueLoading");
+        const empty = document.getElementById("reviewQueueEmpty");
+        const list = document.getElementById("reviewQueueList");
+        const message = document.getElementById("reviewQueueMessage");
+        list.replaceChildren();
+        message.style.display = "none";
+        loading.style.display = "block";
+        empty.style.display = "none";
+
+        try {
+            const response = await fetch(MANAGE_BLOGS_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: workerUsername,
+                    password: workerPassword,
+                    action: "review_list"
+                })
+            });
+            const result = await response.json();
+            loading.style.display = "none";
+            if (response.status === 403) {
+                card.style.display = "none";
+                return;
+            }
+            if (!response.ok || !result.success) {
+                card.style.display = "block";
+                showMessage(message, result.error || "Could not load review queue.", false);
+                return;
+            }
+
+            card.style.display = "block";
+            const submissions = result.submissions || [];
+            if (!submissions.length) {
                 empty.style.display = "block";
                 return;
             }
 
-            blogs.forEach(function(blog) {
-
-                const item = document.createElement("div");
+            submissions.forEach(function(submission) {
+                const item = document.createElement("article");
                 item.className = "blog-item";
+                const title = document.createElement("h3");
+                title.textContent = submission.blog_name || "Untitled submission";
+                const meta = document.createElement("div");
+                meta.className = "review-meta";
+                const date = submission.created_at ? new Date(submission.created_at).toLocaleString("en-IN") : "";
+                meta.textContent = (submission.submission_type || "submission").toUpperCase() + " · Submitted by " + (submission.submitted_by || "unknown") + " · " + date;
+                const preview = document.createElement("div");
+                preview.className = "review-content";
+                preview.textContent = submission.content || "No text content.";
+                item.append(title, meta, preview);
 
-                const date = blog.created_at
-                    ? new Date(blog.created_at).toLocaleDateString(
-                        "en-IN",
-                        {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric"
+                if (submission.image) {
+                    try {
+                        const imageUrl = new URL(submission.image);
+                        if (imageUrl.protocol === "https:" || imageUrl.protocol === "http:") {
+                            const img = document.createElement("img");
+                            img.className = "review-image";
+                            img.alt = "Submitted blog image";
+                            img.loading = "lazy";
+                            img.src = imageUrl.href;
+                            item.appendChild(img);
                         }
-                    )
-                    : "";
+                    } catch (_) { /* Ignore invalid image URLs. */ }
+                }
 
-                item.innerHTML = `
-                    <h3></h3>
-                    <div class="blog-date"></div>
-                    <div class="blog-preview"></div>
-
-                    <div class="blog-actions">
-                        <button type="button" class="edit-btn">
-                            Edit
-                        </button>
-
-                        <button type="button" class="delete-btn">
-                            Delete
-                        </button>
-                    </div>
-                `;
-
-                item.querySelector("h3").textContent =
-                    blog.blog_name || "Untitled";
-
-                item.querySelector(".blog-date").textContent =
-                    date;
-
-                item.querySelector(".blog-preview").textContent =
-                    blog.content || "";
-
-                item.querySelector(".edit-btn")
-                    .addEventListener("click", function() {
-                        openEditBlog(blog);
-                    });
-
-                item.querySelector(".delete-btn")
-                    .addEventListener("click", function() {
-                        deleteBlog(blog.id, blog.blog_name);
-                    });
-
+                const reason = document.createElement("textarea");
+                reason.className = "reason-input";
+                reason.placeholder = "Optional reviewer note (required if rejecting)";
+                reason.setAttribute("aria-label", "Reviewer note or rejection reason");
+                const actions = document.createElement("div");
+                actions.className = "review-actions";
+                const approve = document.createElement("button");
+                approve.type = "button";
+                approve.className = "approve-btn";
+                approve.textContent = "Approve";
+                const reject = document.createElement("button");
+                reject.type = "button";
+                reject.className = "reject-btn";
+                reject.textContent = "Reject";
+                approve.addEventListener("click", () => reviewSubmission(submission.id, "approve", "", approve, item));
+                reject.addEventListener("click", () => {
+                    if (!reason.value.trim()) {
+                        showMessage(message, "Enter a reason before rejecting this submission.", false);
+                        reason.focus();
+                        return;
+                    }
+                    reviewSubmission(submission.id, "reject", reason.value.trim(), reject, item);
+                });
+                actions.append(approve, reject);
+                item.append(reason, actions);
                 list.appendChild(item);
             });
-
         } catch (error) {
-
             console.error(error);
-
             loading.style.display = "none";
-
-            empty.style.display = "block";
-            empty.textContent =
-                error.message || "Could not load your blogs.";
+            card.style.display = "block";
+            showMessage(message, error.message || "Could not connect to the review queue.", false);
         }
     }
+
+    async function reviewSubmission(submissionId, action, reason, button, item) {
+        button.disabled = true;
+        const originalText = button.textContent;
+        button.textContent = action === "approve" ? "Approving..." : "Rejecting...";
+        const message = document.getElementById("reviewQueueMessage");
+        try {
+            const response = await fetch(MANAGE_BLOGS_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: workerUsername,
+                    password: workerPassword,
+                    action,
+                    submission_id: submissionId,
+                    ...(action === "reject" ? { reason } : {})
+                })
+            });
+            const result = await response.json();
+            if (!response.ok || !result.success) {
+                showMessage(message, result.error || "Review action failed.", false);
+                return;
+            }
+            showMessage(message, result.message || "Review saved.", true);
+            item.remove();
+            if (!document.getElementById("reviewQueueList").children.length) {
+                document.getElementById("reviewQueueEmpty").style.display = "block";
+            }
+            await loadMyBlogs();
+        } catch (error) {
+            console.error(error);
+            showMessage(message, "Could not connect to server.", false);
+        } finally {
+            button.disabled = false;
+            button.textContent = originalText;
+        }
+    }
+
     function openEditBlog(blog) {
 
         document.getElementById("editBlogId").value =
@@ -1126,7 +1316,7 @@
 
                 showMessage(
                     message,
-                    "Blog updated successfully.",
+                    result.message || "Edit submitted for approval. The published blog remains unchanged until approved.",
                     true
                 );
 
@@ -1159,9 +1349,9 @@
         }
 
         const confirmed = confirm(
-            'Delete "' +
+            'Request deletion of "' +
             (blogName || "this blog") +
-            '"?\n\nThis cannot be undone.'
+            '"?\n\nThe blog remains published until a reviewer approves the request.'
         );
 
         if (!confirmed) {
@@ -1190,6 +1380,7 @@
                 return;
             }
 
+            alert(result.message || "Deletion request submitted for review.");
             await loadMyBlogs();
 
         } catch (error) {
@@ -1201,6 +1392,11 @@
     }
     document.getElementById("refreshBlogsButton")
         .addEventListener("click", loadMyBlogs);
+    document.getElementById("refreshSubmissionsButton")
+        .addEventListener("click", loadMyBlogs);
+
+    document.getElementById("refreshReviewQueueButton")
+        .addEventListener("click", loadReviewQueue);
     document
         .getElementById("logoutButton")
         .addEventListener("click", function() {
@@ -1210,6 +1406,9 @@
             workerNameValue = "";
 
             document.getElementById("myBlogsList").innerHTML = "";
+            document.getElementById("mySubmissionsList").innerHTML = "";
+            document.getElementById("reviewQueueList").innerHTML = "";
+            document.getElementById("reviewQueueCard").style.display = "none";
             document.getElementById("blogsLoading").style.display = "none";
             document.getElementById("blogsEmpty").style.display = "none";
             closeEditBlog();
