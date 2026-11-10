@@ -674,17 +674,19 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
 
                     <!-- ================= SCREEN 5: DIGITAL RECIPE BOOK & CULTURAL FACTS ================= -->
                     <div id="screenRecipes" class="hidden p-4 flex-col justify-start flex-grow space-y-3">
-                        <div class="flex items-center justify-between border-b border-awadh-gold/30 pb-2.5">
-                            <div>
-                                <span class="text-[10px] uppercase tracking-wider text-awadh-saffron font-bold">Cultural Archive of Lucknow</span>
-                                <h2 class="font-royal text-lg gold-gradient-text">📖 Shahi Dastarkhwan</h2>
+                        <div class="nawabi-card rounded-xl p-3.5 border border-awadh-gold/50">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-[10px] uppercase tracking-wider font-bold block" style="color: #ffd66a;">Cultural Archive of Lucknow</span>
+                                    <h2 class="font-royal text-lg gold-gradient-text">📖 Shahi Dastarkhwan</h2>
+                                </div>
+                                <button onclick="showGameScreen('screenHome')" class="royal-btn px-3 py-1 rounded-lg text-xs">
+                                    <i class="fa-solid fa-arrow-left mr-1"></i> Home
+                                </button>
                             </div>
-                            <button onclick="showGameScreen('screenHome')" class="px-2.5 py-1 rounded-lg bg-awadh-deepRed border border-awadh-gold/40 text-xs text-awadh-goldLight">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> Home
-                            </button>
                         </div>
 
-                        <div id="recipeBookContainer" class="space-y-3 overflow-y-auto max-h-[480px] pr-1">
+                        <div id="recipeBookContainer" class="space-y-3 flex-grow pr-1">
                             <!-- Populated by JS -->
                         </div>
                     </div>
@@ -842,13 +844,13 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
             { id: 'ghee', name: 'Pure Desi Ghee', hindi: 'देसी घी', icon: '🍯' },
             { id: 'rabri', name: 'Thickened Rabri', hindi: 'लच्छेदार रबड़ी', icon: '🍮' },
             { id: 'kesar_chashni', name: 'Kesar & Sugar Syrup', hindi: 'केसर चाशनी', icon: '🌼' },
-            { id: 'elaichi', name: 'Green Cardamom', hindi: 'हरी इलायची', icon: '🫛' },
+            { id: 'elaichi', name: 'Green Cardamom', hindi: 'हरी इलायची', icon: '🌿' },
             { id: 'basmati', name: 'Aged Sella Basmati', hindi: 'बासमती चावल', icon: '🌾' },
             { id: 'cloves_nuts', name: 'Cloves & Candied Petha', hindi: 'लौंग व अशरफी', icon: '🍬' },
             { id: 'short_rice', name: 'Kalanamak Short Rice', hindi: 'कनी चावल', icon: '🍚' },
             { id: 'shabnam_dew', name: 'Winter Night Dew', hindi: 'शबनम (ओस)', icon: '❄️' },
             { id: 'red_chili', name: 'Lal Mirch (Distractor!)', hindi: 'लाल मिर्च', icon: '🌶️' },
-            { id: 'tamarind', name: 'Sour Imli (Distractor!)', hindi: 'खट्टी इमली', icon: '🫘' }
+            { id: 'tamarind', name: 'Sour Imli (Distractor!)', hindi: 'खट्टी इमली', icon: '🌰' }
         ];
 
         /* Authentic Utensils for Stage 2 */
@@ -2176,10 +2178,13 @@ function resetChefRound(){clearInterval(chefRoundTimer);malaiStory.level=1;malai
 <style id="level-one-flow-and-exit-visibility-fix">
 /* Fix the royal ingredient counter and keep every control readable on phones */
 #malaiLevelContent .chef-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
-#malaiLevelContent .chef-ingredient { min-height:82px; padding:8px 4px; font-size:12px; line-height:1.25; overflow-wrap:anywhere; }
+#malaiLevelContent .chef-ingredient { min-height:82px; padding:8px 4px; font-size:12px; line-height:1.25; overflow-wrap:anywhere; color:#2c1810!important; }
+#malaiLevelContent .chef-ingredient span:not(.em) { color:#2c1810!important; font-weight:700!important; }
 #malaiLevelContent .chef-ingredient .em { font-size:27px; line-height:1.1; }
-#malaiLevelContent .chef-ingredient.correct { background:#d9f3d8!important; color:#123c20!important; border-color:#25834a!important; }
-#malaiLevelContent .chef-ingredient.wrong { background:#ffe0df!important; color:#76211e!important; border-color:#c7463e!important; }
+#malaiLevelContent .chef-ingredient.correct,
+#malaiLevelContent .chef-ingredient.correct span:not(.em) { background:#d9f3d8!important; color:#123c20!important; border-color:#25834a!important; }
+#malaiLevelContent .chef-ingredient.wrong,
+#malaiLevelContent .chef-ingredient.wrong span:not(.em) { background:#ffe0df!important; color:#76211e!important; border-color:#c7463e!important; }
 #screenMalaiLevels > div:first-child button { background:#7b1530!important; color:#ffffff!important; border:2px solid #f2ca67!important; box-shadow:0 2px 0 #4c0b1d!important; font-weight:900!important; opacity:1!important; text-shadow:none!important; }
 #screenMalaiLevels > div:first-child button:focus-visible { outline:3px solid #176b43!important; outline-offset:3px; }
 #malaiContinueBtn { background:linear-gradient(135deg,#7d1731,#a92743)!important; color:#fff9e9!important; border:2px solid #edc55d!important; box-shadow:0 3px 0 #4b0d20!important; }
