@@ -457,20 +457,22 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
                     </div>
 
                     <!-- ================= SCREEN 2: DISH SELECTOR (FOR NON-TIMER MODE) ================= -->
-                    <div id="screenDishSelect" class="hidden p-4 flex-col justify-between flex-grow space-y-3">
-                        <div class="flex items-center justify-between border-b border-awadh-gold/30 pb-2.5">
-                            <div>
-                                <span class="text-[10px] uppercase tracking-wider text-awadh-pista font-bold">Non-Timer Mode • Unlimited Time</span>
-                                <h2 class="font-royal text-lg text-awadh-gold">Select Your Royal Sweet</h2>
+                    <div id="screenDishSelect" class="hidden p-4 flex-col flex-grow space-y-3">
+                        <div class="nawabi-card rounded-xl p-3.5 border border-awadh-gold/50 space-y-2">
+                            <div class="flex items-center justify-between border-b border-awadh-gold/30 pb-2">
+                                <div>
+                                    <span class="text-[10px] uppercase tracking-wider font-bold block" style="color: #ffd66a;">Non-Timer Mode • Unlimited Time</span>
+                                    <h2 class="font-royal text-lg gold-gradient-text">Select Your Royal Sweet</h2>
+                                </div>
+                                <button onclick="showGameScreen('screenHome')" class="royal-btn px-3 py-1 rounded-lg text-xs">
+                                    <i class="fa-solid fa-arrow-left mr-1"></i> Back
+                                </button>
                             </div>
-                            <button onclick="showGameScreen('screenHome')" class="px-2.5 py-1 rounded-lg bg-awadh-deepRed border border-awadh-gold/40 text-xs text-awadh-goldLight">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> Back
-                            </button>
-                        </div>
 
-                        <p class="text-xs text-awadh-goldLight/80">
-                            Pick any of the 5 iconic Awadhi sweets below. There is no countdown limit—take your time or race to set a new <strong>Personal &amp; Top 10 Best Time</strong>!
-                        </p>
+                            <p class="text-xs sm:text-sm text-white leading-relaxed">
+                                Pick any of the 5 iconic Awadhi sweets below. There is no countdown limit—take your time or race to set a new <strong style="color: #ffd66a;">Personal & Top 10 Best Time</strong>!
+                            </p>
+                        </div>
 
                         <!-- Dynamic List of 5 Sweets -->
                         <div id="dishSelectList" class="space-y-2.5 overflow-y-auto max-h-[470px] pr-1">
