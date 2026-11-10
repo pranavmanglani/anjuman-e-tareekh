@@ -631,29 +631,31 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
                     </div>
 
                     <!-- ================= SCREEN 4: TOP 10 LEADERBOARD ================= -->
-                    <div id="screenLeaderboard" class="hidden p-4 flex-col justify-between flex-grow space-y-3">
-                        <div class="flex items-center justify-between border-b border-awadh-gold/30 pb-2.5">
-                            <div>
-                                <span class="text-[10px] uppercase tracking-wider text-awadh-gold font-bold">Shahi Darbar Rankings</span>
-                                <h2 class="font-royal text-lg gold-gradient-text">🏆 Top 10 Leaderboard</h2>
+                    <div id="screenLeaderboard" class="hidden p-4 flex-col flex-grow space-y-3">
+                        <div class="nawabi-card rounded-xl p-3.5 border border-awadh-gold/50 space-y-2.5">
+                            <div class="flex items-center justify-between border-b border-awadh-gold/30 pb-2">
+                                <div>
+                                    <span class="text-[10px] uppercase tracking-wider font-bold block" style="color: #ffd66a;">Shahi Darbar Rankings</span>
+                                    <h2 class="font-royal text-lg gold-gradient-text">🏆 Top 10 Leaderboard</h2>
+                                </div>
+                                <button onclick="showGameScreen('screenHome')" class="royal-btn px-3 py-1 rounded-lg text-xs">
+                                    <i class="fa-solid fa-arrow-left mr-1"></i> Home
+                                </button>
                             </div>
-                            <button onclick="showGameScreen('screenHome')" class="px-2.5 py-1 rounded-lg bg-awadh-deepRed border border-awadh-gold/40 text-xs text-awadh-goldLight">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> Home
-                            </button>
-                        </div>
 
-                        <!-- Dish Filter Tabs for Leaderboard -->
-                        <div>
-                            <label class="text-[10px] uppercase tracking-wider text-awadh-goldLight/70 block mb-1.5">
-                                Filter Top 10 Best Completion Times by Dish:
-                            </label>
-                            <div id="leaderboardDishTabs" class="flex gap-1.5 overflow-x-auto pb-1">
-                                <!-- Populated by JS -->
+                            <!-- Dish Filter Tabs for Leaderboard -->
+                            <div>
+                                <label class="text-xs uppercase tracking-wider text-white font-semibold block mb-1.5">
+                                    Filter Top 10 Best Completion Times by Dish:
+                                </label>
+                                <div id="leaderboardDishTabs" class="flex gap-1.5 overflow-x-auto pb-1">
+                                    <!-- Populated by JS -->
+                                </div>
                             </div>
                         </div>
 
                         <!-- Top 10 Table -->
-                        <div class="nawabi-card rounded-xl p-2.5 flex-grow overflow-y-auto max-h-[380px]">
+                        <div class="nawabi-card rounded-xl p-2.5 overflow-y-auto">
                             <div class="grid grid-cols-12 text-[10px] uppercase tracking-wider text-awadh-gold font-semibold border-b border-awadh-gold/30 pb-1.5 mb-2 px-2">
                                 <div class="col-span-2">Rank</div>
                                 <div class="col-span-5">Confectioner</div>
@@ -665,9 +667,8 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between gap-2 text-[11px] text-awadh-goldLight/75">
-                            <span><i class="fa-solid fa-circle-info text-awadh-gold mr-1"></i> Faster times rank higher!</span>
-                            <button onclick="resetLeaderboards()" class="text-awadh-rose underline hover:text-white">Reset Demo Scores</button>
+                        <div class="nawabi-card rounded-xl px-3.5 py-2.5 border border-awadh-gold/40 text-center text-xs text-white">
+                            <span><i class="fa-solid fa-circle-info mr-1" style="color: #ffd66a;"></i> Faster times rank higher!</span>
                         </div>
                     </div>
 
