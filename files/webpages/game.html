@@ -425,8 +425,8 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
                             <div class="home-challenge-ribbon">✿ &nbsp; CHOOSE YOUR CHALLENGE &nbsp; ✿</div>
                         </section>
                         <section class="home-level-grid">
-                            <button onclick="startMalaiLevels();" class="home-level-card"><div class="home-level-art ingredients-art">🥣<span>🥜　🥛　✨</span></div><div class="home-level-number">LEVEL 1</div><h3>THE INGREDIENT<br>CHALLENGE</h3><small>Choose the right ingredients</small></button>
-                            <button onclick="startMalaiLevels();" class="home-level-card"><div class="home-level-art malai-art">🥛<span>〰️</span></div><div class="home-level-number">LEVEL 2</div><h3>THE MALAI<br>MASTERY CHALLENGE</h3><small>Master technique and timing</small></button>
+                            <button onclick="startMalaiLevels(1);" class="home-level-card"><div class="home-level-art ingredients-art">🥣<span>🥜 🥛 ✨</span></div><div class="home-level-number">LEVEL 1</div><h3>THE INGREDIENT<br>CHALLENGE</h3><small>Choose the right ingredients</small></button>
+                            <button onclick="startMalaiLevels(2);" class="home-level-card"><div class="home-level-art malai-art">🥛<span>〰️</span></div><div class="home-level-number">LEVEL 2</div><h3>THE MALAI<br>MASTERY CHALLENGE</h3><small>Master technique and timing</small></button>
                             <button onclick="showComingSoonModal()" class="home-level-card locked"><div class="home-level-art">🔒<span>🥣</span></div><div class="home-level-number">LEVEL 3</div><h3>THE SECRET<br>FILLING CHALLENGE</h3><small>Coming Soon…</small></button>
                         </section>
                         <section class="home-extra-actions">
@@ -526,8 +526,8 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
                             </div>
                         </div>
 
-                        <!-- DYNAMIC STAGE CONTAINER -->
-                        <div id="stageContainer" class="flex-grow flex flex-col justify-between nawabi-card rounded-2xl p-3 overflow-y-auto">
+                              <!-- DYNAMIC STAGE CONTAINER -->
+                        <div id="stageContainer" class="flex-grow flex flex-col nawabi-card rounded-2xl p-3 overflow-y-auto">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-semibold text-awadh-gold">🧺 Shahi Pantry (3/5 Selected)</span>
                     <span class="text-[10px] text-awadh-goldLight/70">Tap correct ingredients</span>
@@ -631,29 +631,31 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
                     </div>
 
                     <!-- ================= SCREEN 4: TOP 10 LEADERBOARD ================= -->
-                    <div id="screenLeaderboard" class="hidden p-4 flex-col justify-between flex-grow space-y-3">
-                        <div class="flex items-center justify-between border-b border-awadh-gold/30 pb-2.5">
-                            <div>
-                                <span class="text-[10px] uppercase tracking-wider text-awadh-gold font-bold">Shahi Darbar Rankings</span>
-                                <h2 class="font-royal text-lg gold-gradient-text">🏆 Top 10 Leaderboard</h2>
+                    <div id="screenLeaderboard" class="hidden p-4 flex-col flex-grow space-y-3">
+                        <div class="nawabi-card rounded-xl p-3.5 border border-awadh-gold/50 space-y-2.5">
+                            <div class="flex items-center justify-between border-b border-awadh-gold/30 pb-2">
+                                <div>
+                                    <span class="text-[10px] uppercase tracking-wider font-bold block" style="color: #ffd66a;">Shahi Darbar Rankings</span>
+                                    <h2 class="font-royal text-lg gold-gradient-text">🏆 Top 10 Leaderboard</h2>
+                                </div>
+                                <button onclick="showGameScreen('screenHome')" class="royal-btn px-3 py-1 rounded-lg text-xs">
+                                    <i class="fa-solid fa-arrow-left mr-1"></i> Home
+                                </button>
                             </div>
-                            <button onclick="showGameScreen('screenHome')" class="px-2.5 py-1 rounded-lg bg-awadh-deepRed border border-awadh-gold/40 text-xs text-awadh-goldLight">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> Home
-                            </button>
-                        </div>
 
-                        <!-- Dish Filter Tabs for Leaderboard -->
-                        <div>
-                            <label class="text-[10px] uppercase tracking-wider text-awadh-goldLight/70 block mb-1.5">
-                                Filter Top 10 Best Completion Times by Dish:
-                            </label>
-                            <div id="leaderboardDishTabs" class="flex gap-1.5 overflow-x-auto pb-1">
-                                <!-- Populated by JS -->
+                            <!-- Dish Filter Tabs for Leaderboard -->
+                            <div>
+                                <label class="text-xs uppercase tracking-wider text-white font-semibold block mb-1.5">
+                                    Filter Top 10 Best Completion Times by Dish:
+                                </label>
+                                <div id="leaderboardDishTabs" class="flex gap-1.5 overflow-x-auto pb-1">
+                                    <!-- Populated by JS -->
+                                </div>
                             </div>
                         </div>
 
                         <!-- Top 10 Table -->
-                        <div class="nawabi-card rounded-xl p-2.5 flex-grow overflow-y-auto max-h-[380px]">
+                        <div class="nawabi-card rounded-xl p-2.5 overflow-y-auto">
                             <div class="grid grid-cols-12 text-[10px] uppercase tracking-wider text-awadh-gold font-semibold border-b border-awadh-gold/30 pb-1.5 mb-2 px-2">
                                 <div class="col-span-2">Rank</div>
                                 <div class="col-span-5">Confectioner</div>
@@ -665,25 +667,26 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between gap-2 text-[11px] text-awadh-goldLight/75">
-                            <span><i class="fa-solid fa-circle-info text-awadh-gold mr-1"></i> Faster times rank higher!</span>
-                            <button onclick="resetLeaderboards()" class="text-awadh-rose underline hover:text-white">Reset Demo Scores</button>
+                        <div class="nawabi-card rounded-xl px-3.5 py-2.5 border border-awadh-gold/40 text-center text-xs text-white">
+                            <span><i class="fa-solid fa-circle-info mr-1" style="color: #ffd66a;"></i> Faster times rank higher!</span>
                         </div>
                     </div>
 
                     <!-- ================= SCREEN 5: DIGITAL RECIPE BOOK & CULTURAL FACTS ================= -->
                     <div id="screenRecipes" class="hidden p-4 flex-col justify-start flex-grow space-y-3">
-                        <div class="flex items-center justify-between border-b border-awadh-gold/30 pb-2.5">
-                            <div>
-                                <span class="text-[10px] uppercase tracking-wider text-awadh-saffron font-bold">Cultural Archive of Lucknow</span>
-                                <h2 class="font-royal text-lg gold-gradient-text">📖 Shahi Dastarkhwan</h2>
+                        <div class="nawabi-card rounded-xl p-3.5 border border-awadh-gold/50">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-[10px] uppercase tracking-wider font-bold block" style="color: #ffd66a;">Cultural Archive of Lucknow</span>
+                                    <h2 class="font-royal text-lg gold-gradient-text">📖 Shahi Dastarkhwan</h2>
+                                </div>
+                                <button onclick="showGameScreen('screenHome')" class="royal-btn px-3 py-1 rounded-lg text-xs">
+                                    <i class="fa-solid fa-arrow-left mr-1"></i> Home
+                                </button>
                             </div>
-                            <button onclick="showGameScreen('screenHome')" class="px-2.5 py-1 rounded-lg bg-awadh-deepRed border border-awadh-gold/40 text-xs text-awadh-goldLight">
-                                <i class="fa-solid fa-arrow-left mr-1"></i> Home
-                            </button>
                         </div>
 
-                        <div id="recipeBookContainer" class="space-y-3 overflow-y-auto max-h-[480px] pr-1">
+                        <div id="recipeBookContainer" class="space-y-3 flex-grow pr-1">
                             <!-- Populated by JS -->
                         </div>
                     </div>
@@ -841,13 +844,13 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
             { id: 'ghee', name: 'Pure Desi Ghee', hindi: 'देसी घी', icon: '🍯' },
             { id: 'rabri', name: 'Thickened Rabri', hindi: 'लच्छेदार रबड़ी', icon: '🍮' },
             { id: 'kesar_chashni', name: 'Kesar & Sugar Syrup', hindi: 'केसर चाशनी', icon: '🌼' },
-            { id: 'elaichi', name: 'Green Cardamom', hindi: 'हरी इलायची', icon: '🫛' },
+            { id: 'elaichi', name: 'Green Cardamom', hindi: 'हरी इलायची', icon: '🌿' },
             { id: 'basmati', name: 'Aged Sella Basmati', hindi: 'बासमती चावल', icon: '🌾' },
             { id: 'cloves_nuts', name: 'Cloves & Candied Petha', hindi: 'लौंग व अशरफी', icon: '🍬' },
             { id: 'short_rice', name: 'Kalanamak Short Rice', hindi: 'कनी चावल', icon: '🍚' },
             { id: 'shabnam_dew', name: 'Winter Night Dew', hindi: 'शबनम (ओस)', icon: '❄️' },
             { id: 'red_chili', name: 'Lal Mirch (Distractor!)', hindi: 'लाल मिर्च', icon: '🌶️' },
-            { id: 'tamarind', name: 'Sour Imli (Distractor!)', hindi: 'खट्टी इमली', icon: '🫘' }
+            { id: 'tamarind', name: 'Sour Imli (Distractor!)', hindi: 'खट्टी इमली', icon: '🌰' }
         ];
 
         /* Authentic Utensils for Stage 2 */
@@ -2064,8 +2067,9 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
 let malaiStory={level:1,score:0,selected:[],answers:[],timingDone:false};
 const malaiItems=[
 {id:'malai',name:'Fresh Malai',icon:'🥛',correct:true},{id:'sugar',name:'Sugar',icon:'🍚',correct:true},{id:'cardamom',name:'Cardamom',icon:'🌿',correct:true},{id:'pista',name:'Chopped Pistachios',icon:'🥜',correct:true},{id:'almonds',name:'Almonds',icon:'🌰',correct:true},{id:'silver',name:'Edible Silver Leaf',icon:'✨',optional:true},{id:'besan',name:'Besan',icon:'🟡'},{id:'turmeric',name:'Turmeric',icon:'🟠'},{id:'mustard',name:'Mustard Seeds',icon:'⚫'},{id:'chilli',name:'Red Chilli Powder',icon:'🌶️'},{id:'tomato',name:'Tomato',icon:'🍅'},{id:'salt',name:'Salt',icon:'🧂'}];
-function startMalaiLevels(){renderPlayerChoices();showGameScreen('screenPlayerSelect');}
-function beginMalaiLevels(){malaiStory={level:1,score:0,selected:[],answers:[],timingDone:false};showGameScreen('screenMalaiLevels');renderMalaiLevel();}
+let targetMalaiStartLevel = 1;
+function startMalaiLevels(startLevel = 1){targetMalaiStartLevel = startLevel;renderPlayerChoices();showGameScreen('screenPlayerSelect');}
+function beginMalaiLevels(){malaiStory={level:targetMalaiStartLevel,score:0,selected:[],answers:[],timingDone:false};showGameScreen('screenMalaiLevels');renderMalaiLevel();}
 function renderMalaiLevel(){let c=document.getElementById('malaiLevelContent'),n=document.getElementById('malaiContinueBtn');n.classList.add('hidden');document.getElementById('malaiScore').textContent=malaiStory.score;
 if(malaiStory.level===1){document.getElementById('malaiLevelLabel').textContent='LEVEL 1 • THE INGREDIENT CHALLENGE';document.getElementById('malaiLevelIntro').textContent='Help Ustad Zaika select the ingredients for Malai Gilori before time runs out.';c.innerHTML=`<div class="player-in-game-badge"><span class="player-in-game-avatar">${selectedPlayer().avatar}</span><span>YOUR PLAYER<br><strong>${selectedPlayer().name}</strong></span></div><div class="chef-game"><p class="text-xs mb-2">🥣 Tap the ingredients that belong in Malai Gilori. Tap Ustad Zaika for a hint!</p><div class="flex justify-between items-center text-xs mb-2"><span>⏱ Time: <b id="chefTime">60</b>s</span><span>Selected: <b id="chefCount">0</b></span></div><div class="chef-playarea"><aside class="chefPanel" id="chefPanel"><div class="speech" id="chefSpeech">Salaam, apprentice! Pick the ingredients for our royal sweet.</div><img class="chefImg" src="${document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || ""}" alt="Ustad Zaika, the friendly Nawabi chef"><div class="chef-reaction" id="chefReaction" aria-live="polite">👨‍🍳</div><div class="chefName">USTAD ZAIKA</div><button type="button" class="chefHintBtn" onclick="event.stopPropagation();chefHint()">TAP FOR A HINT</button></aside><div class="chef-tray"><div class="chef-trayhead">✦ INGREDIENTS ON THE COUNTER ✦</div><div class="chef-grid">${[['malai', '🥛', 'Fresh Malai'], ['sugar', '🍚', 'Sugar'], ['cardamom', '🌿', 'Cardamom'], ['pista', '🥜', 'Pistachios'], ['almonds', '🌰', 'Almonds'], ['silver', '✨', 'Silver Leaf (optional)'], ['turmeric', '🟡', 'Turmeric'], ['mustard', '🌱', 'Mustard Seeds'], ['chilli', '🌶️', 'Red Chilli'], ['besan', '🌾', 'Besan'], ['salt', '🧂', 'Salt'], ['tomato', '🍅', 'Tomato']].map(([id,em,name])=>`<button type="button" class="chef-ingredient" id="chef_${id}" onclick="chooseChefIngredient('${id}')"><span class="em">${em}</span><span>${name}</span></button>`).join('')}</div><div class="chef-actions"><button type="button" class="royal-btn" onclick="submitChefRound()">Submit ✨</button><button type="button" class="emerald-btn" onclick="resetChefRound()">Try Again ↻</button></div><div class="chef-feedback" id="chefFeedback" role="status"></div></div></div></div>`;startChefRound();
 }else if(malaiStory.level===2){document.getElementById('malaiLevelLabel').textContent='LEVEL 2 • THE MALAI MASTERY CHALLENGE';document.getElementById('malaiLevelIntro').textContent='Technique, timing and observation';malaiStory.answers=[];malaiStory.timingDone=false;c.innerHTML=`<div class="chef-level2-panel"><div class="chef-level2-character"><img class="chef-level2-img" src="${document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || ""}" alt="Ustad Zaika the royal chef"><div class="chef-reaction chef-level2-reaction" id="chefReaction" aria-live="polite">👨‍🍳</div></div><div class="chef-level2-talk"><div class="chef-level2-name">USTAD ZAIKA</div><div class="speech" id="chefSpeech">Salaam, apprentice! Show me your technique and timing skills.</div><div class="chef-level2-caption">Choose carefully — I’m watching your progress!</div></div></div><section class="rounded-xl bg-[#073c2b] border border-awadh-gold/30 p-3"><p class="text-xs font-bold text-awadh-gold mb-2">🥛 CHALLENGE 1: Choose the Correct Technique (+10)</p>${[['A','Heat the malai rapidly over a high flame'],['B','Gently prepare and collect delicate layers of malai'],['C','Mix continuously until it thickens'],['D','Freeze the malai before folding']].map(([k,v])=>`<button onclick="answerMalai('technique','${k}',this)" class="block w-full text-left text-xs p-2 my-1 rounded-lg border border-awadh-gold/20">${k}. ${v}</button>`).join('')}</section><section class="rounded-xl bg-[#073c2b] border border-awadh-gold/30 p-3"><p class="text-xs font-bold text-awadh-gold mb-2">⏱ CHALLENGE 2: The Timing Test (+20)</p><p class="text-xs mb-2">Stop in the golden zone. Too early or too late makes the layer harder to handle.</p><div class="h-3 rounded-full bg-[#173d2b] overflow-hidden border border-awadh-gold/30"><div id="malaiTimingBar" class="h-full" style="width:55%;background:linear-gradient(90deg,#FF9933,#D4AF37,#93C572)"></div></div><input id="malaiTimingSlider" type="range" min="0" max="100" value="55" oninput="document.getElementById('malaiTimingBar').style.width=this.value+'%'" class="w-full mt-2"><button onclick="stopMalaiTiming()" class="emerald-btn w-full py-2 rounded-lg text-xs font-bold">Stop Timing</button></section><section class="rounded-xl bg-[#073c2b] border border-awadh-gold/30 p-3"><p class="text-xs font-bold text-awadh-gold mb-2">🧠 CHALLENGE 3: Spot the Mistake (+10)</p>${[['A','The layer is smooth and delicate'],['B','The layer is evenly prepared'],['C','The layer is torn and uneven'],['D','The layer is ready for filling']].map(([k,v])=>`<button onclick="answerMalai('mistake','${k}',this)" class="block w-full text-left text-xs p-2 my-1 rounded-lg border border-awadh-gold/20">${k}. ${v}</button>`).join('')}</section>`;
@@ -2175,10 +2179,13 @@ function resetChefRound(){clearInterval(chefRoundTimer);malaiStory.level=1;malai
 <style id="level-one-flow-and-exit-visibility-fix">
 /* Fix the royal ingredient counter and keep every control readable on phones */
 #malaiLevelContent .chef-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
-#malaiLevelContent .chef-ingredient { min-height:82px; padding:8px 4px; font-size:12px; line-height:1.25; overflow-wrap:anywhere; }
+#malaiLevelContent .chef-ingredient { min-height:82px; padding:8px 4px; font-size:12px; line-height:1.25; overflow-wrap:anywhere; color:#2c1810!important; }
+#malaiLevelContent .chef-ingredient span:not(.em) { color:#2c1810!important; font-weight:700!important; }
 #malaiLevelContent .chef-ingredient .em { font-size:27px; line-height:1.1; }
-#malaiLevelContent .chef-ingredient.correct { background:#d9f3d8!important; color:#123c20!important; border-color:#25834a!important; }
-#malaiLevelContent .chef-ingredient.wrong { background:#ffe0df!important; color:#76211e!important; border-color:#c7463e!important; }
+#malaiLevelContent .chef-ingredient.correct,
+#malaiLevelContent .chef-ingredient.correct span:not(.em) { background:#d9f3d8!important; color:#123c20!important; border-color:#25834a!important; }
+#malaiLevelContent .chef-ingredient.wrong,
+#malaiLevelContent .chef-ingredient.wrong span:not(.em) { background:#ffe0df!important; color:#76211e!important; border-color:#c7463e!important; }
 #screenMalaiLevels > div:first-child button { background:#7b1530!important; color:#ffffff!important; border:2px solid #f2ca67!important; box-shadow:0 2px 0 #4c0b1d!important; font-weight:900!important; opacity:1!important; text-shadow:none!important; }
 #screenMalaiLevels > div:first-child button:focus-visible { outline:3px solid #176b43!important; outline-offset:3px; }
 #malaiContinueBtn { background:linear-gradient(135deg,#7d1731,#a92743)!important; color:#fff9e9!important; border:2px solid #edc55d!important; box-shadow:0 3px 0 #4b0d20!important; }
