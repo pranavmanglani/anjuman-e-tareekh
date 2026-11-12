@@ -696,22 +696,17 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
 
                     <!-- ================= SCREEN 5: DIGITAL RECIPE BOOK & CULTURAL FACTS ================= -->
                     <div id="screenRecipes" class="hidden p-4 flex-col justify-start flex-grow space-y-3">
-                        <div class="nawabi-card rounded-xl p-3.5 border border-awadh-gold/50" style="position: sticky; top: 10px; z-index: 50;">
+                        <div class="nawabi-card rounded-xl p-3.5 border border-awadh-gold/50">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <span class="text-[10px] uppercase tracking-wider font-bold block" style="color: #ffd66a;">Cultural Archive of Lucknow</span>
                                     <h2 class="font-royal text-lg gold-gradient-text">📖 Shahi Dastarkhwan</h2>
                                 </div>
-                                <button onclick="showGameScreen('screenHome')" class="royal-btn px-3 py-1 rounded-lg text-xs">
+                                <button onclick="showGameScreen('screenHome')" class="royal-btn px-3 py-1.5 rounded-lg text-xs shadow-2xl" style="position: fixed; top: 28px; right: 28px; z-index: 900;">
                                     <i class="fa-solid fa-arrow-left mr-1"></i> Home
                                 </button>
                             </div>
                         </div>
-
-                        <div id="recipeBookContainer" class="space-y-3 flex-grow pr-1">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
 
                         <div id="recipeBookContainer" class="space-y-3 flex-grow pr-1">
                             <!-- Populated by JS -->
@@ -1824,35 +1819,35 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
                     ${dish.icon}
                 </div>
                 <div>
-                    <span class="text-[10px] uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-awadh-pista/20 text-awadh-pista border border-awadh-pista/40 font-bold">
+                    <span class="text-[10px] uppercase tracking-widest px-3 py-1 rounded-full font-bold inline-block" style="background-color: #d9f3df; color: #0e4f2d; border: 1.5px solid #24763d;">
                         ✨ Wah! Dish Prepared Perfectly ✨
                     </span>
-                    <h3 class="font-royal text-xl gold-gradient-text mt-1">${dish.name}</h3>
+                    <h3 class="font-royal text-xl gold-gradient-text mt-1.5">${dish.name}</h3>
                     <p class="text-xs text-awadh-goldLight/80">Title Earned: <b>${royalTitle}</b></p>
                 </div>
 
-                <!-- Score & Time Breakdown -->
-                <div class="grid grid-cols-3 gap-2 bg-[#150206] p-3 rounded-xl border border-awadh-gold/40 text-xs">
+                <!-- Score & Time Breakdown (Royal Emerald Theme Box) -->
+                <div class="grid grid-cols-3 gap-2 p-3 rounded-xl text-xs shadow-inner" style="background: linear-gradient(145deg, #0b5138, #063d2c); border: 2px solid #c99726;">
                     <div>
-                        <span class="text-[10px] text-awadh-goldLight/70 block">Completion Time</span>
-                        <strong class="text-base font-mono text-awadh-gold">${finalTime.toFixed(1)}s</strong>
+                        <span class="text-[10px] block font-medium" style="color: #fff0bf !important;">Completion Time</span>
+                        <strong class="text-base font-mono" style="color: #ffd66a !important;">${finalTime.toFixed(1)}s</strong>
                     </div>
                     <div>
-                        <span class="text-[10px] text-awadh-goldLight/70 block">Mistakes</span>
-                        <strong class="text-base font-mono text-white">${gameState.mistakes}</strong>
+                        <span class="text-[10px] block font-medium" style="color: #fff0bf !important;">Mistakes</span>
+                        <strong class="text-base font-mono" style="color: #ffffff !important;">${gameState.mistakes}</strong>
                     </div>
                     <div>
-                        <span class="text-[10px] text-awadh-goldLight/70 block">Top 10 Rank</span>
-                        <strong class="text-base font-mono text-awadh-pista">${achievedRank ? '#' + achievedRank : 'Saved'}</strong>
+                        <span class="text-[10px] block font-medium" style="color: #fff0bf !important;">Top 10 Rank</span>
+                        <strong class="text-base font-mono" style="color: #a7f3d0 !important;">${achievedRank ? '#' + achievedRank : 'Saved'}</strong>
                     </div>
                 </div>
 
-                <!-- Cultural Heritage Fact Unlocked -->
-                <div class="bg-[#23060C] p-3 rounded-xl border-l-4 border-l-awadh-saffron text-left text-xs space-y-1">
-                    <span class="text-[10px] uppercase tracking-wider text-awadh-saffron font-bold block">
+                <!-- Cultural Heritage Fact Unlocked (Warm Royal Parchment Box) -->
+                <div class="p-3.5 rounded-xl border-l-4 text-left text-xs space-y-1 shadow-sm" style="background-color: #f3e5c0; border: 1.5px solid #d5aa42; border-left: 5px solid #b87908;">
+                    <span class="text-[10px] uppercase tracking-wider font-bold block" style="color: #7c4a03 !important;">
                         📖 Cultural Heritage Fact Unlocked:
                     </span>
-                    <p class="text-awadh-cream/90 leading-relaxed">${dish.originFact}</p>
+                    <p class="leading-relaxed font-medium" style="color: #1f3327 !important;">${dish.originFact}</p>
                 </div>
 
                 <div class="flex flex-wrap gap-2 pt-1">
@@ -2163,7 +2158,38 @@ function beginMalaiLevels(){malaiStory={level:targetMalaiStartLevel,score:0,sele
 function renderMalaiLevel(){let c=document.getElementById('malaiLevelContent'),n=document.getElementById('malaiContinueBtn');if(n)n.classList.add('hidden');syncMalaiScoreToHome();
 if(malaiStory.level===1){const currentChefLayout=CHEF_INGREDIENT_LAYOUTS[chefLayoutIndex%CHEF_INGREDIENT_LAYOUTS.length];chefLayoutIndex++;document.getElementById('malaiLevelLabel').textContent='LEVEL 1 • THE INGREDIENT CHALLENGE';document.getElementById('malaiLevelIntro').textContent='Help Ustad Zaika select the ingredients for Malai Gilori before time runs out.';c.innerHTML=`<div class="chef-game"><div class="flex flex-wrap justify-between items-center gap-2 text-xs mb-2.5"><p>🥣 Tap the ingredients that belong in Malai Gilori. Tap Ustad Zaika for a hint!</p><div class="flex items-center gap-4"><span>⏱ Time: <b id="chefTime">60</b>s</span><span>Selected: <b id="chefCount">0</b></span></div></div><div class="chef-playarea"><aside class="chefPanel" id="chefPanel" onclick="chefHint()"><div class="speech" id="chefSpeech">Salaam, apprentice! Pick the ingredients for our royal sweet.</div><img class="chefImg" src="${document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || ""}" alt="Ustad Zaika, the friendly Nawabi chef"><div class="chef-reaction" id="chefReaction" aria-live="polite">👨‍🍳</div><div class="flex flex-col items-center gap-1.5 w-full mt-1"><div class="chefName">USTAD ZAIKA</div><button type="button" class="chefHintBtn" onclick="event.stopPropagation();chefHint()">TAP FOR A HINT</button></div></aside><div class="chef-tray"><div class="chef-trayhead">✦ INGREDIENTS ON THE COUNTER ✦</div><div class="chef-grid">${currentChefLayout.map(([id,em,name])=>`<button type="button" class="chef-ingredient" id="chef_${id}" onclick="chooseChefIngredient('${id}')"><span class="em">${em}</span><span>${name}</span></button>`).join('')}</div><div class="chef-actions"><button type="button" class="royal-btn" onclick="submitChefRound()">Submit ✨</button><button type="button" class="emerald-btn" onclick="resetChefRound()">Try Again ↻</button></div><div class="chef-feedback" id="chefFeedback" role="status"></div></div></div></div>`;startChefRound();
 }else if(malaiStory.level===2){document.getElementById('malaiLevelLabel').textContent='LEVEL 2 • THE MALAI MASTERY CHALLENGE';document.getElementById('malaiLevelIntro').textContent='Technique, timing and observation';malaiStory.answers=[];malaiStory.timingDone=false;c.innerHTML=`<div class="chef-level2-panel"><div class="chef-level2-character"><img class="chef-level2-img" src="${document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || ""}" alt="Ustad Zaika the royal chef"><div class="chef-reaction chef-level2-reaction" id="chefReaction" aria-live="polite">👨‍🍳</div></div><div class="chef-level2-talk"><div class="chef-level2-name">USTAD ZAIKA</div><div class="speech" id="chefSpeech">Salaam, apprentice! Show me your technique and timing skills.</div><div class="chef-level2-caption">Choose carefully — I’m watching your progress!</div></div></div><section class="rounded-xl bg-[#073c2b] border border-awadh-gold/30 p-3"><p class="text-xs font-bold text-awadh-gold mb-2">🥛 CHALLENGE 1: Choose the Correct Technique (+10)</p>${[['A','Heat the malai rapidly over a high flame'],['B','Gently prepare and collect delicate layers of malai'],['C','Mix continuously until it thickens'],['D','Freeze the malai before folding']].map(([k,v])=>`<button onclick="answerMalai('technique','${k}',this)" class="block w-full text-left text-xs p-2 my-1 rounded-lg border border-awadh-gold/20">${k}. ${v}</button>`).join('')}</section><section class="rounded-xl bg-[#073c2b] border border-awadh-gold/30 p-3"><p class="text-xs font-bold text-awadh-gold mb-2">⏱ CHALLENGE 2: The Timing Test (+20)</p><p class="text-xs mb-2">Click <b>Stop Timing</b> when the moving bar is inside the highlighted <b>Golden Sweet Spot (45%–70%)</b>!</p><div class="flex justify-between text-[10px] font-bold mb-1"><span style="color:#7b2117">Too Early</span><span style="color:#8a5a00">★ GOLDEN SWEET SPOT (45%–70%) ★</span><span style="color:#7b2117">Too Late</span></div><div class="relative h-5 rounded-full bg-[#173d2b] overflow-hidden border-2 border-[#b78b3c] mb-2.5"><div id="malaiTimingBar" class="h-full" style="width:0%;background:linear-gradient(90deg,#FF9933,#D4AF37,#166534)"></div><div style="position:absolute;top:0;bottom:0;left:45%;width:25%;background:rgba(255,214,106,0.38);border-left:2.5px dashed #ffd66a;border-right:2.5px dashed #ffd66a;pointer-events:none;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;font-weight:900;color:#fff9e9;text-shadow:0 1px 2px #000;">SWEET SPOT</span></div></div><button id="malaiStopTimingBtn" onclick="stopMalaiTiming()" class="emerald-btn w-full py-2.5 rounded-lg text-xs font-bold">Stop Timing</button></section><section class="rounded-xl bg-[#073c2b] border border-awadh-gold/30 p-3"><p class="text-xs font-bold text-awadh-gold mb-2">🧠 CHALLENGE 3: Spot the Mistake (+10)</p>${[['A','The layer is smooth and delicate'],['B','The layer is evenly prepared'],['C','The layer is torn and uneven'],['D','The layer is ready for filling']].map(([k,v])=>`<button onclick="answerMalai('mistake','${k}',this)" class="block w-full text-left text-xs p-2 my-1 rounded-lg border border-awadh-gold/20">${k}. ${v}</button>`).join('')}</section>`;startMalaiTimingOscillator();
-}else{document.getElementById('malaiLevelLabel').textContent='🏆 ROYAL CHALLENGE COMPLETE';document.getElementById('malaiLevelIntro').textContent='You mastered the first two levels!';c.innerHTML=`<div class="text-center py-5"><div class="text-6xl mb-3">👑</div><h3 class="font-serif text-xl text-awadh-gold">Shahi Malai Ustad!</h3><p class="text-sm mt-2">Final score: ${malaiStory.score} points</p><p class="text-xs mt-2">You practised ingredient selection, gentle preparation, timing and quality checking.</p></div><button onclick="startTimerMode('malai_gilori')" class="royal-btn w-full py-2.5 rounded-xl font-bold">Continue to Full Malai Gilori Cooking →</button>`;if(document.getElementById('malaiFeedback'))document.getElementById('malaiFeedback').textContent='Wah! The royal chef approves your work.';}}
+}else{
+    document.getElementById('malaiLevelLabel').textContent='🏆 ROYAL CHALLENGE COMPLETE';
+    document.getElementById('malaiLevelIntro').textContent='You mastered the first two levels!';
+    
+    // Stretch the green card to fill the remaining bottom space on the screen
+    c.classList.add('flex', 'flex-col', 'flex-grow', 'justify-center');
+    
+    c.innerHTML=`
+    <div class="flex flex-col items-center justify-between text-center px-4 py-3 w-full flex-grow" style="min-height: calc(100vh - 210px);">
+        
+        <!-- Larger Final Score Box -->
+        <div class="bg-[#150206]/45 border-2 border-awadh-gold/40 rounded-2xl px-6 py-4 w-full max-w-md shadow-inner">
+            <p class="text-xs sm:text-sm text-awadh-cream/80 mb-1 uppercase tracking-widest font-semibold">Final Score</p>
+            <p class="text-5xl font-mono font-bold text-awadh-gold drop-shadow-md leading-none my-1">${malaiStory.score}</p>
+            <p class="text-xs sm:text-sm text-awadh-pista mt-2 leading-snug">Ingredient selection, technique & timing mastered.</p>
+        </div>
+        
+        <!-- Larger Ustad Zaika Illustration -->
+        <div class="flex-grow flex items-center justify-center my-2">
+            <img src="${document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || ''}" 
+                 style="height: clamp(190px, 34vh, 270px);" 
+                 class="object-contain drop-shadow-2xl z-10" 
+                 alt="Ustad Zaika Celebrating">
+        </div>
+        
+        <!-- Larger Action Button -->
+        <button onclick="startTimerMode('malai_gilori')" class="royal-btn w-full max-w-md py-3.5 px-6 rounded-xl font-bold text-sm sm:text-base shadow-[0_4px_15px_rgba(212,175,55,0.4)]">
+            Cook Full Malai Gilori →
+        </button>
+    </div>`;
+    if(document.getElementById('malaiFeedback')) document.getElementById('malaiFeedback').style.display='none';
+}}
 function pickMalaiIngredient(id){if(malaiStory.level!==1||malaiStory.selected.includes(id))return;malaiStory.selected.push(id);let i=malaiItems.find(x=>x.id===id),b=document.getElementById('mi_'+id),fb=document.getElementById('malaiFeedback');if(i&&i.correct){malaiStory.score+=10;addStars(10);if(b)b.style.background='#145d40';if(fb)fb.textContent='Excellent choice! +10 points.';}else if(i&&i.optional){malaiStory.score+=5;addStars(5);if(b)b.style.background='#66521d';if(fb)fb.textContent='A lovely optional garnish! +5 bonus.';}else{malaiStory.score=Math.max(0,malaiStory.score-5);addStars(-5);if(b)b.style.background='#742a30';if(fb)fb.textContent='Arre! The royal chef says that does not belong. −5 points.';}if(b)b.disabled=true;syncMalaiScoreToHome();}
 function checkMalaiIngredients(){
     let core=['malai','sugar','cardamom','pista','almonds'];
