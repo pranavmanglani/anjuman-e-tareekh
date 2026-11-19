@@ -20,5 +20,7 @@ Backend Developers
 -Debugging 
   1. Tejas Tripathi
   2. Divyansh Yadav
-  3. Aariz 
+  3. Aariz
+
+     
 -PULL REQUEST CONFIGURATION IS NOW TURNED ON, ANY CHANGES MADE HAVE TO BE APPROVED BY REPOSITORY OWNER.
