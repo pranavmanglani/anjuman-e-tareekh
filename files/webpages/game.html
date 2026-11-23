@@ -459,7 +459,9 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
                             <button onclick="showGameScreen('screenLeaderboard')">🏆 Leaderboard</button>
                             <button onclick="showGameScreen('screenRecipes')">📚 Recipe & Heritage Book</button>
                         </section>
-                        <p class="home-footer">ANJUMAN-E-TAREEKH · RESEARCH MEETS ZAIKA</p>
+                        <p class="home-footer">
+                            <a href="https://anjuman-e-tareekh.vercel.app" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; text-underline-offset: 3px; cursor: pointer; color: #8c122c;">ANJUMAN-E-TAREEKH</a> · RESEARCH MEETS ZAIKA
+                        </p>
                     </div>
 
                     <!-- PLAYER & DISH SELECT -->
@@ -490,16 +492,29 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
                         </div>
                         <button onclick="showGameScreen('screenHome')" class="px-2.5 py-1 rounded-lg bg-awadh-deepRed border border-awadh-gold/40 text-xs">✕ Exit</button>
                       </div>
-                      <div class="nawabi-card rounded-xl p-3 flex justify-between items-center">
-                        <div>
+
+                      <div class="nawabi-card rounded-xl p-3 flex justify-between items-center gap-3">
+                        <div class="min-w-0">
                           <p id="malaiLevelLabel" class="text-xs text-awadh-saffron font-bold">LEVEL 1 • THE INGREDIENT CHALLENGE</p>
                           <p id="malaiLevelIntro" class="text-xs mt-1">Help Ustad Zaika select the authentic ingredients before time runs out.</p>
                         </div>
-                        <div class="text-right">
-                          <p class="text-[10px] opacity-70">SCORE</p>
-                          <p id="malaiScore" class="text-xl font-bold text-awadh-gold">0</p>
+                        <div class="flex items-center gap-3 shrink-0">
+                          <div class="text-right">
+                            <p class="text-[10px] opacity-70">ERRORS</p>
+                            <p id="malaiErrors" class="text-xl font-bold" style="color:#ffd66a;">0/3</p>
+                          </div>
+                          <div class="text-right">
+                            <p class="text-[10px] opacity-70">SCORE</p>
+                            <p id="malaiScore" class="text-xl font-bold text-awadh-gold">0</p>
+                          </div>
                         </div>
                       </div>
+
+                      <div id="malaiErrorWarning" role="alert" class="hidden rounded-xl px-3 py-2.5 text-xs font-bold flex items-center gap-2 shadow-lg" style="background:#7f1d1d; color:#fff9e9; border:2px solid #fca5a5;">
+                        <span class="text-base shrink-0">⚠️</span>
+                        <span id="malaiErrorWarningText">Warning (2/3 Errors): One more mistake will restart this level!</span>
+                      </div>
+
                       <div id="malaiLevelContent" class="nawabi-card rounded-2xl p-3 space-y-3"></div>
                     </div>
 
@@ -2000,8 +2015,25 @@ input::placeholder,textarea::placeholder{color:#5d665f!important;opacity:1!impor
     
 /* Royal Story Level Locking & Multi-Dish Progression (Levels 1, 2 & 3) */
 const STORAGE_KEY_STORY_UNLOCK = 'mithaas_story_unlocked_level_v1';
-let malaiStory = { level: 1, score: 0, selected: [], answers: [], timingDone: false, activeDishId: 'malai_gilori', completed3DDishes: [] };
+const MAX_LEVEL_ERRORS = 3;
+
+let malaiStory = {
+    level: 1,
+    score: 0,
+    errors: 0,
+    selected: [],
+    answers: [],
+    timingDone: false,
+    activeDishId: 'malai_gilori',
+    completed3DDishes: []
+};
 let targetMalaiStartLevel = 1;
+let chefRoundTimer = null;
+let chefRoundTime = 60;
+let chefRoundDone = false;
+let malaiTimingInterval = null;
+let malaiTimingValue = 0;
+let malaiTimingDirection = 1;
 
 const STORY_LEVEL2_QA = {
     malai_gilori: {
@@ -2103,12 +2135,83 @@ function showLevelLockedModal(requestedLevel) {
     `;
 }
 
+function updateStoryErrorUI() {
+    const el = document.getElementById('malaiErrors');
+    const warn = document.getElementById('malaiErrorWarning');
+    const count = malaiStory.errors || 0;
+    if (el) {
+        el.textContent = `${count}/${MAX_LEVEL_ERRORS}`;
+        el.style.color = count >= 2 ? '#ff7b7b' : '#ffd66a';
+    }
+    if (warn) {
+        if (count === 2) {
+            warn.classList.remove('hidden');
+            warn.classList.remove('animate-shake');
+            void warn.offsetWidth;
+            warn.classList.add('animate-shake');
+        } else {
+            warn.classList.add('hidden');
+        }
+    }
+}
+
+function recordStoryError(reason = 'Mistake made!') {
+    malaiStory.errors = (malaiStory.errors || 0) + 1;
+    updateStoryErrorUI();
+
+    if (malaiStory.errors === 2) {
+        if (typeof playSound === 'function') playSound('error');
+        const warnText = document.getElementById('malaiErrorWarningText');
+        if (warnText) {
+            warnText.textContent = `Final Warning (2/3 Errors): ${reason} One more mistake will restart Level ${malaiStory.level}!`;
+        }
+        return false;
+    }
+
+    if (malaiStory.errors >= MAX_LEVEL_ERRORS) {
+        clearInterval(chefRoundTimer);
+        chefRoundDone = true;
+        clearInterval(malaiTimingInterval);
+        if (typeof cleanupRoyal3DKitchen === 'function') cleanupRoyal3DKitchen();
+        if (typeof playSound === 'function') playSound('error');
+
+        const modal = document.getElementById('modalOverlay');
+        const content = document.getElementById('modalContent');
+        if (modal && content) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            content.innerHTML = `
+                <div class="w-16 h-16 mx-auto rounded-full bg-red-900/20 border-2 border-red-600 flex items-center justify-center text-4xl shadow-lg">⚠️</div>
+                <div>
+                    <span class="text-[10px] uppercase tracking-widest font-bold" style="color:#b91c1c !important;">3 / 3 Errors Reached</span>
+                    <h3 class="font-royal text-xl mt-1" style="color:#7f1d1d !important;">Level ${malaiStory.level} Restarting!</h3>
+                </div>
+                <p class="text-sm leading-relaxed">You made <b>3 mistakes</b> (${reason}). Take a breath, apprentice—restart <b>Level ${malaiStory.level}</b> and try again!</p>
+                <button onclick="restartCurrentStoryLevel()" class="royal-btn w-full py-3 rounded-xl text-sm font-bold">Restart Level ${malaiStory.level} ↻</button>
+            `;
+        }
+        return true;
+    }
+    return false;
+}
+
+function restartCurrentStoryLevel() {
+    closeModal();
+    malaiStory.errors = 0;
+    malaiStory.selected = [];
+    malaiStory.answers = [];
+    malaiStory.timingDone = false;
+    updateStoryErrorUI();
+    renderMalaiLevel();
+}
+
 function startMalaiLevels(startLevel = 1) {
-    if (startLevel > getUnlockedStoryLevel()) {
-        showLevelLockedModal(startLevel);
+    const lvl = Number(startLevel) || 1;
+    if (lvl > getUnlockedStoryLevel()) {
+        showLevelLockedModal(lvl);
         return;
     }
-    targetMalaiStartLevel = startLevel;
+    targetMalaiStartLevel = lvl;
     if (typeof renderStoryDishChoices === 'function') renderStoryDishChoices();
     renderPlayerChoices();
     showGameScreen('screenPlayerSelect');
@@ -2118,8 +2221,9 @@ function beginMalaiLevels() {
     const chosenDish = (typeof selectedStoryDishId !== 'undefined' && AWADHI_SWEETS[selectedStoryDishId])
         ? selectedStoryDishId : 'malai_gilori';
     malaiStory = {
-        level: targetMalaiStartLevel,
+        level: Number(targetMalaiStartLevel) || 1,
         score: 0,
+        errors: 0,
         selected: [],
         answers: [],
         timingDone: false,
@@ -2141,8 +2245,20 @@ function buildStoryLevel1Pool(dishId) {
 }
 
 function renderMalaiLevel() {
-    let c = document.getElementById('malaiLevelContent'), n = document.getElementById('malaiContinueBtn');
+    // Always stop previous timers & 3D scenes cleanly before rendering the target level
+    clearInterval(chefRoundTimer);
+    clearInterval(malaiTimingInterval);
+    if (typeof cleanupRoyal3DKitchen === 'function') cleanupRoyal3DKitchen();
+
+    const c = document.getElementById('malaiLevelContent');
+    const n = document.getElementById('malaiContinueBtn');
     if (n) n.classList.add('hidden');
+    if (!c) return;
+
+    c.innerHTML = '';
+    malaiStory.errors = 0;
+    if (malaiStory.level === 1) malaiStory.selected = [];
+    updateStoryErrorUI();
     syncMalaiScoreToHome();
 
     const activeDish = AWADHI_SWEETS[malaiStory.activeDishId] || AWADHI_SWEETS.malai_gilori;
@@ -2150,100 +2266,98 @@ function renderMalaiLevel() {
     if (headerTitle) headerTitle.textContent = `${activeDish.name} Mastery`;
 
     if (malaiStory.level === 1) {
+        c.classList.remove('flex', 'flex-col', 'flex-grow', 'justify-center');
         const pool = buildStoryLevel1Pool(activeDish.id);
         document.getElementById('malaiLevelLabel').textContent = `LEVEL 1 • ${activeDish.name.toUpperCase()} INGREDIENTS`;
-        document.getElementById('malaiLevelIntro').textContent = `Help Ustad Zaika pick the 5 authentic ingredients for ${activeDish.name} before time runs out.`;
-        c.innerHTML = `<div class="chef-game"><div class="flex flex-wrap justify-between items-center gap-2 text-xs mb-2.5"><p>${activeDish.icon} Tap the <b>5 authentic ingredients</b> for <b>${activeDish.name}</b>. Tap Ustad Zaika for a hint!</p><div class="flex items-center gap-4"><span>⏱ Time: <b id="chefTime">60</b>s</span><span>Selected: <b id="chefCount">0</b>/5</span></div></div><div class="chef-playarea"><aside class="chefPanel" id="chefPanel" onclick="chefHint()"><div class="speech" id="chefSpeech">Salaam, apprentice! Pick the 5 authentic ingredients for ${activeDish.name}.</div><img class="chefImg" src="${document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || ""}" alt="Ustad Zaika, the friendly Nawabi chef"><div class="chef-reaction" id="chefReaction" aria-live="polite">👨‍🍳</div><div class="flex flex-col items-center gap-1.5 w-full mt-1"><div class="chefName">USTAD ZAIKA</div><button type="button" class="chefHintBtn" onclick="event.stopPropagation();chefHint()">TAP FOR A HINT</button></div></aside><div class="chef-tray"><div class="chef-trayhead">✦ INGREDIENTS ON THE COUNTER (${activeDish.name.toUpperCase()}) ✦</div><div class="chef-grid">${pool.map(item => `<button type="button" class="chef-ingredient" id="chef_${item.id}" onclick="chooseChefIngredient('${item.id}')"><span class="em">${item.icon}</span><span>${item.name}</span></button>`).join('')}</div><div class="chef-actions"><button type="button" class="royal-btn" onclick="submitChefRound()">Submit ✨</button><button type="button" class="emerald-btn" onclick="resetChefRound()">Try Again ↻</button></div><div class="chef-feedback" id="chefFeedback" role="status"></div></div></div></div>`;
+        document.getElementById('malaiLevelIntro').textContent = `Tap the 5 authentic ingredients for ${activeDish.name} before time runs out.`;
+        c.innerHTML = `<div class="chef-game"><div class="flex flex-wrap justify-between items-center gap-2 text-xs mb-2.5"><p>${activeDish.icon} Tap the <b>5 authentic ingredients</b> for <b>${activeDish.name}</b>. Tap Ustad Zaika for a hint!</p><div class="flex items-center gap-4"><span>⏱ Time: <b id="chefTime">60</b>s</span><span>Selected: <b id="chefCount">0</b>/5</span></div></div><div class="chef-playarea"><aside class="chefPanel" id="chefPanel" onclick="chefHint()"><div class="speech" id="chefSpeech">Salaam, apprentice! Pick the 5 authentic ingredients for ${activeDish.name}.</div><img class="chefImg" src="${document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || ""}" alt="Ustad Zaika, the friendly Nawabi chef"><div class="chef-reaction" id="chefReaction" aria-live="polite">👨‍🍳</div><div class="flex flex-col items-center gap-1.5 w-full mt-1"><div class="chefName">USTAD ZAIKA</div><button type="button" class="chefHintBtn" onclick="event.stopPropagation();chefHint()">TAP FOR A HINT</button></div></aside><div class="chef-tray"><div class="chef-trayhead">✦ INGREDIENTS ON THE COUNTER (${activeDish.name.toUpperCase()}) ✦</div><div class="chef-grid">${pool.map(item => `<button type="button" class="chef-ingredient" id="chef_${item.id}" onclick="chooseChefIngredient('${item.id}')"><span class="em">${item.icon}</span><span>${item.name}</span></button>`).join('')}</div><div class="chef-actions"><button type="button" class="emerald-btn" onclick="resetChefRound()">Try Again ↻</button></div><div class="chef-feedback" id="chefFeedback" role="status"></div></div></div></div>`;
         startChefRound();
+
     } else if (malaiStory.level === 2) {
-        const qa = STORY_LEVEL2_QA[activeDish.id] || STORY_LEVEL2_QA.malai_gilori;
-        document.getElementById('malaiLevelLabel').textContent = `LEVEL 2 • ${activeDish.name.toUpperCase()} MASTERY`;
-        document.getElementById('malaiLevelIntro').textContent = `Technique, timing and observation for ${activeDish.name}`;
+        c.classList.remove('flex', 'flex-col', 'flex-grow', 'justify-center');
+        document.getElementById('malaiLevelLabel').textContent = `LEVEL 2 • 3D ${activeDish.name.toUpperCase()} MASTERY`;
+        document.getElementById('malaiLevelIntro').textContent = `Master 3D technique, rising simmer timing & tasting inspection for ${activeDish.name}`;
         malaiStory.answers = [];
         malaiStory.timingDone = false;
-        c.innerHTML = `<div class="chef-level2-panel"><div class="chef-level2-character"><img class="chef-level2-img" src="${document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || ""}" alt="Ustad Zaika the royal chef"><div class="chef-reaction chef-level2-reaction" id="chefReaction" aria-live="polite">👨‍🍳</div></div><div class="chef-level2-talk"><div class="chef-level2-name">USTAD ZAIKA</div><div class="speech" id="chefSpeech">Salaam, apprentice! Show me your technique and timing skills for ${activeDish.name}.</div><div class="chef-level2-caption">Choose carefully — I’m watching your progress!</div></div></div><section class="rounded-xl bg-[#073c2b] border border-awadh-gold/30 p-3"><p class="text-xs font-bold text-awadh-gold mb-2">${activeDish.icon} CHALLENGE 1: Choose the Correct Technique for ${activeDish.name} (+10)</p>${qa.q1.map(([k, v]) => `<button onclick="answerMalai('technique','${k}',this)" class="block w-full text-left text-xs p-2 my-1 rounded-lg border border-awadh-gold/20">${k}. ${v}</button>`).join('')}</section><section class="rounded-xl bg-[#073c2b] border border-awadh-gold/30 p-3"><p class="text-xs font-bold text-awadh-gold mb-2">⏱ CHALLENGE 2: The Timing Test (+20)</p><p class="text-xs mb-2">Click <b>Stop Timing</b> when the moving bar is inside the highlighted <b>Golden Sweet Spot (45%–70%)</b>!</p><div class="flex justify-between text-[10px] font-bold mb-1"><span style="color:#7b2117">Too Early</span><span style="color:#8a5a00">★ GOLDEN SWEET SPOT (45%–70%) ★</span><span style="color:#7b2117">Too Late</span></div><div class="relative h-5 rounded-full bg-[#173d2b] overflow-hidden border-2 border-[#b78b3c] mb-2.5"><div id="malaiTimingBar" class="h-full" style="width:0%;background:linear-gradient(90deg,#FF9933,#D4AF37,#166534)"></div><div style="position:absolute;top:0;bottom:0;left:45%;width:25%;background:rgba(255,214,106,0.38);border-left:2.5px dashed #ffd66a;border-right:2.5px dashed #ffd66a;pointer-events:none;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;font-weight:900;color:#fff9e9;text-shadow:0 1px 2px #000;">SWEET SPOT</span></div></div><button id="malaiStopTimingBtn" onclick="stopMalaiTiming()" class="emerald-btn w-full py-2.5 rounded-lg text-xs font-bold">Stop Timing</button></section><section class="rounded-xl bg-[#073c2b] border border-awadh-gold/30 p-3"><p class="text-xs font-bold text-awadh-gold mb-2">🧠 CHALLENGE 3: Spot the Mistake in ${activeDish.name} (+10)</p>${qa.q3.map(([k, v]) => `<button onclick="answerMalai('mistake','${k}',this)" class="block w-full text-left text-xs p-2 my-1 rounded-lg border border-awadh-gold/20">${k}. ${v}</button>`).join('')}</section>`;
-        startMalaiTimingOscillator();
-    } else if(malaiStory.level===3){
-    c.classList.remove('flex', 'flex-col', 'flex-grow', 'justify-center');
-    if(!malaiStory.activeDishId) malaiStory.activeDishId='malai_gilori';
-    if(!malaiStory.completed3DDishes) malaiStory.completed3DDishes=[];
-    const activeDish = AWADHI_SWEETS[malaiStory.activeDishId] || AWADHI_SWEETS.malai_gilori;
-    document.getElementById('malaiLevelLabel').textContent='LEVEL 3 • 3D ROYAL KITCHEN HURDLES';
-    document.getElementById('malaiLevelIntro').textContent=`Drag authentic 3D ingredients into the ${activeDish.utensilName} & handle surprise hurdles!`;
-    mountRoyal3DKitchen(c, {
-        dishId: malaiStory.activeDishId,
-        allowDishSwitch: true,
-        completedDishes: malaiStory.completed3DDishes,
-        onDishChange: (newDishId) => {
-            malaiStory.activeDishId = newDishId;
-            renderMalaiLevel();
-        },
-        onScoreDelta: (delta) => {
-            malaiStory.score = Math.max(0, malaiStory.score + delta);
-            addStars(delta);
-            syncMalaiScoreToHome();
-        },
-        onComplete: (result) => {
-            if(!malaiStory.completed3DDishes.includes(result.dishId)) {
-                malaiStory.completed3DDishes.push(result.dishId);
-            }
-            malaiStory.score += 30;
-            addStars(30);
-            syncMalaiScoreToHome();
-            playSound('fanfare');
-            const modal = document.getElementById('modalOverlay');
-            const content = document.getElementById('modalContent');
-            if(modal && content) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                const dishObj = AWADHI_SWEETS[result.dishId];
-                const nextDishKey = Object.keys(AWADHI_SWEETS).find(k => !malaiStory.completed3DDishes.includes(k));
-                content.innerHTML = `
-                    <div class="w-16 h-16 mx-auto rounded-full bg-awadh-gold/20 border-2 border-awadh-gold flex items-center justify-center text-4xl shadow-lg">🏆</div>
-                    <div>
-                        <span class="text-[10px] uppercase tracking-widest text-awadh-saffron font-bold">Level 3 Dish Mastered (+30 pts)</span>
-                        <h3 class="font-royal text-xl gold-gradient-text mt-1">${dishObj.name}</h3>
-                    </div>
-                    <p class="text-sm leading-relaxed">Shabash! You dodged every royal kitchen hurdle with <b>${result.mistakes}</b> mistake(s). Completed <b>${malaiStory.completed3DDishes.length}/5</b> Awadhi dishes in 3D!</p>
-                    <div class="flex flex-col gap-2 pt-1">
-                        ${nextDishKey ? `<button onclick="closeModal(); malaiStory.activeDishId='${nextDishKey}'; renderMalaiLevel();" class="royal-btn w-full py-2.5 rounded-xl text-sm font-bold">Cook Next Dish: ${AWADHI_SWEETS[nextDishKey].name} →</button>` : ''}
-                        <button onclick="closeModal(); malaiStory.level=4; renderMalaiLevel();" class="emerald-btn w-full py-2.5 rounded-xl text-sm font-bold">Finish Royal Challenge →</button>
-                    </div>`;
-            }
+        if (typeof mountRoyal3DLevel2 === 'function') {
+            mountRoyal3DLevel2(c, activeDish.id);
+        } else {
+            c.innerHTML = `<div class="p-4 text-center text-sm text-awadh-gold">Level 2 3D script (<code>royal-3d-level2-engine</code>) is missing from the bottom of the file.</div>`;
         }
-    });
-}else{
-    document.getElementById('malaiLevelLabel').textContent='🏆 ROYAL CHALLENGE COMPLETE';
-    document.getElementById('malaiLevelIntro').textContent='You mastered all three royal levels!';
-    
-    // Stretch the green card to fill the remaining bottom space on the screen
-    c.classList.add('flex', 'flex-col', 'flex-grow', 'justify-center');
-    
-    c.innerHTML=`
-    <div class="flex flex-col items-center justify-between text-center px-4 py-3 w-full flex-grow" style="min-height: calc(100vh - 210px);">
-        
-        <!-- Larger Final Score Box -->
-        <div class="bg-[#150206]/45 border-2 border-awadh-gold/40 rounded-2xl px-6 py-4 w-full max-w-md shadow-inner">
-            <p class="text-xs sm:text-sm text-awadh-cream/80 mb-1 uppercase tracking-widest font-semibold">Final Score</p>
-            <p class="text-5xl font-mono font-bold text-awadh-gold drop-shadow-md leading-none my-1">${malaiStory.score}</p>
-            <p class="text-xs sm:text-sm text-awadh-pista mt-2 leading-snug">Ingredients, technique, timing & 3D kitchen hurdles mastered.</p>
-        </div>
-        
-        <!-- Larger Ustad Zaika Illustration -->
-        <div class="flex-grow flex items-center justify-center my-2">
-            <img src="${document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || ''}" 
-                 style="height: clamp(190px, 34vh, 270px);" 
-                 class="object-contain drop-shadow-2xl z-10" 
-                 alt="Ustad Zaika Celebrating">
-        </div>
-        
-        <!-- Larger Action Button -->
-        <button onclick="startTimerMode('malai_gilori')" class="royal-btn w-full max-w-md py-3.5 px-6 rounded-xl font-bold text-sm sm:text-base shadow-[0_4px_15px_rgba(212,175,55,0.4)]">
-            Cook Full Malai Gilori →
-        </button>
-    </div>`;
-    if(document.getElementById('malaiFeedback')) document.getElementById('malaiFeedback').style.display='none';
-}}
+
+    } else if (malaiStory.level === 3) {
+        c.classList.remove('flex', 'flex-col', 'flex-grow', 'justify-center');
+        if (!malaiStory.activeDishId) malaiStory.activeDishId = 'malai_gilori';
+        if (!malaiStory.completed3DDishes) malaiStory.completed3DDishes = [];
+        document.getElementById('malaiLevelLabel').textContent = 'LEVEL 3 • 3D ROYAL KITCHEN HURDLES';
+        document.getElementById('malaiLevelIntro').textContent = `Drag authentic 3D ingredients in order into the ${activeDish.utensilName} & handle hurdles!`;
+        mountRoyal3DKitchen(c, {
+            dishId: malaiStory.activeDishId,
+            allowDishSwitch: true,
+            completedDishes: malaiStory.completed3DDishes,
+            onDishChange: (newDishId) => {
+                malaiStory.activeDishId = newDishId;
+                renderMalaiLevel();
+            },
+            onScoreDelta: (delta) => {
+                malaiStory.score = Math.max(0, malaiStory.score + delta);
+                addStars(delta);
+                syncMalaiScoreToHome();
+            },
+            onMistake: () => {
+                recordStoryError('Wrong order, distractor dropped, or hurdle missed!');
+            },
+            onComplete: (result) => {
+                if (!malaiStory.completed3DDishes.includes(result.dishId)) {
+                    malaiStory.completed3DDishes.push(result.dishId);
+                }
+                malaiStory.score += 30;
+                addStars(30);
+                syncMalaiScoreToHome();
+                playSound('fanfare');
+                const modal = document.getElementById('modalOverlay');
+                const content = document.getElementById('modalContent');
+                if (modal && content) {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    const dishObj = AWADHI_SWEETS[result.dishId];
+                    const nextDishKey = Object.keys(AWADHI_SWEETS).find(k => !malaiStory.completed3DDishes.includes(k));
+                    content.innerHTML = `
+                        <div class="w-16 h-16 mx-auto rounded-full bg-awadh-gold/20 border-2 border-awadh-gold flex items-center justify-center text-4xl shadow-lg">🏆</div>
+                        <div>
+                            <span class="text-[10px] uppercase tracking-widest text-awadh-saffron font-bold">Level 3 Dish Mastered (+30 pts)</span>
+                            <h3 class="font-royal text-xl gold-gradient-text mt-1">${dishObj.name}</h3>
+                        </div>
+                        <p class="text-sm leading-relaxed">Shabash! You cleared every royal kitchen hurdle with <b>${result.mistakes}</b> mistake(s). Completed <b>${malaiStory.completed3DDishes.length}/5</b> Awadhi dishes in 3D!</p>
+                        <div class="flex flex-col gap-2 pt-1">
+                            ${nextDishKey ? `<button onclick="closeModal(); malaiStory.activeDishId='${nextDishKey}'; renderMalaiLevel();" class="royal-btn w-full py-2.5 rounded-xl text-sm font-bold">Cook Next Dish: ${AWADHI_SWEETS[nextDishKey].name} →</button>` : ''}
+                            <button onclick="closeModal(); malaiStory.level=4; renderMalaiLevel();" class="emerald-btn w-full py-2.5 rounded-xl text-sm font-bold">Finish Royal Challenge →</button>
+                        </div>`;
+                }
+            }
+        });
+
+    } else {
+        document.getElementById('malaiLevelLabel').textContent = '🏆 ROYAL CHALLENGE COMPLETE';
+        document.getElementById('malaiLevelIntro').textContent = 'You mastered all three royal levels!';
+        c.classList.add('flex', 'flex-col', 'flex-grow', 'justify-center');
+        c.innerHTML = `
+        <div class="flex flex-col items-center justify-between text-center px-4 py-3 w-full flex-grow" style="min-height: calc(100vh - 210px);">
+            <div class="bg-[#150206]/45 border-2 border-awadh-gold/40 rounded-2xl px-6 py-4 w-full max-w-md shadow-inner">
+                <p class="text-xs sm:text-sm text-awadh-cream/80 mb-1 uppercase tracking-widest font-semibold">Final Score</p>
+                <p class="text-5xl font-mono font-bold text-awadh-gold drop-shadow-md leading-none my-1">${malaiStory.score}</p>
+                <p class="text-xs sm:text-sm text-awadh-pista mt-2 leading-snug">Ingredients, technique, timing & 3D kitchen hurdles mastered.</p>
+            </div>
+            <div class="flex-grow flex items-center justify-center my-2">
+                <img src="${document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || ''}" style="height: clamp(190px, 34vh, 270px);" class="object-contain drop-shadow-2xl z-10" alt="Ustad Zaika Celebrating">
+            </div>
+            <button onclick="startTimerMode('malai_gilori')" class="royal-btn w-full max-w-md py-3.5 px-6 rounded-xl font-bold text-sm sm:text-base shadow-[0_4px_15px_rgba(212,175,55,0.4)]">
+                Cook Full Malai Gilori →
+            </button>
+        </div>`;
+    }
+}
+
 function pickMalaiIngredient(id) {
     if (malaiStory.level !== 1 || malaiStory.selected.includes(id)) return;
     malaiStory.selected.push(id);
@@ -2265,13 +2379,9 @@ function checkMalaiIngredients() {
     const dish = AWADHI_SWEETS[malaiStory.activeDishId] || AWADHI_SWEETS.malai_gilori;
     const core = dish.requiredIngredients;
     const missing = core.filter(x => !malaiStory.selected.includes(x));
-    const fb = document.getElementById('malaiFeedback');
-    if (missing.length) {
-        if (fb) fb.textContent = `Still missing ${missing.length} authentic ingredient(s) for ${dish.name}. Keep choosing!`;
-        return false;
-    }
+    if (missing.length) return false;
+
     unlockStoryLevel(2);
-    if (fb) fb.textContent = `Wah! All ingredients for ${dish.name} are ready. Level 2 is now unlocked!`;
     setChefReaction('happy', 'Shabash! Level 1 complete! Level 2 is unlocked! 👍');
     playSound('fanfare');
     const modal = document.getElementById('modalOverlay');
@@ -2297,82 +2407,14 @@ function proceedToLevel2FromModal() {
     clearInterval(chefRoundTimer);
     chefRoundDone = true;
     malaiStory.level = 2;
+    targetMalaiStartLevel = 2;
+    const screenEl = document.getElementById('screenMalaiLevels');
+    if (screenEl && screenEl.classList.contains('hidden')) {
+        showGameScreen('screenMalaiLevels');
+    }
     renderMalaiLevel();
 }
 
-function answerMalai(which, a, b) {
-    if (malaiStory.answers.includes(which)) return;
-    malaiStory.answers.push(which);
-    const qa = STORY_LEVEL2_QA[malaiStory.activeDishId] || STORY_LEVEL2_QA.malai_gilori;
-    const ok = (which === 'technique' && a === qa.a1) || (which === 'mistake' && a === qa.a3);
-    const fb = document.getElementById('malaiFeedback');
-    if (ok) {
-        malaiStory.score += 10;
-        addStars(10);
-        playSound('tap');
-        b.style.background = '#145d40';
-        b.style.color = '#fff';
-        if (fb) fb.textContent = 'Correct! +10 points. The Ustad is impressed.';
-        setChefReaction('happy', 'Shabash! You got it right! 👍');
-    } else {
-        malaiStory.score = Math.max(0, malaiStory.score - 5);
-        addStars(-5);
-        playSound('error');
-        b.style.background = '#742a30';
-        b.style.color = '#fff';
-        if (fb) fb.textContent = 'Not quite! −5 points. Think carefully about traditional Awadhi craft.';
-        setChefReaction('sad', 'Hmm, not quite! Learn from this choice and try again.');
-    }
-    b.parentElement.querySelectorAll('button').forEach(x => x.disabled = true);
-    syncMalaiScoreToHome();
-    maybeUnlockMalaiNext();
-}
-let malaiTimingInterval=null,malaiTimingValue=0,malaiTimingDirection=1;
-function startMalaiTimingOscillator(){
-    if(malaiTimingInterval)clearInterval(malaiTimingInterval);
-    malaiTimingValue=10;
-    malaiTimingDirection=1;
-    malaiTimingInterval=setInterval(()=>{
-        if(malaiStory.timingDone||malaiStory.level!==2){
-            clearInterval(malaiTimingInterval);
-            return;
-        }
-        malaiTimingValue+=malaiTimingDirection*2.5;
-        if(malaiTimingValue>=100){
-            malaiTimingValue=100;
-            malaiTimingDirection=-1;
-        }else if(malaiTimingValue<=0){
-            malaiTimingValue=0;
-            malaiTimingDirection=1;
-        }
-        const bar=document.getElementById('malaiTimingBar');
-        if(bar)bar.style.width=malaiTimingValue+'%';
-    },30);
-}
-function stopMalaiTiming(){
-    if(malaiStory.timingDone)return;
-    malaiStory.timingDone=true;
-    if(malaiTimingInterval)clearInterval(malaiTimingInterval);
-    let v=Math.round(malaiTimingValue),fb=document.getElementById('malaiFeedback'),btn=document.getElementById('malaiStopTimingBtn');
-    if(v>=45&&v<=70){
-        malaiStory.score+=20;
-        addStars(20);
-        playSound('success');
-        if(fb)fb.textContent=`Perfect timing (${v}%)! +20 bonus points.`;
-        setChefReaction('happy',`Perfect timing at ${v}%! Wonderful work, apprentice! 👍`);
-        if(btn){btn.textContent=`✓ Stopped in Sweet Spot (${v}%) — +20 pts`;btn.style.background='#145d40';}
-    }else{
-        malaiStory.score=Math.max(0,malaiStory.score-5);
-        addStars(-5);
-        playSound('error');
-        if(fb)fb.textContent=`Stopped at ${v}% (outside 45%–70%)! −5 points.`;
-        setChefReaction('shock',`Oh! You stopped at ${v}% — outside the Golden Sweet Spot!`);
-        if(btn){btn.textContent=`✕ Missed Sweet Spot (${v}%) — −5 pts`;btn.style.background='#742a30';}
-    }
-    if(btn)btn.disabled=true;
-    syncMalaiScoreToHome();
-    maybeUnlockMalaiNext();
-}
 function maybeUnlockMalaiNext() {
     if (malaiStory.answers.length === 2 && malaiStory.timingDone) {
         unlockStoryLevel(3);
@@ -2398,25 +2440,13 @@ function maybeUnlockMalaiNext() {
 function proceedToLevel3FromModal() {
     closeModal();
     malaiStory.level = 3;
+    targetMalaiStartLevel = 3;
     renderMalaiLevel();
 }
 
-function continueMalaiLevels() {
-    if (malaiStory.level === 1) {
-        if (checkMalaiIngredients()) {
-            clearInterval(chefRoundTimer);
-            chefRoundDone = true;
-            malaiStory.level = 2;
-            renderMalaiLevel();
-        }
-    } else if (malaiStory.level === 2 && malaiStory.answers.length === 2 && malaiStory.timingDone) {
-        malaiStory.level = 3;
-        renderMalaiLevel();
-    }
-}
-
 function setChefReaction(kind, message) {
-    const speech = document.getElementById('chefSpeech'), badge = document.getElementById('chefReaction');
+    const speech = document.getElementById('chefSpeech');
+    const badge = document.getElementById('chefReaction');
     if (speech && message) speech.textContent = message;
     if (badge) {
         badge.className = 'chef-reaction';
@@ -2426,8 +2456,6 @@ function setChefReaction(kind, message) {
         else { badge.textContent = '👨‍🍳'; }
     }
 }
-
-let chefRoundTimer = null, chefRoundTime = 60, chefRoundDone = false;
 
 function startChefRound() {
     clearInterval(chefRoundTimer);
@@ -2442,14 +2470,15 @@ function startChefRound() {
             chefRoundDone = true;
             clearInterval(chefRoundTimer);
             document.querySelectorAll('#malaiLevelContent .chef-ingredient').forEach(b => b.disabled = true);
-            let f = document.getElementById('chefFeedback');
+            const f = document.getElementById('chefFeedback');
             if (f) { f.style.display = 'block'; f.textContent = 'Time is up! Tap Try Again to have another go.'; }
         }
     }, 1000);
 }
 
 function updateChefRound() {
-    let t = document.getElementById('chefTime'), c = document.getElementById('chefCount');
+    const t = document.getElementById('chefTime');
+    const c = document.getElementById('chefCount');
     const dish = AWADHI_SWEETS[malaiStory.activeDishId] || AWADHI_SWEETS.malai_gilori;
     const correctPicked = malaiStory.selected.filter(id => dish.requiredIngredients.includes(id)).length;
     if (t) t.textContent = chefRoundTime;
@@ -2466,8 +2495,6 @@ function chefHint() {
     const itemObj = PANTRY_ITEMS.find(p => p.id === nextMissingId);
     if (itemObj) {
         setChefReaction('happy', `A little hint for ${dish.name}: look for "${itemObj.name}" (${itemObj.hindi})!`);
-    } else {
-        setChefReaction('happy', 'You have all 5 authentic ingredients! Press Submit ✨ to unlock Level 2.');
     }
 }
 
@@ -2476,53 +2503,52 @@ function chooseChefIngredient(id) {
     const dish = AWADHI_SWEETS[malaiStory.activeDishId] || AWADHI_SWEETS.malai_gilori;
     pickMalaiIngredient(id);
     const b = document.getElementById('chef_' + id);
+    const isCorrect = dish.requiredIngredients.includes(id);
+
     if (b) {
         b.classList.add('selected');
         b.disabled = true;
-        if (dish.requiredIngredients.includes(id)) {
+        if (isCorrect) {
             b.classList.add('correct');
             setChefReaction('happy', `Wah! Excellent choice! 👍 That belongs in ${dish.name}.`);
         } else {
             b.classList.add('wrong');
             setChefReaction(['red_chili', 'tamarind'].includes(id) ? 'shock' : 'sad', `Oh no! That ingredient does not belong in ${dish.name}. Try another one!`);
+            if (recordStoryError('Wrong ingredient picked!')) return;
         }
     }
-    updateChefRound();
-}
 
-function submitChefRound() {
-    if (malaiStory.level !== 1) return;
-    const dish = AWADHI_SWEETS[malaiStory.activeDishId] || AWADHI_SWEETS.malai_gilori;
-    const core = dish.requiredIngredients;
-    const missing = core.filter(x => !malaiStory.selected.includes(x));
-    let f = document.getElementById('chefFeedback');
-    if (missing.length) {
-        if (f) { f.style.display = 'block'; f.textContent = `You still need ${missing.length} authentic ingredient(s) for ${dish.name}. Choose the remaining ones, then submit again.`; }
-        setChefReaction('sad', `Not quite finished yet! Find ${missing.length} more ingredient(s) for ${dish.name}.`);
-        return;
+    updateChefRound();
+
+    // Auto-complete Level 1 as soon as all 5 authentic ingredients are picked (no Submit button needed)
+    const allFivePicked = dish.requiredIngredients.every(reqId => malaiStory.selected.includes(reqId));
+    if (allFivePicked) {
+        clearInterval(chefRoundTimer);
+        chefRoundDone = true;
+        document.querySelectorAll('#malaiLevelContent .chef-ingredient').forEach(btn => {
+            btn.disabled = true;
+        });
+        const f = document.getElementById('chefFeedback');
+        if (f) {
+            f.style.display = 'block';
+            f.textContent = `All 5 authentic ingredients for ${dish.name} gathered!`;
+        }
+        setTimeout(() => {
+            checkMalaiIngredients();
+        }, 350);
     }
-    clearInterval(chefRoundTimer);
-    chefRoundDone = true;
-    document.querySelectorAll('#malaiLevelContent .chef-ingredient').forEach(b => {
-        b.disabled = true;
-        let id = b.id.replace('chef_', '');
-        if (core.includes(id)) b.classList.add('correct');
-        else if (malaiStory.selected.includes(id)) b.classList.add('wrong');
-    });
-    if (f) { f.style.display = 'block'; f.textContent = `Round complete! You gathered all 5 authentic ingredients for ${dish.name}.`; }
-    checkMalaiIngredients();
 }
 
 function resetChefRound() {
     clearInterval(chefRoundTimer);
     malaiStory.level = 1;
     malaiStory.score = 0;
+    malaiStory.errors = 0;
     malaiStory.selected = [];
     malaiStory.answers = [];
     malaiStory.timingDone = false;
     renderMalaiLevel();
 }
-</script>
 
 
 <style id="readable-colours-and-ustad-reactions">
@@ -2857,7 +2883,7 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
 
 <script id="royal-3d-kitchen-engine">
 (function () {
-    /* Per-dish 3D vessel, 4 authentic ingredients, 2 distractors & liquid color evolution */
+    /* Per-dish 3D vessel, ORDERED 4 authentic ingredients, 2 distractors & unique hurdles */
     const DISH_3D_CONFIG = {
         malai_gilori: {
             vesselType: 'tawa',
@@ -2874,6 +2900,11 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             distractors: [
                 { id: 'red_chili', name: 'Red Chilli', shape: 'chili', color: 0xd92626 },
                 { id: 'tamarind', name: 'Sour Imli', shape: 'tamarind', color: 0x6d4224 }
+            ],
+            hurdles: [
+                { type: 'cat_spill', title: 'Naughty Palace Cat!', desc: 'The cat wants the fresh milk! Tap the 3D cat to shoo it away.', btn: 'Shoo Cat Away!' },
+                { type: 'flame_flare', title: 'Flame Flared Too High!', desc: 'High heat will scorch the thin malai skin! Tap the chulha to lower the flame.', btn: 'Lower Flame' },
+                { type: 'lid_jam', title: 'Brass Lid Slammed Shut!', desc: 'The heavy lid slipped onto the kadhavani! Tap the 3D lid to lift it off.', btn: 'Lift Brass Lid' }
             ]
         },
         shahi_tukda: {
@@ -2883,14 +2914,19 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             startLiquid: 0xf6c94c,
             endLiquid: 0xffa73b,
             ingredients: [
-                { id: 'bread', name: 'Shirmal Bread', shape: 'bread', color: 0xd99b52 },
                 { id: 'ghee', name: 'Pure Desi Ghee', shape: 'ghee_jar', color: 0xffc83d, liquid: true },
-                { id: 'rabri', name: 'Thick Rabri', shape: 'milk_cup', color: 0xfff2cc, liquid: true },
-                { id: 'kesar_chashni', name: 'Kesar Syrup', shape: 'saffron_bowl', color: 0xff7b00, liquid: true }
+                { id: 'bread', name: 'Shirmal Bread', shape: 'bread', color: 0xd99b52 },
+                { id: 'kesar_chashni', name: 'Kesar Syrup', shape: 'saffron_bowl', color: 0xff7b00, liquid: true },
+                { id: 'rabri', name: 'Thick Rabri', shape: 'milk_cup', color: 0xfff2cc, liquid: true }
             ],
             distractors: [
                 { id: 'red_chili', name: 'Red Chilli', shape: 'chili', color: 0xd92626 },
                 { id: 'salt', name: 'Rock Salt', shape: 'salt_pile', color: 0xd4dde4 }
+            ],
+            hurdles: [
+                { type: 'ghee_splatter', title: 'Hot Ghee Splatter!', desc: 'The desi ghee is popping! Tap the brass lagan to calm the heat.', btn: 'Calm Hot Ghee' },
+                { type: 'wind_out', title: 'Wind Blew Out the Fire!', desc: 'A sudden Lucknowi gust put out the chulha! Tap the stove to relight it.', btn: 'Relight Chulha' },
+                { type: 'cat_spill', title: 'Palace Cat Alert!', desc: 'The cat spotted your thick rabri! Tap the 3D cat to shoo it away.', btn: 'Shoo Cat Away!' }
             ]
         },
         zarda: {
@@ -2900,14 +2936,19 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             startLiquid: 0xfaf3d7,
             endLiquid: 0xffb703,
             ingredients: [
-                { id: 'basmati', name: 'Aged Basmati', shape: 'rice_bowl', color: 0xfffdf5 },
                 { id: 'ghee', name: 'Desi Ghee', shape: 'ghee_jar', color: 0xffc83d, liquid: true },
+                { id: 'basmati', name: 'Aged Basmati', shape: 'rice_bowl', color: 0xfffdf5 },
                 { id: 'kesar_chashni', name: 'Kesar Chashni', shape: 'saffron_bowl', color: 0xff7b00, liquid: true },
                 { id: 'cloves_nuts', name: 'Cloves & Petha', shape: 'nuts', color: 0x66bb6a }
             ],
             distractors: [
                 { id: 'red_chili', name: 'Red Chilli', shape: 'chili', color: 0xd92626 },
                 { id: 'tamarind', name: 'Sour Imli', shape: 'tamarind', color: 0x6d4224 }
+            ],
+            hurdles: [
+                { type: 'lid_jam', title: 'Dum Lid Slammed Shut!', desc: 'The copper dum lid fell onto the degchi! Tap the 3D lid to lift it off.', btn: 'Lift Dum Lid' },
+                { type: 'steam_leak', title: 'Saffron Steam Escaping!', desc: 'Aromatic steam is bursting out! Tap the degchi to steady the simmer.', btn: 'Steady Simmer' },
+                { type: 'wind_out', title: 'Breeze Put Out the Coals!', desc: 'A cool draft doused the dum fire! Tap the stove to spark it back on.', btn: 'Relight Coals' }
             ]
         },
         kheer: {
@@ -2925,6 +2966,11 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             distractors: [
                 { id: 'red_chili', name: 'Red Chilli', shape: 'chili', color: 0xd92626 },
                 { id: 'salt', name: 'Rock Salt', shape: 'salt_pile', color: 0xd4dde4 }
+            ],
+            hurdles: [
+                { type: 'milk_boilover', title: 'Milk Boiling Over!', desc: 'The simmering milk is rising fast! Tap the kadhai to stir it down.', btn: 'Stir Milk Down' },
+                { type: 'cat_spill', title: 'Palace Cat on the Counter!', desc: 'The cat smelled the creamy kheer! Tap the 3D cat to shoo it away.', btn: 'Shoo Cat Away!' },
+                { type: 'flame_flare', title: 'Kadhai Bottom Scorching!', desc: 'The flame spiked too high! Tap the stove to lower the heat.', btn: 'Lower Heat' }
             ]
         },
         nimish: {
@@ -2942,6 +2988,11 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             distractors: [
                 { id: 'red_chili', name: 'Red Chilli', shape: 'chili', color: 0xd92626 },
                 { id: 'tamarind', name: 'Sour Imli', shape: 'tamarind', color: 0x6d4224 }
+            ],
+            hurdles: [
+                { type: 'warm_breeze', title: 'Warm Gust Melting Foam!', desc: 'Warm air will collapse the Nimish! Tap the matka to fan cool air.', btn: 'Fan Cool Air' },
+                { type: 'dust_wind', title: 'Dusty Morning Breeze!', desc: 'Wind is blowing dust toward the matka! Tap the matka to shield it.', btn: 'Shield Matka' },
+                { type: 'cat_spill', title: 'Palace Cat Sneaking Up!', desc: 'The cat is eyeing the chilled cream! Tap the 3D cat to shoo it away.', btn: 'Shoo Cat Away!' }
             ]
         }
     };
@@ -2975,7 +3026,7 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         } else if (type === 'matka') {
             pts = [new THREE.Vector2(0, 0), new THREE.Vector2(0.75, 0.02), new THREE.Vector2(1.28, 0.56), new THREE.Vector2(0.95, 1.02), new THREE.Vector2(1.12, 1.14)];
             mat = clayMat; liqY = 0.82; liqR = 0.92; rimY = 1.14;
-        } else { // kadhai
+        } else {
             pts = [new THREE.Vector2(0, 0), new THREE.Vector2(0.82, 0.04), new THREE.Vector2(1.26, 0.52), new THREE.Vector2(1.36, 0.88), new THREE.Vector2(1.44, 0.92)];
             mat = brassMat; liqY = 0.58; liqR = 1.15; rimY = 0.92;
         }
@@ -2985,7 +3036,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         body.receiveShadow = true;
         group.add(body);
 
-        // Side handles
         const handleMat = type === 'matka' ? clayMat : brassMat;
         [-1, 1].forEach(side => {
             const handle = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.045, 10, 20, Math.PI), handleMat);
@@ -2994,7 +3044,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             group.add(handle);
         });
 
-        // Liquid / content surface inside vessel
         const liqGeo = new THREE.CircleGeometry(liqR, 28);
         liqGeo.rotateX(-Math.PI / 2);
         const liqMat = new THREE.MeshStandardMaterial({
@@ -3008,7 +3057,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         liquid.position.y = liqY;
         group.add(liquid);
 
-        // Glowing drop-zone ring around vessel rim
         const ring = new THREE.Mesh(
             new THREE.RingGeometry(liqR + 0.08, liqR + 0.24, 36),
             new THREE.MeshBasicMaterial({ color: 0xffd66a, side: THREE.DoubleSide, transparent: true, opacity: 0.0 })
@@ -3020,7 +3068,7 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         return { group, liquid, liqMat, ring, baseLiqY: liqY, rimY, liqR };
     }
 
-    /* Helper: Build distinct procedural 3D ingredient meshes (Zero Emojis) */
+    /* Helper: Build distinct procedural 3D ingredient meshes */
     function buildIngredientMesh(item) {
         const g = new THREE.Group();
         const bowlMat = new THREE.MeshStandardMaterial({ color: 0x8f4c2c, roughness: 0.65 });
@@ -3064,7 +3112,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 g.add(pod);
             });
         } else {
-            // Katori / brass plate base
             const base = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.26, 0.22, 20), item.shape === 'salt_pile' || item.shape === 'tamarind' ? new THREE.MeshStandardMaterial({ color: 0x3d3230, roughness: 0.85 }) : bowlMat);
             base.position.y = 0.11;
             base.castShadow = true;
@@ -3093,7 +3140,7 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 const dome = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), contentMat);
                 dome.position.y = 0.2;
                 g.add(dome);
-            } else { // nuts, pods, tamarind
+            } else {
                 for (let i = 0; i < 6; i++) {
                     const nut = new THREE.Mesh(new THREE.SphereGeometry(0.1, 10, 10), contentMat);
                     nut.scale.set(1.35, 0.75, 0.85);
@@ -3105,7 +3152,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             }
         }
 
-        // Generous invisible hitbox for effortless touch dragging on phones
         const hit = new THREE.Mesh(
             new THREE.SphereGeometry(0.62, 10, 10),
             new THREE.MeshBasicMaterial({ visible: false })
@@ -3117,7 +3163,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         return g;
     }
 
-    /* Helper: Stylized 3D Palace Cat for the Spill Hurdle */
     function buildCatMesh() {
         const cat = new THREE.Group();
         const furMat = new THREE.MeshStandardMaterial({ color: 0xe69545, roughness: 0.65 });
@@ -3158,7 +3203,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         return cat;
     }
 
-    /* Helper: Heavy 3D Brass Lid for the Lid-Slam Hurdle */
     function buildLidMesh(radius) {
         const lid = new THREE.Group();
         const brassMat = new THREE.MeshStandardMaterial({ color: 0xd9a83c, metalness: 0.86, roughness: 0.24 });
@@ -3181,6 +3225,7 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         const dishMeta = AWADHI_SWEETS[dishId] || AWADHI_SWEETS.malai_gilori;
         const cfg = DISH_3D_CONFIG[dishId] || DISH_3D_CONFIG.malai_gilori;
         const completedDishes = options.completedDishes || [];
+        const dishHurdles = cfg.hurdles || DISH_3D_CONFIG.malai_gilori.hurdles;
 
         const dishBarHtml = options.allowDishSwitch ? `
             <div class="r3d-dish-bar" aria-label="Choose Awadhi Dish for Level 3">
@@ -3195,8 +3240,8 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             <div class="r3d-shell">
                 ${dishBarHtml}
                 <div class="r3d-topbar">
-                    <span><b>${dishMeta.name}</b> • ${cfg.vesselLabel}</span>
-                    <span>Added: <b id="r3dProgressCount">0 / ${cfg.ingredients.length}</b> • Hurdles: <b id="r3dHurdleCount">0 / 3</b></span>
+                    <span><b>${dishMeta.name}</b> • Next: <b id="r3dNextStep">1. ${cfg.ingredients[0].name}</b></span>
+                    <span>Added: <b id="r3dProgressCount">0 / ${cfg.ingredients.length}</b> • Hurdles: <b id="r3dHurdleCount">0 / ${dishHurdles.length}</b></span>
                 </div>
                 <div class="r3d-stage-wrap" id="r3dStageWrap">
                     <div class="r3d-labels-layer" id="r3dLabelsLayer"></div>
@@ -3212,7 +3257,7 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                     </div>
                 </div>
                 <div class="r3d-msg-bar">
-                    <span id="r3dStatusMsg">Drag a 3D ingredient into the ${cfg.vesselLabel} (or tap item, then tap pot). Avoid the 2 distractors!</span>
+                    <span id="r3dStatusMsg">Add ingredients in exact order! Step 1: Drag <b>${cfg.ingredients[0].name}</b> into the ${cfg.vesselLabel}.</span>
                     <button type="button" class="r3d-reset-mini" id="r3dResetBtn">Reset ↻</button>
                 </div>
             </div>
@@ -3236,6 +3281,7 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         const hurdleFillEl = document.getElementById('r3dHurdleFill');
         const statusMsgEl = document.getElementById('r3dStatusMsg');
         const progressEl = document.getElementById('r3dProgressCount');
+        const nextStepEl = document.getElementById('r3dNextStep');
         const hurdleCountEl = document.getElementById('r3dHurdleCount');
         const resetBtn = document.getElementById('r3dResetBtn');
 
@@ -3251,7 +3297,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             return;
         }
 
-        /* --- Setup Three.js Scene --- */
         let renderer;
         try {
             renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
@@ -3301,7 +3346,7 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         fireLight.position.set(0, 0.55, -0.55);
         scene.add(fireLight);
 
-        /* --- Full-Width Royal Kitchen Counter, Wall, Windows & Side Props --- */
+        /* --- Kitchen Counter, Wall, Windows & Side Props --- */
         const counter = new THREE.Mesh(
             new THREE.BoxGeometry(34, 0.4, 8.8),
             new THREE.MeshStandardMaterial({ color: 0x472716, roughness: 0.74 })
@@ -3310,13 +3355,11 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         counter.receiveShadow = true;
         scene.add(counter);
 
-        // Decorative royal brass inlay strip spanning the entire counter
         const goldTrimMat = new THREE.MeshStandardMaterial({ color: 0xd9ad3c, metalness: 0.82, roughness: 0.28 });
         const inlay = new THREE.Mesh(new THREE.BoxGeometry(32, 0.02, 0.09), goldTrimMat);
         inlay.position.set(0, 0.01, 1.35);
         scene.add(inlay);
 
-        // Sandstone Awadhi palace back wall + gold molding
         const wallZ = -2.85;
         const backWall = new THREE.Mesh(
             new THREE.BoxGeometry(36, 9, 0.4),
@@ -3330,7 +3373,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         dadoRail.position.set(0, 0.52, wallZ + 0.04);
         scene.add(dadoRail);
 
-        // Arched Nawabi Jharokha Windows (4 across wide screens, moonlit sky + golden lattice)
         const nightSkyMat = new THREE.MeshBasicMaterial({ color: 0x162447 });
         const moonMat = new THREE.MeshBasicMaterial({ color: 0xfff3c4 });
         const pillarMat = new THREE.MeshStandardMaterial({ color: 0x7a3e29, roughness: 0.8 });
@@ -3338,38 +3380,27 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         function addNawabiWindow(xPos, hasMoon) {
             const win = new THREE.Group();
             win.position.set(xPos, 0.65, wallZ + 0.02);
-
-            // Outer gold frame & sill
             const sill = new THREE.Mesh(new THREE.BoxGeometry(2.55, 0.14, 0.32), goldTrimMat);
-            sill.position.y = 0;
             win.add(sill);
-
             const frameBack = new THREE.Mesh(new THREE.BoxGeometry(2.3, 1.85, 0.06), goldTrimMat);
             frameBack.position.set(0, 0.98, 0);
             win.add(frameBack);
-
             const archTop = new THREE.Mesh(new THREE.CylinderGeometry(1.15, 1.15, 0.06, 24, 1, false, 0, Math.PI), goldTrimMat);
             archTop.rotation.z = Math.PI / 2;
             archTop.rotation.x = Math.PI / 2;
             archTop.position.set(0, 1.9, 0);
             win.add(archTop);
-
-            // Night sky pane inside window
             const skyRect = new THREE.Mesh(new THREE.PlaneGeometry(2.02, 1.72), nightSkyMat);
             skyRect.position.set(0, 0.96, 0.045);
             win.add(skyRect);
-
             const skyArch = new THREE.Mesh(new THREE.CircleGeometry(1.01, 24, 0, Math.PI), nightSkyMat);
             skyArch.position.set(0, 1.82, 0.045);
             win.add(skyArch);
-
             if (hasMoon) {
                 const moon = new THREE.Mesh(new THREE.CircleGeometry(0.22, 18), moonMat);
                 moon.position.set(0.38, 1.95, 0.055);
                 win.add(moon);
             }
-
-            // Golden Jaali / Lattice bars
             [-0.5, 0, 0.5].forEach(bx => {
                 const vBar = new THREE.Mesh(new THREE.BoxGeometry(0.05, 2.55, 0.07), goldTrimMat);
                 vBar.position.set(bx, 1.4, 0.07);
@@ -3380,14 +3411,11 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 hBar.position.set(0, by, 0.07);
                 win.add(hBar);
             });
-
-            // Flanking wall pilasters
             [-1.35, 1.35].forEach(px => {
                 const col = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 3.2, 12), pillarMat);
                 col.position.set(px, 1.5, 0.12);
                 win.add(col);
             });
-
             scene.add(win);
         }
 
@@ -3396,59 +3424,9 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         addNawabiWindow(-8.8, false);
         addNawabiWindow(8.8, true);
 
-        // Central decorative arch niche behind the stove
         const centerArch = new THREE.Mesh(new THREE.TorusGeometry(1.45, 0.09, 10, 28, Math.PI), goldTrimMat);
         centerArch.position.set(0, 1.45, wallZ + 0.06);
         scene.add(centerArch);
-
-        // Side Kitchen Props (Copper Handis, Spice Jars & Glowing Diyas — kept clear of drag & cat lanes)
-        const copperPropMat = new THREE.MeshStandardMaterial({ color: 0xc86d3b, metalness: 0.8, roughness: 0.3 });
-        const jarClayMat = new THREE.MeshStandardMaterial({ color: 0xa4522f, roughness: 0.72 });
-        const ceramicJarMat = new THREE.MeshStandardMaterial({ color: 0xf0e4ce, roughness: 0.35 });
-
-        function addSideProps(side) {
-            // Copper Handi near back corner
-            const handi = new THREE.Mesh(new THREE.SphereGeometry(0.58, 18, 14), copperPropMat);
-            handi.scale.set(1, 0.72, 1);
-            handi.position.set(side * 4.2, 0.38, -1.75);
-            handi.castShadow = true;
-            scene.add(handi);
-
-            const handiRim = new THREE.Mesh(new THREE.TorusGeometry(0.36, 0.05, 8, 18), goldTrimMat);
-            handiRim.rotation.x = Math.PI / 2;
-            handiRim.position.set(side * 4.2, 0.78, -1.75);
-            scene.add(handiRim);
-
-            // Tall Brass Surahi / Pitcher
-            const surahi = new THREE.Mesh(new THREE.SphereGeometry(0.38, 16, 14), goldTrimMat);
-            surahi.position.set(side * 5.6, 0.38, -1.5);
-            const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.16, 0.72, 14), goldTrimMat);
-            neck.position.set(side * 5.6, 0.96, -1.5);
-            scene.add(surahi, neck);
-
-            // Ceramic & Terracotta Spice Jars along outer counter
-            const jar1 = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, 0.62, 16), ceramicJarMat);
-            jar1.position.set(side * 4.9, 0.31, 2.35);
-            const lid1 = new THREE.Mesh(new THREE.SphereGeometry(0.26, 12, 10, 0, Math.PI * 2, 0, Math.PI / 2), copperPropMat);
-            lid1.position.set(side * 4.9, 0.62, 2.35);
-            scene.add(jar1, lid1);
-
-            const jar2 = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.28, 0.48, 16), jarClayMat);
-            jar2.position.set(side * 6.0, 0.24, 1.9);
-            scene.add(jar2);
-
-            // Glowing Brass Diya (Oil Lamp) warming up each side
-            const diyaBase = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.14, 0.12, 14), goldTrimMat);
-            diyaBase.position.set(side * 3.85, 0.06, 2.65);
-            const diyaFlame = new THREE.Mesh(new THREE.ConeGeometry(0.07, 0.22, 8), new THREE.MeshBasicMaterial({ color: 0xffc857 }));
-            diyaFlame.position.set(side * 3.85, 0.22, 2.65);
-            const diyaLight = new THREE.PointLight(0xffa94d, 1.15, 7);
-            diyaLight.position.set(side * 3.85, 0.65, 2.5);
-            scene.add(diyaBase, diyaFlame, diyaLight);
-        }
-
-        addSideProps(-1);
-        addSideProps(1);
 
         // Chulha / Cooling Stand base under vessel
         const stoveGroup = new THREE.Group();
@@ -3469,7 +3447,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         embers.position.y = 0.33;
         stoveGroup.add(embers);
 
-        // Animated 3D Flame Tongues
         const flames = [];
         if (cfg.usesFire) {
             for (let i = 0; i < 6; i++) {
@@ -3484,8 +3461,8 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 flames.push(fl);
             }
         }
-        const stoveHit = new THREE.Mesh(new THREE.CylinderGeometry(1.75, 1.75, 1.2, 16), new THREE.MeshBasicMaterial({ visible: false }));
-        stoveHit.position.y = 0.6;
+        const stoveHit = new THREE.Mesh(new THREE.CylinderGeometry(1.75, 1.75, 1.4, 16), new THREE.MeshBasicMaterial({ visible: false }));
+        stoveHit.position.y = 0.7;
         stoveGroup.add(stoveHit);
         scene.add(stoveGroup);
 
@@ -3534,7 +3511,7 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             mesh.userData.labelEl = lbl;
         });
 
-        /* --- Hurdle 3D Actors (Hidden until triggered) --- */
+        /* --- Hurdle 3D Actors (Cat, Lid, Wind Streaks) --- */
         const catMesh = buildCatMesh();
         catMesh.visible = false;
         catMesh.position.set(4.5, 0.02, 1.1);
@@ -3545,7 +3522,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         lidMesh.position.set(0, 3.2, -0.65);
         scene.add(lidMesh);
 
-        // Wind streaks for Wind Hurdle
         const windGroup = new THREE.Group();
         windGroup.visible = false;
         const windStreaks = [];
@@ -3560,7 +3536,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         }
         scene.add(windGroup);
 
-        // Splash / Sparkle Particle Pool
         const particles = [];
         function spawnBurst(pos, colorHex, count = 16) {
             for (let i = 0; i < count; i++) {
@@ -3580,16 +3555,18 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             }
         }
 
-        /* --- Gameplay & Unexpected Hurdle State --- */
+        /* --- Gameplay & Dish-Specific Hurdle State --- */
         let addedCount = 0;
         let mistakes = 0;
         let hurdlesCleared = 0;
         let fireLit = true;
+        let flameFlaring = false;
         let lidClosed = false;
-        let activeHurdle = null; // { type, timeLeft, maxTime, targetGroup }
-        const triggeredHurdles = new Set();
+        let activeHurdle = null;
+        const triggeredHurdleIdx = new Set();
         let shakeTime = 0;
         let finished = false;
+        let burstCooldown = 0;
 
         let draggingGroup = null;
         let tappedSelection = null;
@@ -3597,16 +3574,16 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         let didMovePointer = false;
 
         function setMsg(text, isWarn = false) {
-            statusMsgEl.textContent = text;
+            statusMsgEl.innerHTML = text;
             if (options.onHint) options.onHint(text, isWarn);
         }
 
-        function triggerHurdle(type, pickedGroup) {
-            if (activeHurdle || triggeredHurdles.has(type)) return false;
-            triggeredHurdles.add(type);
+        function triggerHurdleByIndex(idx, pickedGroup) {
+            if (activeHurdle || triggeredHurdleIdx.has(idx) || !dishHurdles[idx]) return false;
+            triggeredHurdleIdx.add(idx);
+            const h = dishHurdles[idx];
             if (typeof playSound === 'function') playSound('error');
 
-            // Return picked item cleanly while player handles the surprise
             if (pickedGroup) {
                 pickedGroup.scale.setScalar(1);
                 pickedGroup.userData.returning = true;
@@ -3616,33 +3593,26 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             tappedSelection = null;
             renderer.domElement.classList.remove('dragging');
 
-            if (type === 'cat_spill') {
-                activeHurdle = { type, timeLeft: 7.5, maxTime: 7.5, targetGroup: pickedGroup };
+            activeHurdle = { ...h, timeLeft: 7.8, maxTime: 7.8 };
+            hurdleTitleEl.textContent = `Surprise Hurdle: ${h.title}`;
+            hurdleDescEl.textContent = h.desc;
+            hurdleBtnEl.textContent = h.btn;
+            setMsg(`<b>${h.title}</b> ${h.desc}`, true);
+
+            if (h.type === 'cat_spill') {
                 catMesh.visible = true;
                 catMesh.position.set(4.4, 0.02, 0.95);
-                hurdleTitleEl.textContent = 'Surprise Hurdle: Naughty Palace Cat!';
-                hurdleDescEl.textContent = 'The cat is about to spill your bowl! Tap the 3D cat or press Shoo Cat!';
-                hurdleBtnEl.textContent = 'Shoo Cat Away!';
-                setMsg('Watch out! A palace cat jumped onto the counter — shoo it away before it spills the bowl!', true);
-            } else if (type === 'wind_out') {
-                activeHurdle = { type, timeLeft: 8.0, maxTime: 8.0 };
-                windGroup.visible = true;
-                fireLit = false;
-                hurdleTitleEl.textContent = cfg.usesFire ? 'Surprise Hurdle: Wind Blew Out the Fire!' : 'Surprise Hurdle: Dusty Breeze!';
-                hurdleDescEl.textContent = cfg.usesFire
-                    ? 'A sudden Lucknowi gust put out the chulha! Tap the stove to relight it.'
-                    : 'Wind is blowing dust over the matka! Tap the matka stand to fan it clear.';
-                hurdleBtnEl.textContent = cfg.usesFire ? 'Relight Chulha' : 'Fan Breeze Clear';
-                setMsg(cfg.usesFire ? 'Whoa! Wind blew out the chulha fire — tap the stove to spark it back on!' : 'Dusty breeze! Fan it away from the Nimish matka!', true);
-            } else if (type === 'lid_jam') {
-                activeHurdle = { type, timeLeft: 7.5, maxTime: 7.5 };
+            } else if (h.type === 'lid_jam') {
                 lidClosed = true;
                 lidMesh.visible = true;
                 lidMesh.position.set(0, 3.0, -0.65);
-                hurdleTitleEl.textContent = 'Surprise Hurdle: Brass Lid Slammed Shut!';
-                hurdleDescEl.textContent = 'The heavy lid slipped onto the vessel! Tap the 3D lid to lift it off.';
-                hurdleBtnEl.textContent = 'Lift Brass Lid';
-                setMsg('Clank! The brass lid slammed shut — tap the lid to lift it off!', true);
+            } else if (h.type === 'wind_out' || h.type === 'dust_wind' || h.type === 'warm_breeze') {
+                windGroup.visible = true;
+                const wCol = h.type === 'warm_breeze' ? 0xffa94d : (h.type === 'dust_wind' ? 0xd9b98b : 0xcbeeff);
+                windStreaks.forEach(st => st.material.color.setHex(wCol));
+                if (h.type === 'wind_out') fireLit = false;
+            } else if (h.type === 'flame_flare') {
+                flameFlaring = true;
             }
 
             hurdleBanner.classList.add('show');
@@ -3656,32 +3626,30 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             activeHurdle = null;
             hurdleBanner.classList.remove('show');
 
-            if (hType === 'cat_spill') {
-                catMesh.visible = false;
-                spawnBurst(new THREE.Vector3(1.1, 0.7, 0.9), success ? 0xffe066 : 0xffffff, 14);
-            } else if (hType === 'wind_out') {
-                windGroup.visible = false;
-                fireLit = true;
-                spawnBurst(new THREE.Vector3(0, 0.7, -0.65), 0xff9f1c, 16);
-            } else if (hType === 'lid_jam') {
-                lidClosed = false;
-                lidMesh.visible = false;
-                spawnBurst(new THREE.Vector3(0, 1.35, -0.65), 0xffd66a, 14);
-            }
+            catMesh.visible = false;
+            windGroup.visible = false;
+            lidClosed = false;
+            lidMesh.visible = false;
+            fireLit = true;
+            flameFlaring = false;
+
+            const fxPos = hType === 'cat_spill' ? new THREE.Vector3(1.1, 0.7, 0.9) : new THREE.Vector3(0, vessel.rimY + 0.5, -0.65);
+            spawnBurst(fxPos, success ? 0xffe066 : 0xef4444, 16);
 
             if (success) {
                 hurdlesCleared++;
-                hurdleCountEl.textContent = `${hurdlesCleared} / 3`;
+                hurdleCountEl.textContent = `${hurdlesCleared} / ${dishHurdles.length}`;
                 if (typeof playSound === 'function') playSound('success');
                 if (options.onScoreDelta) options.onScoreDelta(10);
-                setMsg('Shabash! Hurdle handled smoothly (+10 pts). Continue adding ingredients!');
+                const nextIng = cfg.ingredients[addedCount];
+                setMsg(`Shabash! Hurdle cleared (+10 pts). Next: drag <b>${nextIng ? nextIng.name : 'the next item'}</b>!`);
             } else {
                 mistakes++;
                 shakeTime = 0.4;
                 if (typeof playSound === 'function') playSound('error');
                 if (options.onMistake) options.onMistake();
                 if (options.onScoreDelta) options.onScoreDelta(-5);
-                setMsg('Oops! The hurdle caught you off guard (−5 pts). Pick up your ingredient and try again!', true);
+                setMsg('Oops! The hurdle caught you off guard (−5 pts). Pick up the next ingredient and try again!', true);
             }
         }
 
@@ -3701,22 +3669,13 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
 
         function handleDropIntoVessel(group) {
             const item = group.userData.item;
-            if (!fireLit) {
-                setMsg('Relight the stove first before adding ingredients!', true);
-                group.userData.returning = true;
-                return;
-            }
-            if (lidClosed) {
-                setMsg('Lift the brass lid off the vessel first!', true);
-                group.userData.returning = true;
-                return;
-            }
-            if (activeHurdle) {
-                setMsg('Handle the active hurdle first!', true);
+            if (!fireLit || lidClosed || activeHurdle) {
+                setMsg('Handle the active hurdle first before adding ingredients!', true);
                 group.userData.returning = true;
                 return;
             }
 
+            // 1. Distractor check
             if (item.isDistractor) {
                 mistakes++;
                 shakeTime = 0.42;
@@ -3724,12 +3683,26 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 if (options.onMistake) options.onMistake();
                 if (options.onScoreDelta) options.onScoreDelta(-5);
                 spawnBurst(new THREE.Vector3(0, vessel.rimY + 0.4, -0.65), 0xef4444, 16);
-                setMsg(`Arre! ${item.name} is a distractor and ruins ${dishMeta.name}!`, true);
+                setMsg(`Arre! <b>${item.name}</b> is a distractor and ruins ${dishMeta.name}!`, true);
                 group.userData.returning = true;
                 return;
             }
 
-            // Valid authentic ingredient accepted!
+            // 2. Strict Order check
+            const expectedItem = cfg.ingredients[addedCount];
+            if (expectedItem && item.id !== expectedItem.id) {
+                mistakes++;
+                shakeTime = 0.42;
+                if (typeof playSound === 'function') playSound('error');
+                if (options.onMistake) options.onMistake();
+                if (options.onScoreDelta) options.onScoreDelta(-5);
+                spawnBurst(new THREE.Vector3(0, vessel.rimY + 0.4, -0.65), 0xff9f1c, 14);
+                setMsg(`Wrong order! Add <b>${expectedItem.name}</b> first (Step ${addedCount + 1}/${cfg.ingredients.length}).`, true);
+                group.userData.returning = true;
+                return;
+            }
+
+            // 3. Valid ingredient in exact order!
             group.userData.used = true;
             group.visible = false;
             if (group.userData.labelEl) group.userData.labelEl.style.display = 'none';
@@ -3739,7 +3712,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             if (typeof playSound === 'function') playSound('success');
             if (options.onScoreDelta) options.onScoreDelta(10);
 
-            // Smoothly shift liquid color & raise level
             const t = addedCount / cfg.ingredients.length;
             const cStart = new THREE.Color(cfg.startLiquid);
             const cEnd = new THREE.Color(cfg.endLiquid);
@@ -3750,13 +3722,16 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
 
             if (addedCount >= cfg.ingredients.length) {
                 finished = true;
+                if (nextStepEl) nextStepEl.textContent = 'All Done!';
                 spawnBurst(new THREE.Vector3(0, vessel.rimY + 0.6, -0.65), 0xffd66a, 28);
-                setMsg(`Wah! All authentic ingredients cooked into ${dishMeta.name}!`);
+                setMsg(`Wah! All authentic ingredients added in exact order for <b>${dishMeta.name}</b>!`);
                 setTimeout(() => {
                     if (options.onComplete) options.onComplete({ dishId, mistakes, hurdlesCleared });
                 }, 650);
             } else {
-                setMsg(`Added ${item.name}! (${addedCount}/${cfg.ingredients.length}) Drag the next authentic ingredient.`);
+                const nextIng = cfg.ingredients[addedCount];
+                if (nextStepEl) nextStepEl.textContent = `${addedCount + 1}. ${nextIng.name}`;
+                setMsg(`Added <b>${item.name}</b>! Next (Step ${addedCount + 1}/${cfg.ingredients.length}): Drag <b>${nextIng.name}</b>.`);
             }
         }
 
@@ -3767,21 +3742,22 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             pointerDownPos = { x: e.clientX, y: e.clientY };
             didMovePointer = false;
 
-            // 1. Check direct 3D tap on active hurdle object
+            // 1. Direct 3D tap on active hurdle object
             if (activeHurdle) {
                 if (activeHurdle.type === 'cat_spill' && raycaster.intersectObject(catMesh.userData.hitMesh).length) {
-                    resolveHurdle(true); return;
-                }
-                if (activeHurdle.type === 'wind_out' && raycaster.intersectObject(stoveHit).length) {
                     resolveHurdle(true); return;
                 }
                 if (activeHurdle.type === 'lid_jam' && raycaster.intersectObject(lidMesh.userData.hitMesh).length) {
                     resolveHurdle(true); return;
                 }
+                if (['wind_out', 'dust_wind', 'warm_breeze', 'flame_flare', 'ghee_splatter', 'steam_leak', 'milk_boilover'].includes(activeHurdle.type)
+                    && raycaster.intersectObject(stoveHit).length) {
+                    resolveHurdle(true); return;
+                }
                 return;
             }
 
-            // 2. Check if tapping vessel while an item is tap-selected
+            // 2. Tap vessel while an item is tap-selected
             if (tappedSelection && raycaster.intersectObject(stoveHit).length) {
                 const chosen = tappedSelection;
                 if (chosen.userData.labelEl) chosen.userData.labelEl.classList.remove('selected');
@@ -3798,12 +3774,11 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 const grp = hits[0].object.userData.parentGroup;
                 const item = grp.userData.item;
 
-                // Trigger unexpected hurdles right when picking up authentic ingredients!
+                // Trigger dish-specific hurdles on Steps 2, 3, and 4 (or Step 1 if picking the first right item)
                 if (!item.isDistractor) {
-                    if (addedCount === 0 && item.liquid && triggerHurdle('cat_spill', grp)) return;
-                    if (addedCount === 1 && !triggeredHurdles.has('cat_spill') && triggerHurdle('cat_spill', grp)) return;
-                    if (addedCount === 2 && triggerHurdle('wind_out', grp)) return;
-                    if (addedCount === 3 && triggerHurdle('lid_jam', grp)) return;
+                    if (addedCount === 1 && triggerHurdleByIndex(0, grp)) return;
+                    if (addedCount === 2 && triggerHurdleByIndex(1, grp)) return;
+                    if (addedCount === 3 && triggerHurdleByIndex(2, grp)) return;
                 }
 
                 if (tappedSelection && tappedSelection !== grp) {
@@ -3850,11 +3825,10 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 if (grp.userData.labelEl) grp.userData.labelEl.classList.remove('selected');
                 handleDropIntoVessel(grp);
             } else if (!didMovePointer) {
-                // Quick tap selects ingredient so mobile users can also tap pot to drop
                 tappedSelection = grp;
                 grp.position.copy(grp.userData.homePos);
                 grp.position.y = 0.25;
-                setMsg(`Selected ${grp.userData.item.name} — drag it to the ${cfg.vesselLabel} or tap the vessel!`);
+                setMsg(`Selected <b>${grp.userData.item.name}</b> — drag it to the ${cfg.vesselLabel} or tap the vessel!`);
             } else {
                 grp.scale.setScalar(1);
                 if (grp.userData.labelEl) grp.userData.labelEl.classList.remove('selected');
@@ -3871,7 +3845,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         if (resizeObserver) resizeObserver.observe(stageWrap);
         window.addEventListener('resize', fitCameraAndRenderer);
 
-        /* --- Project 3D coordinates to crisp 2D HTML labels --- */
         const projVec = new THREE.Vector3();
         function syncLabels() {
             const w = stageWrap.clientWidth;
@@ -3903,24 +3876,23 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             lastTime = now;
             elapsed += dt;
 
-            // Animate flames & fire glow
             if (cfg.usesFire) {
                 flames.forEach(fl => {
                     fl.visible = fireLit;
                     if (fireLit) {
-                        const s = 0.85 + Math.sin(elapsed * 11 + fl.userData.phase) * 0.25;
-                        fl.scale.set(1, s, 1);
+                        const baseH = flameFlaring ? 2.25 : 0.9;
+                        const s = baseH + Math.sin(elapsed * (flameFlaring ? 20 : 11) + fl.userData.phase) * (flameFlaring ? 0.5 : 0.25);
+                        fl.scale.set(flameFlaring ? 1.4 : 1, s, flameFlaring ? 1.4 : 1);
+                        fl.material.color.setHex(flameFlaring ? 0xff2200 : 0xff8c1a);
                     }
                 });
-                fireLight.intensity = fireLit ? 2.4 + Math.sin(elapsed * 9) * 0.35 : 0.15;
-                emberMat.emissiveIntensity = fireLit ? 1.15 : 0.05;
+                fireLight.intensity = !fireLit ? 0.15 : (flameFlaring ? 4.2 + Math.sin(elapsed * 18) * 0.6 : 2.4 + Math.sin(elapsed * 9) * 0.35);
+                emberMat.emissiveIntensity = fireLit ? (flameFlaring ? 2.0 : 1.15) : 0.05;
                 hemiLight.color.setHex(fireLit ? 0xffe7c2 : 0x8fb8e6);
             }
 
-            // Gentle simmering wobble on vessel liquid
             vessel.liquid.rotation.z = Math.sin(elapsed * 2.4) * 0.02;
 
-            // Drop-zone ring glow when dragging or tap-selected
             const activeObj = draggingGroup || tappedSelection;
             if (activeObj && !activeHurdle) {
                 const dist = draggingGroup ? Math.hypot(draggingGroup.position.x, draggingGroup.position.z + 0.65) : 9;
@@ -3931,7 +3903,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 vessel.ring.material.opacity = 0;
             }
 
-            // Spring-return dropped items to their home spot
             draggables.forEach(g => {
                 if (g.userData.returning) {
                     g.position.lerp(g.userData.homePos, Math.min(1, dt * 11));
@@ -3942,7 +3913,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 }
             });
 
-            // Animate active hurdle
             if (activeHurdle) {
                 activeHurdle.timeLeft -= dt;
                 const pct = Math.max(0, (activeHurdle.timeLeft / activeHurdle.maxTime) * 100);
@@ -3952,7 +3922,7 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                     catMesh.position.x += (1.15 - catMesh.position.x) * Math.min(1, dt * 5.5);
                     catMesh.position.y = 0.02 + Math.abs(Math.sin(elapsed * 8)) * 0.18;
                     catMesh.rotation.y = Math.sin(elapsed * 6) * 0.14;
-                } else if (activeHurdle.type === 'wind_out') {
+                } else if (['wind_out', 'dust_wind', 'warm_breeze'].includes(activeHurdle.type)) {
                     windStreaks.forEach(st => {
                         st.position.x += dt * 11.5;
                         if (st.position.x > 5.5) st.position.x = -5.5;
@@ -3960,6 +3930,15 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 } else if (activeHurdle.type === 'lid_jam') {
                     const targetY = 0.34 + vessel.rimY;
                     lidMesh.position.y += (targetY - lidMesh.position.y) * Math.min(1, dt * 9);
+                } else if (['milk_boilover', 'ghee_splatter', 'steam_leak'].includes(activeHurdle.type)) {
+                    // Pulsing boil-over / splatter / steam bursts
+                    vessel.liquid.position.y = vessel.baseLiqY + 0.22 + Math.sin(elapsed * 14) * 0.07;
+                    burstCooldown -= dt;
+                    if (burstCooldown <= 0) {
+                        burstCooldown = 0.35;
+                        const bCol = activeHurdle.type === 'ghee_splatter' ? 0xffc83d : (activeHurdle.type === 'steam_leak' ? 0xffe066 : 0xffffff);
+                        spawnBurst(new THREE.Vector3(0, vessel.rimY + 0.35, -0.65), bCol, 7);
+                    }
                 }
 
                 if (activeHurdle.timeLeft <= 0) {
@@ -3967,7 +3946,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 }
             }
 
-            // Particles update
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
                 p.userData.life -= dt * 1.6;
@@ -3982,7 +3960,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
                 }
             }
 
-            // Brief camera shake on mistake
             if (shakeTime > 0) {
                 shakeTime -= dt;
                 camera.position.x = (Math.random() - 0.5) * 0.22;
@@ -3995,7 +3972,6 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
         }
         rafId = requestAnimationFrame(animate);
 
-        /* --- Teardown hook to prevent WebGL memory leaks --- */
         activeCleanup = function () {
             if (rafId) cancelAnimationFrame(rafId);
             if (resizeObserver) resizeObserver.disconnect();
