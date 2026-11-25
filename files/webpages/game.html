@@ -2549,7 +2549,7 @@ function resetChefRound() {
     malaiStory.timingDone = false;
     renderMalaiLevel();
 }
-
+</script>
 
 <style id="readable-colours-and-ustad-reactions">
 /* Softer, brighter royal palette with clear text and visible controls */
@@ -3980,6 +3980,1031 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
             renderer.domElement.removeEventListener('pointermove', onPointerMove);
             renderer.domElement.removeEventListener('pointerup', onPointerUp);
             renderer.domElement.removeEventListener('pointercancel', onPointerUp);
+            scene.traverse(obj => {
+                if (obj.geometry) obj.geometry.dispose();
+                if (obj.material) {
+                    if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose());
+                    else obj.material.dispose();
+                }
+            });
+            renderer.dispose();
+        };
+    };
+})();
+</script>
+
+<style id="royal-3d-level2-styles">
+.l2-shell { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.l2-hud {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 6px; padding: 8px 11px; border-radius: 12px;
+    background: #062f22; border: 1.5px solid rgba(214, 166, 44, 0.65);
+    font-size: 11px; color: #fff8e3 !important;
+}
+.l2-hud b { color: #ffd66a !important; }
+.l2-steps { display: flex; gap: 5px; }
+.l2-pill {
+    padding: 3px 8px; border-radius: 999px; font: 700 10px/1.2 Poppins, system-ui, sans-serif;
+    background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(214, 166, 44, 0.45);
+    color: #fff0c2 !important;
+}
+.l2-pill.active { background: #d4af37; color: #1b0c04 !important; border-color: #fff6cf; }
+.l2-pill.done { background: #166534; color: #dcfce7 !important; border-color: #4ade80; }
+.l2-stage-wrap {
+    position: relative; width: 100%; height: clamp(320px, 52vh, 440px);
+    border-radius: 16px; overflow: hidden; border: 2px solid #d4af37;
+    background: radial-gradient(circle at 50% 35%, #2d180e, #120705);
+    box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.65);
+    touch-action: none; user-select: none;
+}
+.l2-stage-wrap canvas { display: block; width: 100% !important; height: 100% !important; cursor: pointer; touch-action: none; }
+.l2-labels-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.l2-3d-label {
+    position: absolute; transform: translate(-50%, 0); max-width: 145px; text-align: center;
+    padding: 4px 8px; border-radius: 10px;
+    background: rgba(16, 8, 5, 0.9); border: 1.5px solid rgba(212, 175, 55, 0.85);
+    color: #fff7df !important; font: 700 10px/1.25 Poppins, system-ui, sans-serif;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6); transition: transform 0.15s, border-color 0.15s;
+}
+.l2-3d-label.zone-hit { background: rgba(20, 83, 45, 0.95); border-color: #4ade80; color: #dcfce7 !important; transform: translate(-50%, -2px) scale(1.06); }
+.l2-action-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 9px 12px; border-radius: 12px;
+    background: #fff8e8 !important; color: #1e3528 !important; border: 2px solid #c99726;
+    font: 600 11.5px/1.35 Poppins, system-ui, sans-serif; min-height: 46px;
+}
+.l2-action-bar span { color: #1e3528 !important; }
+.l2-stop-btn {
+    padding: 9px 16px; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(135deg, #0e6847, #06432f) !important;
+    color: #fff5d1 !important; border: 2px solid #f2c75a !important;
+    font: 800 12px/1.2 Poppins, system-ui, sans-serif; cursor: pointer;
+    box-shadow: 0 3px 0 #04291c;
+}
+.l2-stop-btn:active { transform: translateY(2px); }
+.l2-stop-btn.in-zone { background: linear-gradient(135deg, #16a34a, #15803d) !important; border-color: #bbf7d0 !important; }
+@media (max-width: 480px) {
+    .l2-stage-wrap { height: clamp(300px, 48vh, 380px); }
+    .l2-3d-label { font-size: 9px; max-width: 112px; padding: 3px 6px; }
+}
+</style>
+
+<script id="royal-3d-level2-engine">
+(function () {
+    let activeL2Cleanup = null;
+
+    function cleanupL2() {
+        if (typeof activeL2Cleanup === 'function') {
+            try { activeL2Cleanup(); } catch (e) {}
+            activeL2Cleanup = null;
+        }
+    }
+
+    // Hook into Level 3's global cleanup so exiting, switching levels, or 3-error resets always dispose Level 2 cleanly
+    const origCleanup = window.cleanupRoyal3DKitchen;
+    window.cleanupRoyal3DKitchen = function () {
+        if (typeof origCleanup === 'function') origCleanup();
+        cleanupL2();
+    };
+
+    const DISH_VISUALS = {
+        malai_gilori: { vessel: 'tawa', usesFire: true, mainCol: 0xfff4d6, accentCol: 0x84cc16, liqCol: 0xfff6e0, wrongHint: 'torn & burnt black' },
+        shahi_tukda:  { vessel: 'lagan', usesFire: true, mainCol: 0xd99b43, accentCol: 0xfff0c2, liqCol: 0xffb347, wrongHint: 'charred & soggy' },
+        zarda:        { vessel: 'degchi', usesFire: true, mainCol: 0xffb703, accentCol: 0xef4444, liqCol: 0xffc83d, wrongHint: 'clumped & scorched' },
+        kheer:        { vessel: 'kadhai', usesFire: true, mainCol: 0xf7e7ce, accentCol: 0x65a30d, liqCol: 0xfbf0de, wrongHint: 'curdled & burnt' },
+        nimish:       { vessel: 'matka', usesFire: false, mainCol: 0xfff7d6, accentCol: 0xf97316, liqCol: 0xfffdf5, wrongHint: 'melted flat & spoilt' }
+    };
+
+    /* Build authentic 3D vessel for Stage 2 */
+    function buildVessel(type, liqHex) {
+        const g = new THREE.Group();
+        const mats = {
+            tawa:   new THREE.MeshStandardMaterial({ color: 0x3b3836, metalness: 0.65, roughness: 0.45, side: THREE.DoubleSide }),
+            lagan:  new THREE.MeshStandardMaterial({ color: 0xd9a83c, metalness: 0.82, roughness: 0.25, side: THREE.DoubleSide }),
+            degchi: new THREE.MeshStandardMaterial({ color: 0xc96f3b, metalness: 0.84, roughness: 0.28, side: THREE.DoubleSide }),
+            kadhai: new THREE.MeshStandardMaterial({ color: 0xd9a83c, metalness: 0.82, roughness: 0.25, side: THREE.DoubleSide }),
+            matka:  new THREE.MeshStandardMaterial({ color: 0xb85d38, metalness: 0.08, roughness: 0.82, side: THREE.DoubleSide })
+        };
+        let pts, liqY = 0.52, liqR = 1.05;
+        if (type === 'tawa') {
+            pts = [new THREE.Vector2(0, 0), new THREE.Vector2(1.2, 0.02), new THREE.Vector2(1.38, 0.26), new THREE.Vector2(1.32, 0.34)];
+            liqY = 0.22; liqR = 1.2;
+        } else if (type === 'lagan') {
+            pts = [new THREE.Vector2(0, 0), new THREE.Vector2(1.15, 0.02), new THREE.Vector2(1.36, 0.42), new THREE.Vector2(1.44, 0.5)];
+            liqY = 0.35; liqR = 1.2;
+        } else if (type === 'degchi' || type === 'matka') {
+            pts = [new THREE.Vector2(0, 0), new THREE.Vector2(0.8, 0.02), new THREE.Vector2(1.28, 0.5), new THREE.Vector2(0.98, 0.98), new THREE.Vector2(1.14, 1.08)];
+            liqY = 0.72; liqR = 0.96;
+        } else {
+            pts = [new THREE.Vector2(0, 0), new THREE.Vector2(0.8, 0.04), new THREE.Vector2(1.24, 0.5), new THREE.Vector2(1.34, 0.86), new THREE.Vector2(1.42, 0.9)];
+            liqY = 0.58; liqR = 1.12;
+        }
+        const body = new THREE.Mesh(new THREE.LatheGeometry(pts, 32), mats[type] || mats.kadhai);
+        body.castShadow = true;
+        g.add(body);
+
+        const liqGeo = new THREE.CircleGeometry(liqR, 28);
+        liqGeo.rotateX(-Math.PI / 2);
+        const liq = new THREE.Mesh(liqGeo, new THREE.MeshStandardMaterial({ color: liqHex, roughness: 0.22, emissive: liqHex, emissiveIntensity: 0.14 }));
+        liq.position.y = liqY;
+        g.add(liq);
+        return { group: g, liq };
+    }
+
+    /* Build 3D Cooking Technique Station for Stage 1 (mode: 'good' | 'high_heat' | 'frozen') */
+    function buildTechniqueStation(mode, vis) {
+        const g = new THREE.Group();
+        const baseCol = mode === 'frozen' ? 0x67a9cf : (mode === 'high_heat' ? 0x451212 : 0x2b1b14);
+        const ped = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.92, 1.02, 0.28, 24),
+            new THREE.MeshStandardMaterial({ color: baseCol, roughness: 0.8 })
+        );
+        ped.position.y = 0.14;
+        g.add(ped);
+
+        // Mini vessel on top
+        const potCol = mode === 'frozen' ? 0xa5f3fc : (mode === 'high_heat' ? 0x261a18 : 0xd9a83c);
+        const pot = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.72, 0.55, 0.45, 22),
+            new THREE.MeshStandardMaterial({ color: potCol, metalness: mode === 'frozen' ? 0.15 : 0.75, roughness: 0.3 })
+        );
+        pot.position.y = 0.52;
+        g.add(pot);
+
+        const fillCol = mode === 'high_heat' ? 0x1c1412 : (mode === 'frozen' ? 0xe0f2fe : vis.liqCol);
+        const fill = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.66, 0.66, 0.06, 20),
+            new THREE.MeshStandardMaterial({ color: fillCol, roughness: 0.28 })
+        );
+        fill.position.y = 0.74;
+        g.add(fill);
+
+        const animParts = [];
+        if (mode === 'high_heat') {
+            // Wild red-orange flames + dark smoke
+            for (let i = 0; i < 6; i++) {
+                const fl = new THREE.Mesh(
+                    new THREE.ConeGeometry(0.16, 0.85, 8),
+                    new THREE.MeshBasicMaterial({ color: i % 2 ? 0xff1e00 : 0xff6b00, transparent: true, opacity: 0.92 })
+                );
+                const a = (i / 6) * Math.PI * 2;
+                fl.position.set(Math.cos(a) * 0.62, 0.6, Math.sin(a) * 0.62);
+                fl.userData = { kind: 'wild', phase: i };
+                g.add(fl);
+                animParts.push(fl);
+            }
+            for (let i = 0; i < 3; i++) {
+                const sm = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.16, 8, 8),
+                    new THREE.MeshBasicMaterial({ color: 0x262626, transparent: true, opacity: 0.65 })
+                );
+                sm.position.set((i - 1) * 0.18, 0.95 + i * 0.25, 0);
+                sm.userData = { kind: 'smoke', phase: i * 1.4 };
+                g.add(sm);
+                animParts.push(sm);
+            }
+        } else if (mode === 'frozen') {
+            // Ice cubes / raw unheated crystals
+            for (let i = 0; i < 5; i++) {
+                const ice = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.26, 0.26, 0.26),
+                    new THREE.MeshStandardMaterial({ color: 0xbae6fd, transparent: true, opacity: 0.82, roughness: 0.1 })
+                );
+                const a = (i / 5) * Math.PI * 2;
+                ice.position.set(Math.cos(a) * 0.28, 0.88 + (i % 2) * 0.14, Math.sin(a) * 0.28);
+                ice.rotation.set(i * 0.5, i * 0.7, 0.3);
+                ice.userData = { kind: 'ice', phase: i };
+                g.add(ice);
+                animParts.push(ice);
+            }
+        } else {
+            // Gentle authentic simmer / cool dew glow for Nimish
+            for (let i = 0; i < 5; i++) {
+                const fl = new THREE.Mesh(
+                    new THREE.ConeGeometry(0.11, 0.32, 8),
+                    new THREE.MeshBasicMaterial({ color: vis.usesFire ? 0xffb703 : 0x7dd3fc, transparent: true, opacity: 0.85 })
+                );
+                const a = (i / 5) * Math.PI * 2;
+                fl.position.set(Math.cos(a) * 0.52, 0.34, Math.sin(a) * 0.52);
+                fl.userData = { kind: 'gentle', phase: i * 1.1 };
+                g.add(fl);
+                animParts.push(fl);
+            }
+        }
+
+        const hit = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 1.9, 14), new THREE.MeshBasicMaterial({ visible: false }));
+        hit.position.y = 0.85;
+        hit.userData.station = g;
+        g.add(hit);
+        g.userData.hitMesh = hit;
+        g.userData.animParts = animParts;
+        return g;
+    }
+
+    /* Build 3D Platter of the Chosen Dish (isWrong = true makes it visibly burnt/ruined/smoking) */
+    function buildDishPlatter(dishId, vis, isWrong) {
+        const g = new THREE.Group();
+        const thaliMat = new THREE.MeshStandardMaterial({
+            color: isWrong ? 0x8c857d : 0xe5e7eb,
+            metalness: 0.85, roughness: isWrong ? 0.55 : 0.2
+        });
+        const rimMat = new THREE.MeshStandardMaterial({
+            color: isWrong ? 0x6b5328 : 0xd4af37,
+            metalness: 0.85, roughness: 0.28
+        });
+
+        const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.8, 0.1, 28), thaliMat);
+        plate.position.y = 0.06;
+        plate.castShadow = true;
+        g.add(plate);
+
+        const rim = new THREE.Mesh(new THREE.TorusGeometry(0.94, 0.045, 10, 28), rimMat);
+        rim.rotation.x = Math.PI / 2;
+        rim.position.y = 0.11;
+        g.add(rim);
+
+        const foodGroup = new THREE.Group();
+        foodGroup.position.y = 0.12;
+        const goodMat = new THREE.MeshStandardMaterial({ color: vis.mainCol, roughness: 0.35 });
+        const accMat  = new THREE.MeshStandardMaterial({ color: vis.accentCol, roughness: 0.4 });
+        const burntMat = new THREE.MeshStandardMaterial({ color: 0x1f1714, roughness: 0.92 });
+        const charEdgeMat = new THREE.MeshStandardMaterial({ color: 0x452414, roughness: 0.88 });
+
+        if (dishId === 'malai_gilori') {
+            // 3 folded triangular paan-shaped malai giloris
+            for (let i = 0; i < 3; i++) {
+                const a = (i / 3) * Math.PI * 2 + 0.3;
+                const tri = new THREE.Mesh(
+                    new THREE.ConeGeometry(0.36, 0.22, 3),
+                    isWrong ? (i === 1 ? burntMat : charEdgeMat) : goodMat
+                );
+                tri.position.set(Math.cos(a) * 0.32, isWrong ? 0.07 : 0.13, Math.sin(a) * 0.32);
+                tri.rotation.y = a;
+                if (isWrong) { tri.scale.set(1.15, 0.45, 0.75); tri.rotation.z = 0.25; }
+                foodGroup.add(tri);
+                if (!isWrong) {
+                    const pista = new THREE.Mesh(new THREE.SphereGeometry(0.055, 8, 8), accMat);
+                    pista.position.set(Math.cos(a) * 0.32, 0.23, Math.sin(a) * 0.32);
+                    foodGroup.add(pista);
+                }
+            }
+        } else if (dishId === 'shahi_tukda') {
+            for (let i = 0; i < 3; i++) {
+                const slice = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.56, 0.14, 0.42),
+                    isWrong ? burntMat : goodMat
+                );
+                slice.position.set((i - 1) * 0.26, 0.1 + i * 0.08, (i % 2 - 0.5) * 0.16);
+                slice.rotation.y = i * 0.45;
+                if (isWrong) slice.rotation.z = 0.22;
+                foodGroup.add(slice);
+            }
+            if (!isWrong) {
+                const rabri = new THREE.Mesh(new THREE.SphereGeometry(0.38, 16, 10), accMat);
+                rabri.scale.set(1.2, 0.32, 1.1);
+                rabri.position.y = 0.32;
+                foodGroup.add(rabri);
+            }
+        } else if (dishId === 'zarda') {
+            const mound = new THREE.Mesh(
+                new THREE.SphereGeometry(0.58, 18, 12, 0, Math.PI * 2, 0, Math.PI / 2),
+                isWrong ? charEdgeMat : goodMat
+            );
+            mound.scale.y = isWrong ? 0.45 : 0.9;
+            foodGroup.add(mound);
+            for (let i = 0; i < 8; i++) {
+                const a = (i / 8) * Math.PI * 2;
+                const bit = new THREE.Mesh(
+                    new THREE.OctahedronGeometry(0.07, 0),
+                    isWrong ? burntMat : (i % 2 ? accMat : new THREE.MeshStandardMaterial({ color: 0x4ade80 }))
+                );
+                bit.position.set(Math.cos(a) * 0.3, isWrong ? 0.16 : 0.32, Math.sin(a) * 0.3);
+                foodGroup.add(bit);
+            }
+        } else if (dishId === 'nimish') {
+            const cup = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.52, 0.36, 0.38, 22),
+                new THREE.MeshStandardMaterial({ color: 0xb85d38, roughness: 0.8 })
+            );
+            cup.position.y = 0.19;
+            foodGroup.add(cup);
+            if (isWrong) {
+                // Collapsed flat murky puddle
+                const flat = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.46, 0.04, 20), new THREE.MeshStandardMaterial({ color: 0x6b6048, roughness: 0.2 }));
+                flat.position.y = 0.22;
+                foodGroup.add(flat);
+            } else {
+                // Cloud-light airy foam dome
+                for (let i = 0; i < 6; i++) {
+                    const a = (i / 6) * Math.PI * 2;
+                    const puff = new THREE.Mesh(new THREE.SphereGeometry(0.24, 12, 12), goodMat);
+                    puff.position.set(Math.cos(a) * 0.18, 0.42 + (i % 2) * 0.08, Math.sin(a) * 0.18);
+                    foodGroup.add(puff);
+                }
+                const topPuff = new THREE.Mesh(new THREE.SphereGeometry(0.26, 12, 12), accMat);
+                topPuff.position.y = 0.58;
+                foodGroup.add(topPuff);
+            }
+        } else {
+            // Kheer in ornate bowl
+            const bowl = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.58, 0.38, 0.34, 22),
+                new THREE.MeshStandardMaterial({ color: 0xd9a83c, metalness: 0.78, roughness: 0.28 })
+            );
+            bowl.position.y = 0.17;
+            foodGroup.add(bowl);
+            const kheerFill = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.52, 0.48, 0.08, 20),
+                isWrong ? new THREE.MeshStandardMaterial({ color: 0x574c3f, roughness: 0.95 }) : goodMat
+            );
+            kheerFill.position.y = 0.33;
+            foodGroup.add(kheerFill);
+            if (isWrong) {
+                for (let i = 0; i < 5; i++) {
+                    const lump = new THREE.Mesh(new THREE.SphereGeometry(0.11, 8, 8), burntMat);
+                    lump.position.set((i - 2) * 0.14, 0.38, (i % 2 - 0.5) * 0.18);
+                    foodGroup.add(lump);
+                }
+            } else {
+                for (let i = 0; i < 5; i++) {
+                    const a = (i / 5) * Math.PI * 2;
+                    const nut = new THREE.Mesh(new THREE.SphereGeometry(0.055, 8, 8), accMat);
+                    nut.position.set(Math.cos(a) * 0.22, 0.39, Math.sin(a) * 0.22);
+                    foodGroup.add(nut);
+                }
+            }
+        }
+        g.add(foodGroup);
+
+        // Subtle dark smoke puffs rising ONLY from the wrong/ruined dish
+        const smokePuffs = [];
+        if (isWrong) {
+            for (let i = 0; i < 4; i++) {
+                const sm = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.13, 8, 8),
+                    new THREE.MeshBasicMaterial({ color: 0x2b2623, transparent: true, opacity: 0.55 })
+                );
+                sm.position.set((Math.random() - 0.5) * 0.35, 0.45 + i * 0.28, (Math.random() - 0.5) * 0.35);
+                sm.userData.phase = i * 1.2;
+                g.add(sm);
+                smokePuffs.push(sm);
+            }
+        }
+
+        const hit = new THREE.Mesh(new THREE.CylinderGeometry(1.05, 1.05, 1.6, 14), new THREE.MeshBasicMaterial({ visible: false }));
+        hit.position.y = 0.7;
+        hit.userData.platter = g;
+        g.add(hit);
+
+        g.userData.hitMesh = hit;
+        g.userData.isWrong = isWrong;
+        g.userData.foodGroup = foodGroup;
+        g.userData.smokePuffs = smokePuffs;
+        return g;
+    }
+
+    window.mountRoyal3DLevel2 = function (container, dishId) {
+        cleanupL2();
+
+        const dish = AWADHI_SWEETS[dishId] || AWADHI_SWEETS.malai_gilori;
+        const qa = STORY_LEVEL2_QA[dish.id] || STORY_LEVEL2_QA.malai_gilori;
+        const vis = DISH_VISUALS[dish.id] || DISH_VISUALS.malai_gilori;
+        const chefImgSrc = document.querySelector('#ustadZaikaHome .ustad-home-img')?.src || '';
+
+        container.innerHTML = `
+            <div class="l2-shell">
+                <div class="chef-level2-panel" style="margin-bottom:2px;">
+                    <div class="chef-level2-character" style="min-height:110px;">
+                        <img class="chef-level2-img" style="height:125px;" src="${chefImgSrc}" alt="Ustad Zaika">
+                        <div class="chef-reaction chef-level2-reaction" id="l2ChefReaction" aria-live="polite">👨‍🍳</div>
+                    </div>
+                    <div class="chef-level2-talk">
+                        <div class="chef-level2-name">USTAD ZAIKA • 3D MASTERY</div>
+                        <div class="speech" id="l2ChefSpeech">Trial 1/3: Tap the authentic 3D cooking station for ${dish.name}!</div>
+                    </div>
+                </div>
+
+                <div class="l2-hud">
+                    <span><b>${dish.name}</b> • <span id="l2TrialTitle">Trial 1/3: 3D Technique</span></span>
+                    <div class="l2-steps">
+                        <span class="l2-pill active" id="l2Pill1">1. Technique</span>
+                        <span class="l2-pill" id="l2Pill2">2. Ring Zone</span>
+                        <span class="l2-pill" id="l2Pill3">3. Spot Flaw</span>
+                    </div>
+                </div>
+
+                <div class="l2-stage-wrap" id="l2StageWrap">
+                    <div class="l2-labels-layer" id="l2LabelsLayer"></div>
+                </div>
+
+                <div class="l2-action-bar">
+                    <span id="l2StatusMsg">Inspect the 3 cooking stations in 3D and tap the authentic one!</span>
+                    <button type="button" id="l2RingStopBtn" class="l2-stop-btn hidden">STOP RING!</button>
+                </div>
+            </div>
+        `;
+
+        const stageWrap = document.getElementById('l2StageWrap');
+        const labelsLayer = document.getElementById('l2LabelsLayer');
+        const statusMsgEl = document.getElementById('l2StatusMsg');
+        const trialTitleEl = document.getElementById('l2TrialTitle');
+        const stopRingBtn = document.getElementById('l2RingStopBtn');
+
+        if (typeof THREE === 'undefined') {
+            statusMsgEl.textContent = '3D engine (Three.js) is offline—check your connection and reload.';
+            return;
+        }
+
+        let renderer;
+        try {
+            renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+        } catch (err) {
+            statusMsgEl.textContent = 'WebGL is unavailable on this browser.';
+            return;
+        }
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        stageWrap.insertBefore(renderer.domElement, labelsLayer);
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x23120c);
+        scene.fog = new THREE.Fog(0x23120c, 15, 30);
+
+        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 50);
+
+        function fitCamera() {
+            const w = Math.max(250, stageWrap.clientWidth);
+            const h = Math.max(250, stageWrap.clientHeight);
+            renderer.setSize(w, h, false);
+            camera.aspect = w / h;
+            if (w < 460) {
+                camera.fov = 55;
+                camera.position.set(0, 4.3, 6.8);
+                camera.lookAt(0, 0.9, 0);
+            } else {
+                camera.fov = 44;
+                camera.position.set(0, 3.6, 6.1);
+                camera.lookAt(0, 0.95, 0);
+            }
+            camera.updateProjectionMatrix();
+        }
+        fitCamera();
+
+        // Warm royal kitchen lighting & backdrop
+        scene.add(new THREE.HemisphereLight(0xffe7c2, 0x26120c, 0.95));
+        const keyLight = new THREE.DirectionalLight(0xfff1d6, 0.95);
+        keyLight.position.set(3, 7, 4.5);
+        keyLight.castShadow = true;
+        scene.add(keyLight);
+
+        const accentLight = new THREE.PointLight(0xff9d3b, 1.8, 12);
+        accentLight.position.set(0, 2.2, 1.5);
+        scene.add(accentLight);
+
+        const counter = new THREE.Mesh(
+            new THREE.BoxGeometry(26, 0.4, 7.5),
+            new THREE.MeshStandardMaterial({ color: 0x472716, roughness: 0.75 })
+        );
+        counter.position.set(0, -0.2, 0.5);
+        counter.receiveShadow = true;
+        scene.add(counter);
+
+        const goldMat = new THREE.MeshStandardMaterial({ color: 0xd9ad3c, metalness: 0.82, roughness: 0.28 });
+        const trim = new THREE.Mesh(new THREE.BoxGeometry(24, 0.03, 0.1), goldMat);
+        trim.position.set(0, 0.015, 2.0);
+        scene.add(trim);
+
+        const backWall = new THREE.Mesh(
+            new THREE.BoxGeometry(28, 9, 0.4),
+            new THREE.MeshStandardMaterial({ color: 0x5c2b1e, roughness: 0.88 })
+        );
+        backWall.position.set(0, 3.8, -2.9);
+        scene.add(backWall);
+
+        const wallArch = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.1, 10, 30, Math.PI), goldMat);
+        wallArch.position.set(0, 1.5, -2.65);
+        scene.add(wallArch);
+
+        // Stage container group (swapped cleanly between Trials 1, 2, 3)
+        const trialGroup = new THREE.Group();
+        scene.add(trialGroup);
+
+        const particles = [];
+        function spawnBurst(pos, colorHex, count = 18) {
+            for (let i = 0; i < count; i++) {
+                const p = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.065, 6, 6),
+                    new THREE.MeshBasicMaterial({ color: colorHex, transparent: true, opacity: 0.95 })
+                );
+                p.position.copy(pos);
+                p.userData.vel = new THREE.Vector3(
+                    (Math.random() - 0.5) * 3.4,
+                    1.5 + Math.random() * 2.2,
+                    (Math.random() - 0.5) * 3.4
+                );
+                p.userData.life = 1.0;
+                scene.add(p);
+                particles.push(p);
+            }
+        }
+
+        function setChef(kind, msg) {
+            const speech = document.getElementById('l2ChefSpeech');
+            const badge = document.getElementById('l2ChefReaction');
+            if (speech && msg) speech.textContent = msg;
+            if (badge) {
+                badge.className = 'chef-reaction chef-level2-reaction';
+                if (kind === 'happy') { badge.textContent = '👍😄'; badge.classList.add('react-happy'); }
+                else if (kind === 'sad') { badge.textContent = '😟'; badge.classList.add('react-sad'); }
+                else if (kind === 'shock') { badge.textContent = '😱'; badge.classList.add('react-shock'); }
+                else { badge.textContent = '👨‍🍳'; }
+            }
+        }
+
+        function clearTrialObjects() {
+            labelsLayer.innerHTML = '';
+            while (trialGroup.children.length > 0) {
+                const obj = trialGroup.children.pop();
+                obj.traverse(c => {
+                    if (c.geometry) c.geometry.dispose();
+                    if (c.material) {
+                        if (Array.isArray(c.material)) c.material.forEach(m => m.dispose());
+                        else c.material.dispose();
+                    }
+                });
+            }
+        }
+
+        // State across the 3 3D trials
+        let phase = 1; // 1 = Technique, 2 = Floating Ring Timing, 3 = Spot Wrong Dish
+        let isDisposed = false;
+        let phaseLocked = false;
+        let shakeTime = 0;
+        let labelEntries = [];
+
+        // Phase-specific references
+        let p1Stations = [];
+        let p2Ring = null;
+        let p2ZoneBand = null;
+        let p2RingY = 0.85;
+        let p2RingDir = 1;
+        let p2RingStopped = false;
+        let p2Flames = [];
+        let p2RingLabelEl = null;
+        const P2_MIN_Y = 0.78;
+        const P2_MAX_Y = 2.75;
+        const P2_ZONE_LOW = 1.50;
+        const P2_ZONE_HIGH = 2.02;
+        let p3Platters = [];
+
+        function updateStepPills() {
+            const p1 = document.getElementById('l2Pill1');
+            const p2 = document.getElementById('l2Pill2');
+            const p3 = document.getElementById('l2Pill3');
+            if (p1) p1.className = 'l2-pill ' + (phase > 1 ? 'done' : 'active');
+            if (p2) p2.className = 'l2-pill ' + (phase > 2 ? 'done' : (phase === 2 ? 'active' : ''));
+            if (p3) p3.className = 'l2-pill ' + (phase === 3 ? 'active' : (phase > 3 ? 'done' : ''));
+        }
+
+        /* ================= TRIAL 1: 3D COOKING TECHNIQUE ================= */
+        function setupPhase1() {
+            phase = 1;
+            phaseLocked = false;
+            clearTrialObjects();
+            labelEntries = [];
+            p1Stations = [];
+            stopRingBtn.classList.add('hidden');
+            updateStepPills();
+            trialTitleEl.textContent = 'Trial 1/3: 3D Technique';
+            statusMsgEl.innerHTML = `Tap the <b>authentic 3D cooking station</b> for <b>${dish.name}</b>!`;
+            setChef('idle', `Trial 1/3: Which 3D station uses the true Lucknowi technique for ${dish.name}?`);
+
+            const correctText = (qa.q1.find(([l]) => l === qa.a1) || ['B', 'Gentle slow royal method'])[1];
+            const wrongItems = qa.q1.filter(([l]) => l !== qa.a1);
+            const choices = [
+                { mode: 'good', correct: true, label: correctText },
+                { mode: 'high_heat', correct: false, label: wrongItems[0] ? wrongItems[0][1] : 'High scorching flame' },
+                { mode: 'frozen', correct: false, label: wrongItems[1] ? wrongItems[1][1] : 'Freeze / skip cooking' }
+            ].sort(() => Math.random() - 0.5);
+
+            const xSlots = [-2.4, 0, 2.4];
+            choices.forEach((ch, idx) => {
+                const st = buildTechniqueStation(ch.mode, vis);
+                st.position.set(xSlots[idx], 0, 0.45);
+                st.userData.choice = ch;
+                st.userData.eliminated = false;
+                trialGroup.add(st);
+                p1Stations.push(st);
+
+                const el = document.createElement('div');
+                el.className = 'l2-3d-label';
+                el.textContent = ch.label;
+                labelsLayer.appendChild(el);
+                labelEntries.push({ el, pos: new THREE.Vector3(xSlots[idx], 0.05, 1.5), yPx: 6 });
+            });
+        }
+
+        /* ================= TRIAL 2: 3D FLOATING RING IN ZONE ================= */
+        function setupPhase2() {
+            if (isDisposed) return;
+            phase = 2;
+            phaseLocked = false;
+            clearTrialObjects();
+            labelEntries = [];
+            p2Flames = [];
+            p2RingY = P2_MIN_Y + 0.1;
+            p2RingDir = 1;
+            p2RingStopped = false;
+            stopRingBtn.classList.remove('hidden');
+            stopRingBtn.disabled = false;
+            stopRingBtn.textContent = 'STOP RING!';
+            updateStepPills();
+
+            trialTitleEl.textContent = 'Trial 2/3: Floating Ring Timing';
+            statusMsgEl.innerHTML = `Tap the 3D scene or <b>STOP RING!</b> right inside the glowing green zone!`;
+            setChef('idle', `Trial 2/3: Stop the floating golden ring right inside the green simmer zone!`);
+
+            // Stove base
+            const stove = new THREE.Mesh(
+                new THREE.CylinderGeometry(1.42, 1.55, 0.3, 28),
+                new THREE.MeshStandardMaterial({ color: vis.usesFire ? 0x2b1914 : 0x274047, roughness: 0.9 })
+            );
+            stove.position.set(0, 0.15, 0);
+            trialGroup.add(stove);
+
+            if (vis.usesFire) {
+                for (let i = 0; i < 6; i++) {
+                    const fl = new THREE.Mesh(
+                        new THREE.ConeGeometry(0.14, 0.44, 8),
+                        new THREE.MeshBasicMaterial({ color: i % 2 ? 0xff9f1c : 0xff4d00, transparent: true, opacity: 0.88 })
+                    );
+                    const a = (i / 6) * Math.PI * 2;
+                    fl.position.set(Math.cos(a) * 0.68, 0.44, Math.sin(a) * 0.68);
+                    fl.userData.phase = i * 1.1;
+                    trialGroup.add(fl);
+                    p2Flames.push(fl);
+                }
+            }
+
+            // Authentic vessel
+            const v = buildVessel(vis.vessel, vis.liqCol);
+            v.group.position.set(0, 0.3, 0);
+            trialGroup.add(v.group);
+
+            // Translucent Target Zone Cylinder + top/bottom boundary rings
+            const zoneHeight = P2_ZONE_HIGH - P2_ZONE_LOW;
+            const zoneMid = (P2_ZONE_HIGH + P2_ZONE_LOW) / 2;
+            p2ZoneBand = new THREE.Mesh(
+                new THREE.CylinderGeometry(1.38, 1.38, zoneHeight, 32, 1, true),
+                new THREE.MeshBasicMaterial({ color: 0x22c55e, transparent: true, opacity: 0.24, side: THREE.DoubleSide })
+            );
+            p2ZoneBand.position.set(0, zoneMid, 0);
+            trialGroup.add(p2ZoneBand);
+
+            [P2_ZONE_LOW, P2_ZONE_HIGH].forEach(yPos => {
+                const bound = new THREE.Mesh(
+                    new THREE.TorusGeometry(1.38, 0.032, 10, 40),
+                    new THREE.MeshBasicMaterial({ color: 0x4ade80, transparent: true, opacity: 0.9 })
+                );
+                bound.rotation.x = Math.PI / 2;
+                bound.position.set(0, yPos, 0);
+                trialGroup.add(bound);
+            });
+
+            // Vertical guide rods
+            [-1.42, 1.42].forEach(xPos => {
+                const rod = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.02, 0.02, P2_MAX_Y - P2_MIN_Y + 0.2, 8),
+                    new THREE.MeshBasicMaterial({ color: 0xf3e5ab, transparent: true, opacity: 0.35 })
+                );
+                rod.position.set(xPos, (P2_MAX_Y + P2_MIN_Y) / 2, 0);
+                trialGroup.add(rod);
+            });
+
+            // THE FLOATING RING!
+            p2Ring = new THREE.Mesh(
+                new THREE.TorusGeometry(1.42, 0.09, 16, 48),
+                new THREE.MeshStandardMaterial({
+                    color: 0xffd66a, emissive: 0xd4af37, emissiveIntensity: 0.65,
+                    metalness: 0.7, roughness: 0.2
+                })
+            );
+            p2Ring.rotation.x = Math.PI / 2;
+            p2Ring.position.set(0, p2RingY, 0);
+            trialGroup.add(p2Ring);
+
+            p2RingLabelEl = document.createElement('div');
+            p2RingLabelEl.className = 'l2-3d-label';
+            p2RingLabelEl.textContent = 'TARGET ZONE';
+            labelsLayer.appendChild(p2RingLabelEl);
+            labelEntries.push({ el: p2RingLabelEl, pos: new THREE.Vector3(1.85, zoneMid, 0), yPx: -8 });
+        }
+
+        function attemptStopRing() {
+            if (phase !== 2 || phaseLocked || p2RingStopped || isDisposed) return;
+            const inZone = p2RingY >= (P2_ZONE_LOW - 0.04) && p2RingY <= (P2_ZONE_HIGH + 0.04);
+
+            if (inZone) {
+                p2RingStopped = true;
+                phaseLocked = true;
+                malaiStory.timingDone = true;
+                malaiStory.score += 20;
+                addStars(20);
+                syncMalaiScoreToHome();
+                if (typeof playSound === 'function') playSound('success');
+
+                p2Ring.material.color.setHex(0x4ade80);
+                p2Ring.material.emissive.setHex(0x22c55e);
+                p2Ring.material.emissiveIntensity = 1.1;
+                stopRingBtn.disabled = true;
+                stopRingBtn.textContent = '✓ PERFECT!';
+                spawnBurst(new THREE.Vector3(0, p2RingY, 0), 0x4ade80, 26);
+                setChef('happy', 'Subhanallah! You stopped the floating ring right in the royal sweet spot! (+20)');
+                statusMsgEl.innerHTML = '<b>Perfect Simmer Locked!</b> Preparing the 3D royal platters for tasting inspection...';
+
+                setTimeout(() => {
+                    if (!isDisposed) setupPhase3();
+                }, 950);
+            } else {
+                p2RingStopped = true;
+                shakeTime = 0.38;
+                malaiStory.score = Math.max(0, malaiStory.score - 5);
+                addStars(-5);
+                syncMalaiScoreToHome();
+                if (typeof playSound === 'function') playSound('error');
+
+                const tooLow = p2RingY < P2_ZONE_LOW;
+                p2Ring.material.color.setHex(0xef4444);
+                p2Ring.material.emissive.setHex(0x991b1b);
+                spawnBurst(new THREE.Vector3(0, p2RingY, 0), 0xef4444, 16);
+                setChef(tooLow ? 'sad' : 'shock', tooLow
+                    ? 'Too low! Wait for the floating ring to rise into the green zone.'
+                    : 'Too high! You almost overheated it—stop inside the green band.');
+                statusMsgEl.innerHTML = tooLow
+                    ? '<b>Missed (Too Low)!</b> Watch the ring and tap inside the green zone.'
+                    : '<b>Missed (Too High)!</b> Watch the ring and tap inside the green zone.';
+
+                if (recordStoryError(tooLow ? 'Floating ring stopped too low!' : 'Floating ring stopped too high!')) return;
+
+                setTimeout(() => {
+                    if (!isDisposed && phase === 2 && !malaiStory.timingDone) {
+                        p2Ring.material.color.setHex(0xffd66a);
+                        p2Ring.material.emissive.setHex(0xd4af37);
+                        p2RingStopped = false;
+                    }
+                }, 550);
+            }
+        }
+
+        stopRingBtn.addEventListener('click', attemptStopRing);
+
+        /* ================= TRIAL 3: 3D SPOT WHICH DISH LOOKS WRONG ================= */
+        function setupPhase3() {
+            if (isDisposed) return;
+            phase = 3;
+            phaseLocked = false;
+            clearTrialObjects();
+            labelEntries = [];
+            p3Platters = [];
+            stopRingBtn.classList.add('hidden');
+            updateStepPills();
+
+            trialTitleEl.textContent = 'Trial 3/3: Spot the Wrong Dish';
+            statusMsgEl.innerHTML = `Inspect the 3 silver thalis in 3D and <b>tap the ${dish.name} that looks wrong</b>!`;
+            setChef('idle', `Trial 3/3: One of these 3 dishes is ruined (${vis.wrongHint})! Tap the flawed 3D platter.`);
+
+            const wrongSlot = Math.floor(Math.random() * 3);
+            const xSlots = [-2.35, 0, 2.35];
+            const names = ['Thali A', 'Thali B', 'Thali C'];
+
+            for (let i = 0; i < 3; i++) {
+                const isWrong = i === wrongSlot;
+                const platter = buildDishPlatter(dish.id, vis, isWrong);
+                platter.position.set(xSlots[i], 0.02, 0.55);
+                platter.userData.labelName = names[i];
+                platter.userData.checkedWrong = false;
+                trialGroup.add(platter);
+                p3Platters.push(platter);
+
+                const el = document.createElement('div');
+                el.className = 'l2-3d-label';
+                el.textContent = names[i];
+                labelsLayer.appendChild(el);
+                labelEntries.push({ el, pos: new THREE.Vector3(xSlots[i], 0.05, 1.55), yPx: 8 });
+            }
+        }
+
+        /* ================= 3D RAYCASTING & POINTER INTERACTION ================= */
+        const raycaster = new THREE.Raycaster();
+        const pointerNDC = new THREE.Vector2();
+
+        function onPointerDown(e) {
+            if (isDisposed || phaseLocked) return;
+
+            if (phase === 2) {
+                attemptStopRing();
+                return;
+            }
+
+            const rect = renderer.domElement.getBoundingClientRect();
+            pointerNDC.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            pointerNDC.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+            raycaster.setFromCamera(pointerNDC, camera);
+
+            if (phase === 1) {
+                const hits = raycaster.intersectObjects(p1Stations.map(s => s.userData.hitMesh));
+                if (!hits.length) return;
+                const st = hits[0].object.userData.station;
+                if (st.userData.eliminated) return;
+
+                if (st.userData.choice.correct) {
+                    phaseLocked = true;
+                    malaiStory.answers.push('q1');
+                    malaiStory.score += 15;
+                    addStars(15);
+                    syncMalaiScoreToHome();
+                    if (typeof playSound === 'function') playSound('success');
+                    spawnBurst(st.position.clone().add(new THREE.Vector3(0, 1.0, 0)), 0xffd66a, 24);
+                    setChef('happy', `Wah! Authentic technique chosen (+15)! Now get ready for the floating ring!`);
+                    statusMsgEl.innerHTML = '<b>Technique Mastered!</b> Loading the 3D Floating Ring Timing trial...';
+                    setTimeout(() => {
+                        if (!isDisposed) setupPhase2();
+                    }, 900);
+                } else {
+                    st.userData.eliminated = true;
+                    st.scale.setScalar(0.84);
+                    shakeTime = 0.38;
+                    malaiStory.score = Math.max(0, malaiStory.score - 5);
+                    addStars(-5);
+                    syncMalaiScoreToHome();
+                    if (typeof playSound === 'function') playSound('error');
+                    spawnBurst(st.position.clone().add(new THREE.Vector3(0, 0.9, 0)), 0xef4444, 16);
+                    setChef('sad', `Arre! That will ruin ${dish.name}. Look closely at the other 3D stations!`);
+                    statusMsgEl.innerHTML = `<b>Wrong station!</b> Pick the authentic 3D setup for ${dish.name}.`;
+                    recordStoryError('Wrong 3D cooking technique selected!');
+                }
+            } else if (phase === 3) {
+                const hits = raycaster.intersectObjects(p3Platters.map(p => p.userData.hitMesh));
+                if (!hits.length) return;
+                const pl = hits[0].object.userData.platter;
+                if (pl.userData.checkedWrong) return;
+
+                if (pl.userData.isWrong) {
+                    phaseLocked = true;
+                    malaiStory.answers.push('q3');
+                    malaiStory.score += 15;
+                    addStars(15);
+                    syncMalaiScoreToHome();
+                    if (typeof playSound === 'function') playSound('success');
+                    spawnBurst(pl.position.clone().add(new THREE.Vector3(0, 0.7, 0)), 0x4ade80, 28);
+                    setChef('happy', `Sharp royal eyes! ${pl.userData.labelName} was clearly ${vis.wrongHint}! (+15)`);
+                    statusMsgEl.innerHTML = `<b>Flawed Dish Spotted!</b> Level 2 Mastery complete—unlocking Level 3!`;
+                    phase = 4;
+                    updateStepPills();
+                    setTimeout(() => {
+                        if (!isDisposed) maybeUnlockMalaiNext();
+                    }, 750);
+                } else {
+                    pl.userData.checkedWrong = true;
+                    shakeTime = 0.38;
+                    malaiStory.score = Math.max(0, malaiStory.score - 5);
+                    addStars(-5);
+                    syncMalaiScoreToHome();
+                    if (typeof playSound === 'function') playSound('error');
+                    spawnBurst(pl.position.clone().add(new THREE.Vector3(0, 0.6, 0)), 0xef4444, 14);
+                    setChef('sad', `Wait—${pl.userData.labelName} looks delicious and authentic! Find the ruined one.`);
+                    statusMsgEl.innerHTML = `<b>${pl.userData.labelName} is actually good!</b> Spot the dish that looks ${vis.wrongHint}.`;
+                    recordStoryError('Picked an authentic platter instead of the ruined one!');
+                }
+            }
+        }
+
+        renderer.domElement.addEventListener('pointerdown', onPointerDown);
+        const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(fitCamera) : null;
+        if (ro) ro.observe(stageWrap);
+        window.addEventListener('resize', fitCamera);
+
+        // Start at Trial 1
+        setupPhase1();
+
+        /* ================= 3D ANIMATION LOOP ================= */
+        const projVec = new THREE.Vector3();
+        let rafId = null;
+        let lastTime = performance.now();
+        let elapsed = 0;
+
+        function animate(now) {
+            rafId = requestAnimationFrame(animate);
+            const dt = Math.min(0.05, (now - lastTime) / 1000);
+            lastTime = now;
+            elapsed += dt;
+
+            // Animate Phase 1 stations
+            if (phase === 1) {
+                p1Stations.forEach((st, idx) => {
+                    st.rotation.y = Math.sin(elapsed * 0.9 + idx) * 0.2;
+                    (st.userData.animParts || []).forEach(part => {
+                        const k = part.userData.kind;
+                        if (k === 'wild') {
+                            part.scale.y = 0.85 + Math.sin(elapsed * 18 + part.userData.phase) * 0.4;
+                        } else if (k === 'gentle') {
+                            part.scale.y = 0.85 + Math.sin(elapsed * 8 + part.userData.phase) * 0.18;
+                        } else if (k === 'smoke') {
+                            part.position.y = 0.95 + ((elapsed * 0.65 + part.userData.phase) % 0.95);
+                        } else if (k === 'ice') {
+                            part.rotation.y += dt * 0.6;
+                        }
+                    });
+                });
+            }
+
+            // Animate Phase 2 Floating Ring
+            if (phase === 2 && p2Ring) {
+                p2Flames.forEach(fl => {
+                    fl.scale.y = 0.85 + Math.sin(elapsed * 12 + fl.userData.phase) * 0.25;
+                });
+                if (!p2RingStopped) {
+                    const ringSpeed = 2.15;
+                    p2RingY += p2RingDir * ringSpeed * dt;
+                    if (p2RingY >= P2_MAX_Y) { p2RingY = P2_MAX_Y; p2RingDir = -1; }
+                    else if (p2RingY <= P2_MIN_Y) { p2RingY = P2_MIN_Y; p2RingDir = 1; }
+                    p2Ring.position.y = p2RingY;
+
+                    const inZone = p2RingY >= P2_ZONE_LOW && p2RingY <= P2_ZONE_HIGH;
+                    p2Ring.material.color.setHex(inZone ? 0x4ade80 : 0xffd66a);
+                    p2Ring.material.emissive.setHex(inZone ? 0x16a34a : 0xd4af37);
+                    p2ZoneBand.material.opacity = inZone ? 0.42 : 0.2;
+                    stopRingBtn.classList.toggle('in-zone', inZone);
+                    if (p2RingLabelEl) {
+                        p2RingLabelEl.classList.toggle('zone-hit', inZone);
+                        p2RingLabelEl.textContent = inZone ? '✦ TAP NOW! ✦' : 'TARGET ZONE';
+                    }
+                }
+            }
+
+            // Animate Phase 3 Platters
+            if (phase === 3) {
+                p3Platters.forEach((pl, idx) => {
+                    pl.userData.foodGroup.rotation.y += dt * 0.65;
+                    pl.position.y = 0.02 + Math.sin(elapsed * 2.2 + idx * 1.4) * 0.03;
+                    (pl.userData.smokePuffs || []).forEach(sm => {
+                        sm.position.y = 0.4 + ((elapsed * 0.7 + sm.userData.phase) % 1.15);
+                        sm.material.opacity = Math.max(0, 0.62 - (sm.position.y - 0.4) * 0.5);
+                    });
+                });
+            }
+
+            // Particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.userData.life -= dt * 1.6;
+                p.userData.vel.y -= 5.0 * dt;
+                p.position.addScaledVector(p.userData.vel, dt);
+                p.material.opacity = Math.max(0, p.userData.life);
+                if (p.userData.life <= 0) {
+                    scene.remove(p);
+                    p.geometry.dispose();
+                    p.material.dispose();
+                    particles.splice(i, 1);
+                }
+            }
+
+            // Camera shake on mistakes
+            if (shakeTime > 0) {
+                shakeTime -= dt;
+                camera.position.x = (Math.random() - 0.5) * 0.22;
+            } else {
+                camera.position.x = 0;
+            }
+
+            // Project 3D labels
+            const w = stageWrap.clientWidth;
+            const h = stageWrap.clientHeight;
+            labelEntries.forEach(entry => {
+                projVec.copy(entry.pos).project(camera);
+                if (projVec.z > 1) {
+                    entry.el.style.display = 'none';
+                } else {
+                    entry.el.style.display = 'block';
+                    const x = (projVec.x * 0.5 + 0.5) * w;
+                    const y = (-projVec.y * 0.5 + 0.5) * h + entry.yPx;
+                    entry.el.style.left = `${Math.max(54, Math.min(w - 54, x))}px`;
+                    entry.el.style.top = `${Math.max(10, Math.min(h - 32, y))}px`;
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+        rafId = requestAnimationFrame(animate);
+
+        activeL2Cleanup = function () {
+            isDisposed = true;
+            if (rafId) cancelAnimationFrame(rafId);
+            if (ro) ro.disconnect();
+            window.removeEventListener('resize', fitCamera);
+            renderer.domElement.removeEventListener('pointerdown', onPointerDown);
+            stopRingBtn.removeEventListener('click', attemptStopRing);
             scene.traverse(obj => {
                 if (obj.geometry) obj.geometry.dispose();
                 if (obj.material) {
