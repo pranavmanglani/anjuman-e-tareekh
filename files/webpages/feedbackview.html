@@ -1,0 +1,617 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback Admin — ANJUMAN ए TAREEKH</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --green: #173b2c;
+  --green2: #24563d;
+  --gold: #c49a52;
+  --paper: #f8f4e9;
+  --white: #fffdf8;
+  --text: #25352b;
+  --muted: #85877d;
+  --border: #e6dfd1;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--paper);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+button, input {
+  font: inherit;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--white);
+  padding: 44px 38px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 15px 50px rgba(23, 59, 44, 0.07);
+}
+
+.brand {
+  color: var(--green);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.brand-sub {
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.login-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 34px;
+  margin-top: 38px;
+  color: var(--green);
+}
+
+.login-description {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 8px;
+  line-height: 1.7;
+}
+
+.field {
+  margin-top: 22px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 9px;
+  color: var(--green);
+}
+
+.field input {
+  width: 100%;
+  padding: 14px 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  outline: none;
+  transition: 0.2s;
+}
+
+.field input:focus {
+  border-color: var(--green2);
+  box-shadow: 0 0 0 3px rgba(36, 86, 61, 0.08);
+}
+
+.primary-btn {
+  width: 100%;
+  margin-top: 26px;
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.primary-btn:hover {
+  background: var(--green2);
+}
+
+.primary-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.message {
+  font-size: 13px;
+  margin-top: 14px;
+  color: #a43d32;
+  line-height: 1.5;
+}
+
+.dashboard {
+  min-height: 100vh;
+}
+
+.topbar {
+  background: var(--green);
+  color: white;
+  padding: 23px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.topbar .brand {
+  color: white;
+}
+
+.topbar .brand-sub {
+  color: #d8bd87;
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.top-btn {
+  border: 1px solid rgba(255,255,255,0.25);
+  background: transparent;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.top-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.top-btn.logout {
+  color: #e9c98c;
+  border-color: rgba(233,201,140,0.35);
+}
+
+.main {
+  max-width: 1200px;
+  padding: 45px 24px;
+  margin: auto;
+}
+
+.heading-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.heading h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 43px;
+  color: var(--green);
+}
+
+.heading p {
+  color: var(--muted);
+  margin-top: 5px;
+  font-size: 13px;
+}
+
+.stats {
+  display: flex;
+  gap: 12px;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 15px 22px;
+  min-width: 120px;
+}
+
+.stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+}
+
+.stat-value {
+  font-family: "Cormorant Garamond", serif;
+  color: var(--green);
+  font-size: 30px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.feedback-list {
+  display: grid;
+  gap: 15px;
+}
+
+.feedback-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 23px 25px;
+  transition: 0.2s;
+}
+
+.feedback-card:hover {
+  border-color: #d1c3a5;
+  transform: translateY(-1px);
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 17px;
+}
+
+.person-name {
+  color: var(--green);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.person-email {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+  word-break: break-word;
+}
+
+.person-email a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.person-email a:hover {
+  color: var(--green2);
+  text-decoration: underline;
+}
+
+.date {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.feedback-text {
+  line-height: 1.8;
+  font-size: 14px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #35443a;
+  padding-top: 16px;
+  border-top: 1px solid #eee8dc;
+}
+
+.empty {
+  text-align: center;
+  padding: 65px 20px;
+  background: var(--white);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  color: var(--muted);
+}
+
+.empty h3 {
+  font-family: "Cormorant Garamond", serif;
+  color: var(--green);
+  font-size: 27px;
+  margin-bottom: 8px;
+}
+
+.status {
+  text-align: center;
+  color: var(--muted);
+  padding: 40px;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .login-card {
+    padding: 32px 24px;
+  }
+
+  .heading h1 {
+    font-size: 35px;
+  }
+
+  .main {
+    padding: 30px 16px;
+  }
+
+  .topbar {
+    padding: 20px;
+  }
+
+  .feedback-card {
+    padding: 18px;
+  }
+
+  .heading-row {
+    align-items: start;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<section class="login-page" id="loginPage">
+  <div class="login-card">
+    <div class="brand">ANJUMAN ए TAREEKH</div>
+    <div class="brand-sub">Feedback Administration</div>
+
+    <h1 class="login-title">Admin Login</h1>
+    <p class="login-description">Sign in to access the feedback submitted to the archive.</p>
+
+    <form id="loginForm">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" type="text" value="admin" autocomplete="username" required>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Enter admin password" autocomplete="current-password" required>
+      </div>
+
+      <button class="primary-btn" id="loginBtn" type="submit">Sign In</button>
+      <div class="message" id="loginMessage"></div>
+    </form>
+  </div>
+</section>
+
+<section class="dashboard hidden" id="dashboard">
+  <header class="topbar">
+    <div>
+      <div class="brand">ANJUMAN ए TAREEKH</div>
+      <div class="brand-sub">Feedback Administration</div>
+    </div>
+
+    <div class="top-actions">
+      <button class="top-btn" id="refreshBtn">↻ Refresh</button>
+      <button class="top-btn logout" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="heading-row">
+      <div class="heading">
+        <h1>Feedback</h1>
+        <p>Messages received from visitors and contributors.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-label">Total Responses</div>
+          <div class="stat-value" id="totalCount">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feedback-list" id="feedbackList">
+      <div class="status">Loading feedback...</div>
+    </div>
+  </main>
+</section>
+
+<script>
+const ADMIN_FEEDBACK_URL =
+  "https://xitmexidjgacikjpheji.supabase.co/functions/v1/admin-feedback";
+
+let adminUsername = "";
+let adminPassword = "";
+let isLoading = false;
+
+const loginPage = document.getElementById("loginPage");
+const dashboard = document.getElementById("dashboard");
+const loginForm = document.getElementById("loginForm");
+const loginBtn = document.getElementById("loginBtn");
+const loginMessage = document.getElementById("loginMessage");
+const feedbackList = document.getElementById("feedbackList");
+const totalCount = document.getElementById("totalCount");
+const refreshBtn = document.getElementById("refreshBtn");
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+
+function formatDate(value) {
+  if (!value) return "Date unavailable";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return "Date unavailable";
+
+  return date.toLocaleString("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
+}
+
+function setLoading(value) {
+  isLoading = value;
+  refreshBtn.disabled = value;
+  refreshBtn.textContent = value ? "↻ Loading..." : "↻ Refresh";
+}
+
+async function requestFeedback() {
+  if (isLoading) return;
+
+  setLoading(true);
+  feedbackList.innerHTML = '<div class="status">Loading feedback...</div>';
+
+  try {
+    const response = await fetch(ADMIN_FEEDBACK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: adminUsername,
+        password: adminPassword
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      if (response.status === 401) {
+        logout();
+        loginMessage.textContent = "Authentication failed. Please sign in again.";
+      } else {
+        feedbackList.innerHTML =
+          '<div class="empty"><h3>Unable to load feedback</h3><p>Please try refreshing.</p></div>';
+      }
+      return;
+    }
+
+    renderFeedback(result.feedback || []);
+  } catch (error) {
+    feedbackList.innerHTML =
+      '<div class="empty"><h3>Connection error</h3><p>Could not connect to the server.</p></div>';
+  } finally {
+    setLoading(false);
+  }
+}
+
+function renderFeedback(items) {
+  totalCount.textContent = items.length;
+
+  if (!items.length) {
+    feedbackList.innerHTML = `
+      <div class="empty">
+        <h3>No feedback yet</h3>
+        <p>Responses will appear here when visitors submit feedback.</p>
+      </div>
+    `;
+    return;
+  }
+
+  feedbackList.innerHTML = items.map(item => {
+    const email = item.email
+      ? `<a href="mailto:${escapeHTML(item.email)}">${escapeHTML(item.email)}</a>`
+      : "No email provided";
+
+    return `
+      <article class="feedback-card">
+        <div class="feedback-header">
+          <div>
+            <div class="person-name">${escapeHTML(item.name)}</div>
+            <div class="person-email">${email}</div>
+          </div>
+          <div class="date">${escapeHTML(formatDate(item.created_at))}</div>
+        </div>
+        <div class="feedback-text">${escapeHTML(item.feedback)}</div>
+      </article>
+    `;
+  }).join("");
+}
+
+loginForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (username !== "admin") {
+    loginMessage.textContent = "Only the admin account can access this page.";
+    return;
+  }
+
+  loginBtn.disabled = true;
+  loginBtn.textContent = "Signing in...";
+  loginMessage.textContent = "";
+
+  try {
+    const response = await fetch(ADMIN_FEEDBACK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username, password })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      loginMessage.textContent = result.error || "Login failed.";
+      return;
+    }
+
+    adminUsername = username;
+    adminPassword = password;
+
+    document.getElementById("password").value = "";
+    loginPage.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+
+    renderFeedback(result.feedback || []);
+  } catch (error) {
+    loginMessage.textContent = "Unable to connect. Please try again.";
+  } finally {
+    loginBtn.disabled = false;
+    loginBtn.textContent = "Sign In";
+  }
+});
+
+refreshBtn.addEventListener("click", requestFeedback);
+
+function logout() {
+  adminUsername = "";
+  adminPassword = "";
+  isLoading = false;
+
+  totalCount.textContent = "0";
+  feedbackList.innerHTML = "";
+
+  dashboard.classList.add("hidden");
+  loginPage.classList.remove("hidden");
+
+  loginForm.reset();
+  document.getElementById("username").value = "admin";
+  loginMessage.textContent = "";
+}
+
+document.getElementById("logoutBtn").addEventListener("click", logout);
+</script>
+
+</body>
+</html>
