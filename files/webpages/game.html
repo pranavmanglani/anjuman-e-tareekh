@@ -2468,15 +2468,36 @@ function startChefRound() {
     chefRoundDone = false;
     updateChefRound();
     chefRoundTimer = setInterval(() => {
-        if (chefRoundDone) return;
+        const levelScreen = document.getElementById('screenMalaiLevels');
+        if (chefRoundDone || malaiStory.level !== 1 || !levelScreen || levelScreen.classList.contains('hidden')) {
+            clearInterval(chefRoundTimer);
+            return;
+        }
         chefRoundTime--;
         updateChefRound();
         if (chefRoundTime <= 0) {
             chefRoundDone = true;
             clearInterval(chefRoundTimer);
             document.querySelectorAll('#malaiLevelContent .chef-ingredient').forEach(b => b.disabled = true);
-            const f = document.getElementById('chefFeedback');
-            if (f) { f.style.display = 'block'; f.textContent = 'Time is up! Tap Try Again to have another go.'; }
+            setChefReaction('sad', 'Waqt khatam! Time ran out—restart the level and try again.');
+            if (typeof playSound === 'function') playSound('error');
+
+            const dish = AWADHI_SWEETS[malaiStory.activeDishId] || AWADHI_SWEETS.malai_gilori;
+            const modal = document.getElementById('modalOverlay');
+            const content = document.getElementById('modalContent');
+            if (modal && content) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                content.innerHTML = `
+                    <div class="w-16 h-16 mx-auto rounded-full bg-red-900/20 border-2 border-red-600 flex items-center justify-center text-4xl shadow-lg">⏳</div>
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest font-bold" style="color:#b91c1c !important;">Time Up</span>
+                        <h3 class="font-royal text-xl mt-1" style="color:#7f1d1d !important;">Waqt Khatam!</h3>
+                    </div>
+                    <p class="text-sm leading-relaxed">Time is up for <b>Level ${malaiStory.level} (${dish.name})</b>. Restart the level and gather all 5 authentic ingredients in time!</p>
+                    <button onclick="restartCurrentStoryLevel()" class="royal-btn w-full py-3 rounded-xl text-sm font-bold">Restart Level ${malaiStory.level} ↻</button>
+                `;
+            }
         }
     }, 1000);
 }
@@ -5898,167 +5919,5 @@ body, main, #viewGame, #phoneFrameWrapper, #gameViewport { min-width: 0 !importa
     };
 })();
 </script>
-<style id="royal-home-dome-styles">
-#screenHome.royal-home-screen {
-    position: relative !important;
-    overflow-x: hidden !important;
-    padding-top: 26px !important;
-}
-
-/* Keep all interactive homepage UI above the dome backdrop */
-#screenHome > *:not(#royalHomeDome) {
-    position: relative;
-    z-index: 3;
-}
-
-#royalHomeDome {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 320px;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-}
-
-.dome-arch-svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 270px;
-    display: block;
-    filter: drop-shadow(0 6px 14px rgba(10, 42, 28, 0.35));
-}
-
-.dome-lanterns {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(100%, 980px);
-    height: 300px;
-}
-
-/* Individual swaying lantern pendulum */
-.lantern-rig {
-    position: absolute;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transform-origin: 50% 0%;
-    will-change: transform;
-}
-
-.lantern-l1 { left: 9%;  top: 78px; animation: lanternSwayA 4.8s ease-in-out infinite; }
-.lantern-l2 { left: 24%; top: 34px; animation: lanternSwayB 5.7s ease-in-out -1.4s infinite; }
-.lantern-r2 { right: 24%; top: 34px; animation: lanternSwayA 5.3s ease-in-out -2.6s infinite; }
-.lantern-r1 { right: 9%;  top: 78px; animation: lanternSwayB 4.5s ease-in-out -0.9s infinite; }
-
-.lantern-chain {
-    width: 2.5px;
-    background: repeating-linear-gradient(
-        180deg,
-        #f7df8e 0px,
-        #f7df8e 4px,
-        #7d5312 4px,
-        #7d5312 7px
-    );
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
-}
-
-.lantern-body-wrap {
-    position: relative;
-    width: 44px;
-    height: 66px;
-    margin-top: -3px;
-}
-
-.lantern-svg {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    filter: drop-shadow(0 4px 10px rgba(255, 175, 45, 0.6));
-}
-
-/* Warm pulsing light halo radiating from each lantern */
-.lantern-halo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 135px;
-    height: 135px;
-    transform: translate(-50%, -48%);
-    border-radius: 50%;
-    background: radial-gradient(
-        circle,
-        rgba(255, 240, 170, 0.78) 0%,
-        rgba(255, 185, 55, 0.42) 32%,
-        rgba(255, 140, 20, 0.14) 62%,
-        rgba(255, 140, 20, 0) 78%
-    );
-    z-index: 1;
-    animation: lanternGlowPulse 2.8s ease-in-out infinite;
-    will-change: transform, opacity;
-}
-
-.lantern-l2 .lantern-halo { animation-delay: -0.9s; width: 118px; height: 118px; }
-.lantern-r2 .lantern-halo { animation-delay: -1.7s; width: 118px; height: 118px; }
-.lantern-r1 .lantern-halo { animation-delay: -0.4s; }
-
-.lantern-l2 .lantern-body-wrap,
-.lantern-r2 .lantern-body-wrap {
-    width: 36px;
-    height: 54px;
-}
-
-/* Flickering inner flame */
-.lantern-flame {
-    transform-origin: 32px 54px;
-    animation: flameFlicker 1.9s ease-in-out infinite;
-}
-
-@keyframes lanternSwayA {
-    0%, 100% { transform: rotate(-6.5deg); }
-    50%      { transform: rotate(6.5deg); }
-}
-
-@keyframes lanternSwayB {
-    0%, 100% { transform: rotate(5.5deg); }
-    50%      { transform: rotate(-5.5deg); }
-}
-
-@keyframes lanternGlowPulse {
-    0%, 100% { opacity: 0.72; transform: translate(-50%, -48%) scale(0.92); }
-    50%      { opacity: 1;    transform: translate(-50%, -48%) scale(1.14); }
-}
-
-@keyframes flameFlicker {
-    0%, 100% { opacity: 0.85; transform: scale(0.92, 0.94); }
-    35%      { opacity: 1;    transform: scale(1.06, 1.12); }
-    70%      { opacity: 0.9;  transform: scale(0.96, 1.02); }
-}
-
-/* Keep top score pill crisp over the right arch */
-#screenHome .royal-home-top {
-    position: relative;
-    z-index: 6;
-}
-
-/* Mobile adjustments: keep logo & score pill completely unobstructed */
-@media (max-width: 640px) {
-    #screenHome.royal-home-screen { padding-top: 18px !important; }
-    .dome-arch-svg { height: 205px; }
-    .lantern-inner { display: none; }
-    .lantern-l1 { left: 4%;  top: 58px; }
-    .lantern-r1 { right: 4%; top: 58px; }
-    .lantern-l1 .lantern-chain,
-    .lantern-r1 .lantern-chain { height: 34px !important; }
-    .lantern-body-wrap { width: 34px; height: 50px; }
-    .lantern-halo { width: 105px; height: 105px; }
-}
 </style>
 </body></html>
