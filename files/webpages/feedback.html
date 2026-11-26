@@ -1,1 +1,483 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Feedback — ANJUMAN ए TAREEKH</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --green:#164d36;
+    --green-dark:#0d3022;
+    --green-light:#276b4b;
+    --orange:#df6915;
+    --gold:#b99350;
+    --ivory:#f8f4e9;
+    --paper:#fffdf7;
+    --ink:#18251e;
+    --muted:#68736c;
+    --border:rgba(185,147,80,.35);
+    --serif:"Cormorant Garamond",Georgia,serif;
+    --sans:"DM Sans",Arial,sans-serif;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 15% 5%,rgba(223,105,21,.10),transparent 32%),
+        radial-gradient(circle at 90% 15%,rgba(22,77,54,.09),transparent 38%),
+        var(--ivory);
+    color:var(--ink);
+    font-family:var(--sans);
+}
+
+.page{
+    width:min(1100px,calc(100% - 32px));
+    margin:auto;
+}
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:rgba(248,244,233,.9);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+}
+
+.nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:14px 0;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.brand-mark{
+    width:44px;
+    height:44px;
+    min-width:44px;
+    border-radius:50%;
+    border:1px solid var(--gold);
+    overflow:hidden;
+}
+
+.brand-mark img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.brand-name{
+    color:var(--green);
+    font-family:var(--serif);
+    font-size:20px;
+    font-weight:700;
+}
+
+.brand-tagline{
+    margin-top:3px;
+    color:var(--orange);
+    font-size:8px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.nav-link{
+    padding:9px 15px;
+    border-radius:100px;
+    color:var(--green);
+    font-size:13px;
+    font-weight:600;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.nav-link:hover{
+    border:1px solid var(--gold);
+    background:rgba(185,147,80,.08);
+}
+
+.hero{
+    padding:75px 20px 30px;
+    text-align:center;
+}
+
+.eyebrow{
+    color:var(--orange);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.hero h1{
+    margin:18px 0 10px;
+    color:var(--green);
+    font-family:var(--serif);
+    font-size:clamp(42px,8vw,76px);
+    line-height:.95;
+    font-weight:600;
+    letter-spacing:-1px;
+}
+
+.hero h1 span{
+    color:var(--orange);
+    font-style:italic;
+}
+
+.hero p{
+    max-width:600px;
+    margin:20px auto 0;
+    color:var(--muted);
+    font-family:var(--serif);
+    font-size:21px;
+    line-height:1.5;
+}
+
+.form-section{
+    padding:35px 20px 80px;
+}
+
+.feedback-card{
+    width:min(680px,100%);
+    margin:auto;
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:35px;
+    box-shadow:0 14px 35px rgba(22,77,54,.08);
+}
+
+.feedback-card h2{
+    margin:0;
+    color:var(--green);
+    font-family:var(--serif);
+    font-size:32px;
+}
+
+.form-description{
+    margin:8px 0 28px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+}
+
+.field{
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-size:13px;
+    font-weight:700;
+    color:var(--green);
+}
+
+.required{
+    color:var(--orange);
+}
+
+input,textarea{
+    width:100%;
+    padding:13px 15px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:white;
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:14px;
+    outline:none;
+    transition:.2s;
+}
+
+input:focus,textarea:focus{
+    border-color:var(--green);
+    box-shadow:0 0 0 3px rgba(22,77,54,.08);
+}
+
+textarea{
+    resize:vertical;
+    min-height:150px;
+    line-height:1.6;
+}
+
+.submit-btn{
+    width:100%;
+    padding:14px 24px;
+    border:none;
+    border-radius:100px;
+    background:var(--green);
+    color:white;
+    font-family:var(--sans);
+    font-size:14px;
+    font-weight:700;
+    transition:.25s;
+    cursor:pointer;
+}
+
+.submit-btn:hover{
+    background:var(--green-light);
+    transform:translateY(-2px);
+}
+
+.submit-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+    transform:none;
+}
+
+#status{
+    display:none;
+    margin-top:18px;
+    padding:14px 16px;
+    border-radius:12px;
+    font-size:13.5px;
+    line-height:1.5;
+}
+
+#status.success{
+    display:block;
+    background:rgba(22,77,54,.08);
+    border:1px solid rgba(22,77,54,.2);
+    color:var(--green);
+}
+
+#status.error{
+    display:block;
+    background:rgba(198,40,40,.06);
+    border:1px solid rgba(198,40,40,.2);
+    color:#a52a2a;
+}
+
+footer{
+    padding:40px 20px;
+    text-align:center;
+    border-top:1px solid var(--border);
+}
+
+.footer-title{
+    color:var(--green);
+    font-family:var(--serif);
+    font-size:22px;
+    font-weight:700;
+}
+
+.footer-tagline{
+    margin-top:6px;
+    color:var(--orange);
+    font-size:12px;
+    letter-spacing:1px;
+}
+
+.footer-text{
+    margin-top:14px;
+    color:var(--muted);
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+@media(max-width:600px){
+    .nav{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .hero{
+        padding-top:50px;
+    }
+
+    .feedback-card{
+        padding:25px 20px;
+    }
+
+    .feedback-card h2{
+        font-size:27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <nav class="nav page">
+        <div class="brand">
+            <div class="brand-mark">
+                <img src="/files/photos/favicon.jpg" alt="ANJUMAN ए TAREEKH">
+            </div>
+
+            <div>
+                <div class="brand-name">ANJUMAN ए TAREEKH</div>
+                <div class="brand-tagline">Research Meets Zaika</div>
+            </div>
+        </div>
+
+        <a href="index.html" class="nav-link">← Back to Home</a>
+    </nav>
+</div>
+
+<header class="hero">
+    <div class="eyebrow">✦ Your Voice Matters ✦</div>
+
+    <h1>Share Your <span>Thoughts.</span></h1>
+
+    <p>
+        Help us improve our journey of exploring, documenting
+        and preserving the heritage of Awadh.
+    </p>
+</header>
+
+<section class="form-section">
+    <div class="feedback-card">
+
+        <h2>Leave Feedback</h2>
+
+        <p class="form-description">
+            Have a suggestion, thought, correction or simply something
+            you'd like to share? We'd love to hear from you.
+        </p>
+
+        <form id="feedbackForm">
+
+            <div class="field">
+                <label for="name">Name <span class="required">*</span></label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Your name"
+                    maxlength="100"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="email">Email <span>(optional)</span></label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    maxlength="254"
+                >
+            </div>
+
+            <div class="field">
+                <label for="feedback">Feedback <span class="required">*</span></label>
+                <textarea
+                    id="feedback"
+                    name="feedback"
+                    placeholder="Write your feedback here..."
+                    maxlength="5000"
+                    required
+                ></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Submit Feedback
+            </button>
+
+            <div id="status"></div>
+
+        </form>
+    </div>
+</section>
+
+<footer>
+    <div class="page">
+        <div class="footer-title">ANJUMAN ए TAREEKH</div>
+
+        <div class="footer-tagline">
+            Tareekh Aur Anjuman — Research Meets Zaika
+        </div>
+
+        <div class="footer-text">
+            Explore • Research • Create • Document • Share • Preserve
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://xitmexidjgacikjpheji.supabase.co";
+
+const SUPABASE_ANON_KEY = "sb_publishable_GCcivMsWA5NmNAx3yMRS1A_vNEJvEwj";
+
+const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+const form = document.getElementById("feedbackForm");
+const submitBtn = document.getElementById("submitBtn");
+const statusBox = document.getElementById("status");
+
+form.addEventListener("submit", async function(event){
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const feedback = document.getElementById("feedback").value.trim();
+
+    if(!name || !feedback){
+        showStatus("Please fill in your name and feedback.", "error");
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+    statusBox.className = "";
+    statusBox.style.display = "none";
+
+    const { error } = await supabase
+        .from("feedback")
+        .insert([{
+            name: name,
+            email: email || null,
+            feedback: feedback
+        }]);
+
+    if(error){
+        console.error(error);
+        showStatus("Something went wrong while submitting your feedback. Please try again.", "error");
+    }else{
+        showStatus("Thank you! Your feedback has been submitted successfully.", "success");
+        form.reset();
+    }
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Feedback";
+});
+
+function showStatus(message, type){
+    statusBox.textContent = message;
+    statusBox.className = type;
+    statusBox.style.display = "block";
+}
+</script>
+
+</body>
+</html>
+
