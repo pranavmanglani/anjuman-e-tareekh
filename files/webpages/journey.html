@@ -853,6 +853,40 @@
           </button>
 
         </article>
+        <!-- DIWALI EVENT (DUPLICATED FROM JANMASHTAMI) -->
+        <article class="folder-card event-card"
+                 onclick="openFolder('diwali-event')"
+                 role="button" tabindex="0"
+                 onkeydown="handleCardKey(event,'diwali-event')">
+
+          <div class="folder-tab"></div>
+
+          <div class="spiral-container">
+            <img class="spiral-photo" src="../photos/diwali13.jpeg"
+                 alt="Diwali event photograph 1">
+
+            <img class="spiral-photo" src="../photos/diwali8.jpeg"
+                 alt="Diwali event photograph 2">
+
+            <img class="spiral-photo" src="../photos/diwali6.jpeg"
+                 alt="Diwali event photograph 3">
+          </div>
+
+          <span class="event-label">Cultural & Culinary Heritage</span>
+
+          <h2 class="folder-title">Diwali Celebrations</h2>
+
+          <p class="event-description">
+            Three young chefs, traditional festive delicacies,
+            and the living culinary heritage of Lucknow.
+          </p>
+
+          <button class="event-open"
+                  onclick="event.stopPropagation();openFolder('diwali-event')">
+            Explore Event →
+          </button>
+
+        </article>
 
       </div>
     </section>
@@ -1075,6 +1109,195 @@
 
         <img src="../photos/Janmashtami6.jpeg"
              alt="Janmashtami celebration photograph 6"
+             onclick="expandImage(this.src)">
+      </div>
+
+    </div>
+  </div>
+  <!-- DIWALI EVENT MODAL -->
+  <div class="modal-overlay" id="modal-diwali-event"
+       onclick="closeFolderOnOverlay(event,'diwali-event')">
+
+    <div class="modal-container" role="dialog" aria-modal="true"
+         aria-labelledby="title-diwali">
+
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-diwali">
+          Diwali Celebrations
+        </h2>
+
+        <button class="close-btn" aria-label="Close event"
+                onclick="closeFolder('diwali-event')">×</button>
+      </div>
+
+      <!-- COMPLETE EVENT ARTICLE -->
+      <article class="event-article">
+
+        <p class="event-highlight">
+          <strong>
+            Tradition on a Plate: Celebrating Diwali and the
+            Culinary Heritage of Lucknow
+          </strong>
+        </p>
+
+        <p>
+          As part of the Diwali celebrations, Anjuman-e-Tareekh
+          organised a beautiful culinary event that brought together
+          the festive spirit of Diwali and the rich culinary
+          heritage of Lucknow. The event provided a wonderful platform
+          for students to showcase their creativity, culinary skills,
+          and appreciation for traditional Indian cuisine.
+        </p>
+
+        <h3>The Three Young Culinary Stars</h3>
+
+        <p>
+          The highlight of the event was the participation of three
+          talented students. Eva Mishra of Class 9E prepared the
+          delicate and much-loved Makkhan Malai, while Satakshi of
+          Class 9M presented Makhana Kheer. Jiya Chauhan of Class 9M
+          prepared the royal Shahi Tukda.
+        </p>
+
+        <p>
+          Each dish reflected not only the students' culinary talent
+          but also the richness and diversity of traditional cuisine
+          associated with our cultural heritage.
+        </p>
+
+        <div class="event-dishes">
+
+          <div class="dish-card">
+            <strong>Makkhan Malai</strong>
+            <span>Eva Mishra · Class 9E</span>
+          </div>
+
+          <div class="dish-card">
+            <strong>Makhana Kheer</strong>
+            <span>Satakshi · Class 9M</span>
+          </div>
+
+          <div class="dish-card">
+            <strong>Shahi Tukda</strong>
+            <span>Jiya Chauhan · Class 9M</span>
+          </div>
+
+        </div>
+
+        <h3>Appreciation and Encouragement</h3>
+
+        <p>
+          The students proudly presented their creations to Abha Anant
+          Ma'am, Principal, and Savita Mall Ma'am, Vice Principal, who
+          appreciated their efforts and enthusiasm.
+        </p>
+
+        <p>
+          The in-charges, Swarnlata Ma'am, Archana Ma'am, Diksha Ma'am,
+          and Sadaf Ma'am, also encouraged and appreciated the students
+          for their dedication and creativity. The showstoppers were
+          truly a great sight for all of us to see and get inspired from!
+        </p>
+
+        <p>
+          Adding a special touch to the event were the beautifully
+          designed badges made by Bhavya and Avishi, which made the
+          young participants stand out and added to the festive atmosphere.
+        </p>
+
+        <h3>Diwali and Lucknow's Living Heritage</h3>
+
+        <p>
+          Janmashtami holds a special place in Lucknow's cultural
+          landscape, reflecting the city's tradition of celebrating
+          festivals with shared joy, art, music, and food. Known for
+          its beautiful Ganga-Jamuni tehzeeb, Lucknow has long embraced
+          festivals as occasions that bring communities together.
+        </p>
+
+        <p>
+          The celebrations also carry a strong culinary connection,
+          with traditional festive dishes becoming a part of the occasion.
+          Thus, Diwali in Lucknow is not just a religious celebration,
+          but also a reflection of the city's living heritage, cultural
+          harmony, and love for its traditions.
+        </p>
+
+        <h3>A Celebration to Remember</h3>
+
+        <p>
+          The three young chefs truly became the showstoppers of the day,
+          turning traditional recipes into a celebration of skill, culture,
+          and creativity. Through this event, Anjuman-e-Tareekh celebrated
+          not only Diwali but also the living culinary heritage of
+          Lucknow, reminding us that traditions continue to thrive when
+          they are passed on to the next generation.
+        </p>
+
+      </article>
+
+      <!-- EVENT PHOTO GALLERY -->
+      <h3 class="gallery-heading">Moments from the Celebration</h3>
+
+      <div class="modal-gallery">
+        <img src="../photos/diwali1.jpeg"
+             alt="Diwali celebration photograph 1"
+             onclick="expandImage(this.src)">
+
+        <img src="../photos/diwali2.jpeg"
+             alt="Diwali celebration photograph 2"
+             onclick="expandImage(this.src)">
+
+        <img src="../photos/diwali3.jpeg"
+             alt="Diwali celebration photograph 3"
+             onclick="expandImage(this.src)">
+
+        <img src="../photos/diwali4.jpeg"
+             alt="Diwali celebration photograph 4"
+             onclick="expandImage(this.src)">
+
+        <img src="../photos/diwali5.jpeg"
+             alt="Diwali celebration photograph 5"
+             onclick="expandImage(this.src)">
+
+        <img src="../photos/diwali6.jpeg"
+             alt="Diwali celebration photograph 6"
+             onclick="expandImage(this.src)">
+
+         <img src="../photos/diwali6.jpeg"
+             alt="Diwali celebration photograph 6"
+             onclick="expandImage(this.src)">
+
+           <img src="../photos/diwali7.jpeg"
+             alt="Diwali celebration photograph 6"
+             onclick="expandImage(this.src)">
+
+           <img src="../photos/diwali8.jpeg"
+             alt="Diwali celebration photograph 6"
+             onclick="expandImage(this.src)">
+
+           <img src="../photos/diwali9.jpeg"
+             alt="Diwali celebration photograph 6"
+             onclick="expandImage(this.src)">
+
+           <img src="../photos/diwali10.jpeg"
+             alt="Diwali celebration photograph 6"
+             onclick="expandImage(this.src)">
+
+          <img src="../photos/diwali11.jpeg"
+             alt="Diwali celebration photograph 6"
+             onclick="expandImage(this.src)">
+
+          <img src="../photos/diwali12.jpeg"
+             alt="Diwali celebration photograph 6"
+             onclick="expandImage(this.src)">
+
+          <img src="../photos/diwali13.jpeg"
+             alt="Diwali celebration photograph 6"
+             onclick="expandImage(this.src)">
+
+          <img src="../photos/diwali14.jpeg"
+             alt="Diwali celebration photograph 6"
              onclick="expandImage(this.src)">
       </div>
 
