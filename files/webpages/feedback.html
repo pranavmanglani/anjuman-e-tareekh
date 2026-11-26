@@ -450,14 +450,10 @@ form.addEventListener("submit", async function(event){
     submitBtn.textContent = "Submitting...";
     statusBox.className = "";
     statusBox.style.display = "none";
-
-    const { error } = await supabase
-        .from("feedback")
-        .insert([{
-            name: name,
-            email: email || null,
-            feedback: feedback
-        }]);
+    
+const { error } = await supabaseClient.from("feedback").insert([
+  { name, email: email || null, feedback }
+]);
 
     if(error){
         console.error(error);
